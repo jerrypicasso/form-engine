@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form-engine>
+	<data-source>
+		<driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+		<url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
+		<user-name>system</user-name>
+		<password>neusoft</password>
+		<initial-size>10</initial-size>
+		<max-active>20</max-active>
+		<max-idle>10000</max-idle>
+		<max-wait>1000</max-wait>
+	</data-source>
+	
+	<image-upload>
+		<save-path>D:/test/upload</save-path>
+		<file-type>gif,jpg,jpeg,png,bmp</file-type>
+		<max-size>1000000</max-size>
+	</image-upload>
+	
+	<plugins>
+		<plugin name="diagnosis" class="com.neusoft.hit.fe.ext.diagnosis.DiagnosisDataHandler"/>
+	</plugins>
+	
+	<combo-configs>
+		<combo-config code="dict" name="字典">
+			<sql-template>
+				<![CDATA[
+				SELECT VAL,TXT FROM DICT WHERE CATEGORY = ${param.category} 
+				<#if param.master??> 
+					AND PID = ${param.master} 
+				</#if> 
+				]]>
+			</sql-template>
+			<display-template><![CDATA[ <div style="color:#333;">${result.txt}</div> ]]></display-template>
+			<value-template>${result.val}</value-template>
+		</combo-config>
+		
+		<combo-config code="staff" name="人员">
+			<sql-template>
+				<![CDATA[
+				SELECT DISTINCT YGBH,XM FROM VIEW_YGJBXX WHERE ZC_TYPE = ${param.filter} 
+				<#if param.fuzzy??> 
+					AND XM LIKE '%${param.fuzzy}%' 
+				</#if>
+				]]>
+			</sql-template>
+			<display-template><![CDATA[ <div style="color:#333;">${result.XM}</div> ]]></display-template>
+			<value-template>${result.YGBH}</value-template>
+		</combo-config>
+		
+		<combo-config code="icd" name="ICD">
+			<sql-template>
+				<![CDATA[
+				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE 1=1 
+				<#if param.fuzzy??> 
+					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%') 
+				</#if>
+				]]>
+			</sql-template>
+			<display-template><![CDATA[ <div style="color:#333;">${result.ICD_NAME}</div> ]]></display-template>
+			<value-template>${result.ICD_CODE}</value-template>
+		</combo-config>
+	</combo-configs>
+</form-engine>

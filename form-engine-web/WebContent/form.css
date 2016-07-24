@@ -1,0 +1,214 @@
+.widget-table td, th {
+	padding: 0;
+	/* border: 1px solid transparent; */
+}
+
+.paper {
+	margin: 0 auto;
+}
+
+.footer {
+	display: none;
+}
+
+.page-wrapper {
+	position: relative;
+	background-color: rgba(33, 66, 99, 0.5);
+	width: 100%;
+	text-align:center;
+}
+
+.edit-wrapper {
+	position: relative;
+	background-color: rgba(33, 66, 99, 0.3);
+	width: 100%;
+	text-align:center;
+}
+
+.toolbar {
+	position: absolute;
+	background-color: rgba(33, 66, 99, 0.5);
+	width: 153px;
+	height: 32px;
+	left: 0;
+	top: -32px;
+}
+
+.tool-bar {
+	position: absolute;
+	background-color: rgba(33, 66, 99, 0.6);
+	height: 28px;
+	margin: 0;
+	padding: 0;
+	top: -28px;
+	left: 0;
+	right: 0;
+}
+
+.tool-bar .edit-btn {
+	float: left;
+}
+
+.tool-bar .page-btn {
+	float: right;
+}
+
+.toolbar .operate-btn {
+	border: none;
+	background-color: #cdcdcd;
+	margin-left: 5px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+
+.save-or-not-wrapper .operate-btn {
+	margin-left: 5px;
+	margin-top: 5px;
+	background-color: #cdcdcd;
+	border: none;
+	cursor: pointer;
+}
+
+.data-row.editable {
+	position: relative;
+	box-shadow: 0 0 5px 5px rgb(205, 92, 92);
+	z-index: 1100;
+	background-color: #fff;
+	cursor: pointer;
+}
+
+.main-field.editable {
+	position: relative;
+	z-index: 1100;
+	background-color: #fff;
+	cursor: pointer;
+	overflow: visible !important;
+	height: auto !important;
+}
+
+.main-field.editable .editor {
+	box-shadow: 0 0 2px 2px rgb(34, 139, 34);
+}
+
+.main-field.editable .select2 {
+	box-shadow: 0 0 2px 2px rgb(34, 139, 34);
+}
+
+.widget-check.editable .check-field {
+	box-shadow: 0 0 2px 2px rgb(34, 139, 34);
+}
+
+/* .editable td {
+		background-color:rgb(255, 228, 225) !important;
+	}
+	
+	.editable .row-field {
+		background-color: transparent !important;
+	}
+	
+	.editable .main-field {
+		box-shadow: 0 0 5px 5px rgb(139,0,0);
+	} */
+	
+.main-field, .row-field {
+	display: inline-block;
+}
+
+.display-field {
+	min-width: 14px;
+	display:block;
+}
+
+.selected .row-field {
+	background-color: transparent !important;
+}
+
+.selected td {
+	background-color: #90EE90 !important;
+}
+
+li.selected {
+	background-color: #90EE90 !important;
+}
+
+.editing {
+	position: relative;
+	box-shadow: 0 0 0 2px rgb(34, 139, 34);
+	z-index: 1200;
+	background: #fff;
+}
+
+.save-or-not-wrapper {
+	background-color: blue;
+	position: absolute;
+	z-index: 1200;
+}
+
+.ok-cancel-wrapper {
+	width: 100%;
+	min-width: 36px;
+	font-size: 12px;
+	font-weight: bold;
+	border-collapse: collapse;
+}
+
+.ok-cancel-wrapper td {
+	line-height: 12px;
+	text-align: center;
+	border-style: solid;
+	border-color: #aaa;
+	border-width: 1px 1px 0 1px;
+}
+
+.ok-cancel-wrapper .ok {
+	color: #fff !important;
+	background: rgb(50, 205, 50) !important;
+}
+
+.ok-cancel-wrapper .cancel {
+	color: #fff !important;
+	background: rgb(178, 34, 34) !important;
+}
+
+.paginationbar {
+	background-color: rgba(33, 66, 99, 0.5);
+	position: absolute;
+	width: 420px;
+	height: 32px;
+	right: 0;
+	top: -32px;
+	text-align: center;
+}
+
+input.editor {
+	border: 1px solid #aaa;
+	min-height: 28px;
+	min-width: 36px;
+	-moz-appearance: textfield;
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.select2-container {
+	width: 100% !important;
+}
+
+.select2-dropdown {
+	min-width: 100px !important;
+	border: 1px solid #aaa !important;
+	border-radius: 0 !important;
+	/* z-index: 1200 !important; */
+}
+
+.select2-selection {
+	border-radius: 0 !important;
+}
+
+.select2-selection__arrow {
+	display: none !important;
+}
+
+.select2-selection__rendered {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
