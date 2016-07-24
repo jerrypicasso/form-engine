@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import com.neusoft.hit.emr.fd.util.DBUtil;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import net.sf.json.JSONArray;
 
 public class FormDesignerServlet extends HttpServlet {
