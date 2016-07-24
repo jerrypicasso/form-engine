@@ -18,8 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.neusoft.hit.emr.fd.util.DBUtil;
 
+import com.neusoft.hit.emr.fd.util.DBUtil;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import net.sf.json.JSONArray;
 
 public class FormDesignerServlet extends HttpServlet {
@@ -57,19 +58,26 @@ public class FormDesignerServlet extends HttpServlet {
 			writer.write(tpl);
 			writer.flush();
 			writer.close();
-			
+
 			Connection conn = null;
 			PreparedStatement stmt = null;
-			String sql = "INSERT INTO FORM_TEMPLATE_STORAGE(ID, CODE, TITLE, CONTENT, VERSION) VALUES(?,?,?,?,?)";
+			String sql = "INSERT INTO FORM_TEMPLATE_STORAGE(\"ID\", \"CODE\", \"TITLE\", \"CONTENT\", \"VERSION\") VALUES(?,?,?,?,?)";
 			try {
+
 				conn = DBUtil.getConnection();
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, UUID.randomUUID().toString());
 				stmt.setString(2, code.toLowerCase());
 				stmt.setString(3, name);
-				Clob clob = conn.createClob();
-				clob.setString(1, tpl);
-				stmt.setClob(4, clob);
+				if("Oracle".equals(DBUtil.getDataBaseType())){
+					Clob clob = conn.createClob();
+					clob.setString(1, tpl);
+					stmt.setClob(4, clob);
+				}else{
+					stmt.setString(4, tpl);
+				}
+
+
 				stmt.setTimestamp(5, new Timestamp(Calendar.getInstance().getTimeInMillis()));
 				stmt.executeUpdate();
 			} catch (Exception e) {
@@ -94,12 +102,12 @@ public class FormDesignerServlet extends HttpServlet {
 			String code = req.getParameter("code");
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FROM (");
-			sql.append("SELECT * FROM FORM_TEMPLATE_STORAGE WHERE CODE = '").append(code).append("' ");
-			sql.append("ORDER BY VERSION DESC");
-			sql.append(") ");
+			sql.append("SELECT * FROM FORM_TEMPLATE_STORAGE WHERE \"CODE\" = '").append(code).append("' ");
+			sql.append("ORDER BY \"VERSION\" DESC");
+			sql.append(") AS A ");
 			String dbType = DBUtil.getDataBaseType();
 			if("Oracle".equals(dbType)) {
-				sql.append("WHERE ROWNUM = 1 ");
+				sql.append("WHERE \"ROWNUM\" = 1 ");
 			}
 			else if("Postgresql".equals(dbType)) {
 				sql.append("LIMIT 1 ");
@@ -120,7 +128,7 @@ public class FormDesignerServlet extends HttpServlet {
 			resp.getWriter().flush();
 		}
 		else if("/loadTempList.do".equals(servletPath)) {
-			String sql = "SELECT DISTINCT CODE,TITLE FROM FORM_TEMPLATE_STORAGE";
+			String sql = "SELECT DISTINCT \"CODE\",\"TITLE\" FROM FORM_TEMPLATE_STORAGE";
 			List<Map<String, Object>> records = DBUtil.getMultiResults(sql);
 			resp.setContentType("text/json;charset=utf-8");
 			JSONArray jsonArr = JSONArray.fromObject(records);
@@ -128,5 +136,5 @@ public class FormDesignerServlet extends HttpServlet {
 			resp.getWriter().flush();
 		}
 	}
-	
+
 }
