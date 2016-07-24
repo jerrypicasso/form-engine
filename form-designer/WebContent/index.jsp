@@ -9,7 +9,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-	List<Map<String, Object>> list = DBUtil.getMultiResults("SELECT * FROM COMBO_WIDGET_CONFIG WHERE DEL_FLAG != 1");
+	List<Map<String, Object>> list = DBUtil.getMultiResults("SELECT * FROM COMBO_WIDGET_CONFIG WHERE 'DEL_FLAG' != '1'");
 	request.setAttribute("combos", list);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
