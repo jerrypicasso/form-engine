@@ -519,7 +519,7 @@ function registerWidgetPropertiesHandlers() {
 	});
 	propPanel.find('select[name=trigger]').next().bind('click', function(){
 		var val = $(this).prev().val();
-		$('.selected-widget').attr({'auto-complete':val});
+		$('.selected-widget').attr({'trigger':val});
 	});
 	propPanel.find('select[name=fontWeight]').next().bind('click', function(){
 		var val = $(this).prev().val();
@@ -531,7 +531,7 @@ function registerWidgetPropertiesHandlers() {
 	});
 	propPanel.find('input[name=filter]').next().bind('click', function(){
 		var val = $(this).prev().val();
-		$('.selected-widget').val(val);
+		$('.selected-widget').attr({'filter':val});
 	});
 	propPanel.find('select[name=isRich]').next().bind('click', function(){
 		var val = $(this).prev().val();
