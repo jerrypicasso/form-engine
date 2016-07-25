@@ -1,0 +1,33 @@
+.widget-table {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+
+.td-border-invisible {
+	border:1px dotted red;
+	padding:1px !important;
+}
+
+.th-border-invisible {
+	border:1px dotted blue;
+	padding:1px !important;
+}
+
+.row-resizable {
+	cursor: row-resize;
+}
+
+.col-resizable {
+	cursor: col-resize;
+}
+
+.col-setting-referenced {
+	box-shadow: 0 0 3px 3px rgba(209,91,71,0.5);
+}
+
+.cell.drop-zone {
+	background: rgb(187,255,255) !important;
+}

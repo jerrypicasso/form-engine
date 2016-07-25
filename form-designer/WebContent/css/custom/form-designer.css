@@ -1,0 +1,361 @@
+body {
+	padding: 0;
+	margin: 0;
+	background: #fff;
+}
+
+.main-frame {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.left-panel {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 240px;
+}
+
+.top-panel {
+	height:120px;
+	position:absolute;
+	left:0;
+	right:0;
+	top:0;
+	overflow:hidden;
+}
+
+.banner-panel {
+	width: 100%;
+	font-size: 15px;
+	color: #fff;
+	text-align:center;
+	background-color:rgb(67,142,185);
+	font-weight: bold;
+}
+
+.banner-btn span {
+	font-size:12px;
+	line-height:30px;
+	cursor:pointer;
+	padding:2px;
+}
+
+.center-panel {
+	background: rgb(255, 255, 255);
+	overflow: auto;
+}
+
+.dataset-wrapper {
+	background: rgb(255, 255, 255);
+}
+
+.paper-wrapper {
+	padding: 20px;
+}
+
+.paper {
+	/* position: relative;
+	width: 794px;
+	min-height: 1123px; */
+	background: rgb(255, 255, 255);
+	margin: 0 auto;
+	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+	position:relative;
+	/* border-bottom: 1px dashed black; */
+	background: rgb(255,228,225);
+	/* overflow: hidden; */
+}
+
+.header.drop-zone {
+	background: rgb(187,255,255) !important;
+}
+
+.header-resizer {
+	position : absolute;
+	bottom : 0;
+	left : 0;
+	border : 1px solid;
+	cursor : n-resize;
+	z-index : 110;
+}
+
+.content {
+	position:relative;
+	background: rgb(250,250,210);
+	/* overflow: hidden; */
+}
+
+.content.drop-zone {
+	background: rgb(187,255,255) !important;
+}
+
+.content-resizer {
+	position : absolute;
+	bottom : 0;
+	left : 0;
+	border : 1px solid;
+	cursor : n-resize;
+	z-index : 110;
+}
+
+.footer {
+	position:relative;
+	background: rgb(255,228,225);
+	/* overflow: hidden; */
+}
+
+.footer.drop-zone {
+	background: rgb(187,255,255) !important;
+}
+
+.footer-resizer {
+	position : absolute;
+	bottom : 0;
+	left : 0;
+	border : 1px solid;
+	cursor : s-resize;
+	z-index : 110;
+}
+
+.editing {
+	border: 1px solid rgb(200, 200, 200);
+	cursor: move;
+}
+
+.selected-widget {
+	background: rgb(0, 191, 255) !important;
+}
+
+.control {
+	width: 17px;
+	height: 17px;
+	font-size: 12px;
+	color: #fff;
+	display: inline-block;
+	margin-top: 4px;
+	margin-left: 3px;
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+.control:hover {
+	background: rgb(67, 142, 185);
+}
+
+.widgets-panel {
+	height: 100%;
+	width: 100%;
+}
+
+.widgets {
+	height: 100px;
+	/* text-align: center; */
+	overflow-y: scroll;
+	background: rgb(245, 245, 245);
+}
+
+.widgets-panel-title {
+	text-align: center;
+	height: 20px;
+	line-height:20px;
+	background: rgb(209, 91, 71);
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.widget {
+}
+
+.operate-panel {
+	height: 100%;
+	width: 100%;
+}
+
+.operates {
+	height: 100px;
+	/* text-align: center; */
+	overflow-y: scroll;
+	background: rgb(245, 245, 245);
+}
+
+.operate-panel-title {
+	height: 20px;
+	line-height:20px;
+	background: rgb(209, 91, 71);
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.operate {
+	width: 34px;
+	height: 34px;
+	font-size: 12px;
+	color: #fff;
+	display: inline-block;
+	background: rgb(67, 142, 185);
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+	margin-top:5px;
+}
+
+.dataset-panel {
+	height: 100%;
+	width: 100%;
+}
+
+.datasets {
+	height: 100px;
+	/* text-align: center; */
+	overflow-y: scroll;
+	background: rgb(245, 245, 245);
+}
+
+.dataset-panel-title {
+	height: 20px;
+	line-height:20px;
+	background: rgb(209, 91, 71);
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.dataset {
+	width: 34px;
+	height: 34px;
+	font-size: 12px;
+	color: #fff;
+	display: inline-block;
+	background: rgb(67, 142, 185);
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+	margin-top:5px;
+}
+
+.prop-panel {
+	height: 100%;
+	width: 100%;
+}
+
+.properties {
+	background: rgb(245, 245, 245);
+	font-size: 12px;
+	overflow-y: scroll;
+	height: 100px;
+	text-align: center;
+}
+
+.prop-panel-title {
+	height: 20px;
+	line-height:20px;
+	background: rgb(209, 91, 71);
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.copying {
+	box-shadow: 0 0 3px 3px rgba(67,142,185,0.5);
+}
+
+.selected-sql {
+	background: rgb(224,255,255);
+}
+
+.sql-wrapper {
+	display:none;
+	background:#fff;
+	box-shadow:0 0 5px 5px rgba(0, 0, 0, 0.2);
+	position:relative;
+	margin:0 auto 20px auto;
+	min-height: 20px;
+}
+
+.sql-node {
+	display:none;
+	border:1px dashed green;
+	margin:5px auto;
+	padding:5px;
+}
+
+.sql-name {
+	background:rgb(209,91,71);
+	color:#fff;
+	padding:0 3px;
+}
+
+.sql-result-type {
+	background:rgb(67,142,185);
+	color:#fff;
+	padding:0 3px;
+}
+
+.sql-result-limit {
+	background:rgb(34,139,34);
+	color:#fff;
+	padding:0 3px;
+}
+
+.var-name {
+	background:rgb(139,58,58);
+	color:#fff;
+	padding:0 3px;
+}
+
+ul.datasets-wrapper {
+	padding:0;
+	margin:0;
+}
+
+ul.datasets-wrapper li {
+	list-style:none;
+	display:block;
+	cursor:pointer;
+}
+
+ul.fields-wrapper {
+	padding:0;
+	margin:0;
+}
+
+ul.fields-wrapper li {
+	list-style:none;
+	display:block;
+	cursor:pointer;
+}
+
+.selected-item {
+	background-color: rgb(0, 191, 255) !important;
+}
+
+.dialog {
+	box-shadow:5px 5px 5px;
+	background:#fff;
+	font-size:12px;
+}
+
+.dialog .dialog-title {
+	background:rgb(67, 142, 185);
+	height:30px;
+	line-height:30px;
+	color:#fff;
+	text-align:left;
+	padding:0 10px;
+}

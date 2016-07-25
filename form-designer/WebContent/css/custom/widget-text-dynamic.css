@@ -1,0 +1,13 @@
+.widget-text-dynamic {
+	cursor:default;
+	background-color:rgb(255,255,255);
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+
+.widget-text-dynamic.drop-zone {
+	border-left:2px solid red;
+}

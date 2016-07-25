@@ -1,0 +1,23 @@
+.widget-field-staff {
+	cursor:default;
+	background-color:rgb(255,255,255);
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+
+/* .widget-field-staff .display-field {
+	display:none !important;
+	overflow: hidden;
+}
+
+.widget-field-staff .value-field {
+	display: block !important;
+	overflow: hidden;
+} */
+
+.widget-field-staff.drop-zone {
+	border-left:2px solid red;
+}

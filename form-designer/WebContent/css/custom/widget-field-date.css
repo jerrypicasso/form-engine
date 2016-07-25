@@ -1,0 +1,23 @@
+.widget-field-date {
+	cursor:default;
+	background-color:rgb(255,255,255);
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+
+/* .widget-field-date .display-field {
+	display:none !important;
+	overflow: hidden;
+}
+
+.widget-field-date .value-field {
+	display: block !important;
+	overflow: hidden;
+}
+ */
+.widget-field-date.drop-zone {
+	border-left:2px solid red;
+}
