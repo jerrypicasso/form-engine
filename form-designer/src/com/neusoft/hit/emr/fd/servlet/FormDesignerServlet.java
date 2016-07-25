@@ -100,15 +100,19 @@ public class FormDesignerServlet extends HttpServlet {
 		else if("/loadFormTpl.do".equals(servletPath)) {
 			String code = req.getParameter("code");
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM (");
-			sql.append("SELECT * FROM FORM_TEMPLATE_STORAGE WHERE \"CODE\" = '").append(code).append("' ");
-			sql.append("ORDER BY \"VERSION\" DESC");
-			sql.append(") AS A ");
 			String dbType = DBUtil.getDataBaseType();
 			if("Oracle".equals(dbType)) {
-				sql.append("WHERE \"ROWNUM\" = 1 ");
+				sql.append("SELECT * FROM (");
+				sql.append("SELECT * FROM FORM_TEMPLATE_STORAGE WHERE CODE = '").append(code).append("' ");
+				sql.append("ORDER BY VERSION DESC");
+				sql.append(") A ");
+				sql.append("WHERE ROWNUM = 1 ");
 			}
 			else if("Postgresql".equals(dbType)) {
+				sql.append("SELECT * FROM (");
+				sql.append("SELECT * FROM FORM_TEMPLATE_STORAGE WHERE \"CODE\" = '").append(code).append("' ");
+				sql.append("ORDER BY \"VERSION\" DESC");
+				sql.append(") AS A ");
 				sql.append("LIMIT 1 ");
 			}
 			Map<String, Object> record = DBUtil.getSingleResult(sql.toString());
