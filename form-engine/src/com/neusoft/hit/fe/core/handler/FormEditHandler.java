@@ -6,13 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.StageParam;
+import com.neusoft.hit.fe.core.utility.CommonUtil;
 import com.neusoft.hit.fe.core.utility.DBUtil;
 
 import net.sf.json.JSONObject;
@@ -32,7 +32,7 @@ public class FormEditHandler {
 		if(pkValue == null || "".equals(pkValue)) {
 			StringBuilder columnNames = new StringBuilder(" (");
 			StringBuilder columnValues = new StringBuilder(" (");
-			columns.put(pkName, UUID.randomUUID().toString());
+			columns.put(pkName, CommonUtil.guid());
 			Iterator<?> it = columns.keys();
 			while (it.hasNext()) {
 				String key = (String) it.next();  
@@ -160,7 +160,7 @@ public class FormEditHandler {
 			deleteStmt.setString(3, category);
 			deleteStmt.executeUpdate();
 			insertStmt = conn.prepareStatement(insertSql);
-			insertStmt.setString(1, UUID.randomUUID().toString());
+			insertStmt.setString(1, CommonUtil.guid());
 			insertStmt.setString(2, staffCode);
 			insertStmt.setString(3, patientCode);
 			insertStmt.setString(4, category);

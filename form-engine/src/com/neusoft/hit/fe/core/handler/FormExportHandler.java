@@ -97,6 +97,7 @@ public class FormExportHandler {
 			ITextFontResolver fontResolver = renderer.getFontResolver();  
 			//fontResolver.addFont("C:/Windows/Fonts/SIMKAI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);  
 			fontResolver.addFont("c:/windows/fonts/simsun.ttc",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+			fontResolver.addFont("c:/windows/fonts/SimSun-Bold.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
   
 			// 解决图片的相对路径问题  
 			//renderer.getSharedContext().setBaseURL("file:/D:/Work/Demo2do/Yoda/branch/Yoda%20-%20All/conf/template/");  

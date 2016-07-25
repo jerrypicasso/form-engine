@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,7 +37,7 @@ public class FreemarkerUtil {
 		ByteArrayOutputStream os = null;
 		Writer out = null;
 		try {
-			String key = UUID.randomUUID().toString();
+			String key = CommonUtil.guid();
 			StringTemplateLoader stringLoader = (StringTemplateLoader) configuration.getTemplateLoader();
 			stringLoader.putTemplate(key, template);
 			Template sqlTemplate = configuration.getTemplate(key);

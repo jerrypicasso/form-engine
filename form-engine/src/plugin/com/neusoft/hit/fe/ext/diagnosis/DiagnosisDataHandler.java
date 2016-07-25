@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import com.neusoft.hit.fe.core.api.PluginDataHandler;
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.ResultInfo;
+import com.neusoft.hit.fe.core.utility.CommonUtil;
 import com.neusoft.hit.fe.core.utility.DBUtil;
 import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 
@@ -56,7 +56,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 		if(diagnosisParent != null && !"".equals(diagnosisParent)) {
 			sqlTpl = "INSERT INTO DIAGNOSIS_SUB(ID,DIAGNOSIS_ID,ICD_10,NAME) VALUES('${id}','${diagnosisParent}','${diagnosisCode}','${diagnosisText}')";
 		}
-		param.put("id", UUID.randomUUID().toString());
+		param.put("id", CommonUtil.guid());
 		String sql = FreemarkerUtil.getMixedString(sqlTpl, param);
 		Connection conn = null;
 		Statement stmt = null;
