@@ -11,15 +11,15 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import com.neusoft.hit.emr.fd.util.DBUtil;
+import com.neusoft.hit.fe.core.utility.CommonUtil;
+
 import net.sf.json.JSONArray;
 
 public class FormDesignerServlet extends HttpServlet {
@@ -62,10 +62,9 @@ public class FormDesignerServlet extends HttpServlet {
 			PreparedStatement stmt = null;
 			String sql = "INSERT INTO FORM_TEMPLATE_STORAGE(\"ID\", \"CODE\", \"TITLE\", \"CONTENT\", \"VERSION\") VALUES(?,?,?,?,?)";
 			try {
-
 				conn = DBUtil.getConnection();
 				stmt = conn.prepareStatement(sql);
-				stmt.setString(1, UUID.randomUUID().toString());
+				stmt.setString(1, CommonUtil.guid());
 				stmt.setString(2, code.toLowerCase());
 				stmt.setString(3, name);
 				if("Oracle".equals(DBUtil.getDataBaseType())){

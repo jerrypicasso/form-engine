@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,8 +186,8 @@ public class FormLoadHandler {
 		}
 	}
 	
-	private Map<String, SqlTplInfo> parseSqlTplMap(HtmlDocument htmlDocument) throws FormEngineException {
-		Map<String, SqlTplInfo> selectSqlMap = new HashMap<String, SqlTplInfo>();
+	private List<SqlTplInfo> parseSqlTplMap(HtmlDocument htmlDocument) throws FormEngineException {
+		List<SqlTplInfo> selectSqlList = new ArrayList<SqlTplInfo>();
 		List<HtmlElement> htmlElements = htmlDocument.getElementsByClass("sql-node");
 		for(HtmlElement htmlElement : htmlElements) {
 			SqlTplInfo sqlTpl = new SqlTplInfo();
@@ -213,17 +215,30 @@ public class FormLoadHandler {
 				sql = sql.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
 				sqlTpl.setSql(sql);
 			}
-			selectSqlMap.put(sqlTpl.getName(), sqlTpl);
+			selectSqlList.add(sqlTpl);
 		}
-		return selectSqlMap;
+		Collections.sort(selectSqlList, new Comparator<SqlTplInfo>() {
+			@Override
+			public int compare(SqlTplInfo o1, SqlTplInfo o2) {
+				if("single".equals(o1.getResultType()) && !"single".equals(o1.getResultType())) {
+					return 1;
+				}
+				else if(!"single".equals(o1.getResultType()) && "single".equals(o1.getResultType())) {
+					return -1;
+				}
+				else {
+					return 0;
+				}
+			}
+		});
+		return selectSqlList;
 	}
 	
-	private void loadDatasetByExecutingQuerySql(Map<String, SqlTplInfo> selectSqlMap, 
+	private void loadDatasetByExecutingQuerySql(List<SqlTplInfo> selectSqlList, 
 			Map<String, Object> rootMap) throws FormEngineException {
 		//把select语句都执行一下，得到的结果作为展示用的数据源
-		for(Map.Entry<String, SqlTplInfo> entry : selectSqlMap.entrySet()) {
-			String sqlName = entry.getKey();
-			SqlTplInfo sqlTpl = entry.getValue();
+		for(SqlTplInfo sqlTpl : selectSqlList) {
+			String sqlName = sqlTpl.getName();
 			String resultType = sqlTpl.getResultType();
 			String sql = sqlTpl.getSql();
 			Integer resultlimit = sqlTpl.getResultLimit();
