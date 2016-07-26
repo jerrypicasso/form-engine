@@ -554,7 +554,7 @@
 				}
 			});
 		}*/
-		else {
+		else if(type == 'text' || dataField.hasClass('widget-field-hidden')) {
 			var isRich = dataField.attr('rich');
 			if(isRich === 'true') {
 				editor = document.createElement('textarea');
@@ -748,7 +748,8 @@
 				url:'form/drop.process',
 				data:{'id': $.trim(rowId), 'table':tableName},
 				success:function(){
-					query();
+					var func = methods['load'];
+					func.apply(container);
 				}
 			});
 		}
@@ -780,14 +781,16 @@
 			});
 			$.ajax({
 				url:'form/save.process',
+				type: 'post',
 				data:{
-					'table':tableName,
-					'pkName':primaryKeyName,
-					'pkValue':primaryKeyValue,
+					'tableName':tableName,
+					'primaryKeyName':primaryKeyName,
+					'primaryKeyValue':primaryKeyValue,
 					'record':JSON.stringify(recordData)
 				},
 				success:function() {
-					query();
+					var func = methods['load'];
+					func.apply(container);
 				}
 			});
 		}
