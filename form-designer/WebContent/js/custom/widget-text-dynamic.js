@@ -5,7 +5,7 @@ function createDynamicTextWidget(config) {
 	$(text).addClass('droppable');
 	$(text).css({
 		'display':'inline-block',
-		'vertical-align':'bottom',
+		'vertical-align':'middle',
 		'white-space':'normal',
 		'word-wrap':'break-word',
 		'text-align':'center',

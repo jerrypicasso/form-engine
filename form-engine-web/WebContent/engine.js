@@ -32,6 +32,7 @@
 					container.html(data['content']);
 					container.data('lastOptions', params);
 					container.data('mode', data['mode']);
+					handleEmptyWidgetField(container);
 					createPaginationBars(container);
 					renderCheckboxWidgets(container);
 					createExportForm();
@@ -175,7 +176,6 @@
 							var realVal = $(this).find('.value-field').html();
 							var hiddenField = parent.find('.widget-field-hidden[field='+ fieldName +']');
 							var checkGroupType = parent.attr('check-group-type');
-							console.log(checkGroupType);
 							var checkField = $(this).find('.check-field');
 							if(checkField.html() == '√') {
 								checkField.html('');
@@ -493,6 +493,7 @@
 					return item.name || item.text;
 				}
 			});
+			$(editor).val(val);
 		}
 		else if(type == 'date') {
 			editor = document.createElement('input');
@@ -644,6 +645,15 @@
 			var currentPage = lastOptions[pageParamName] || 0;
 			currentPage++;
 			$('#' + pageParamName).html('第' + currentPage + '页/共' + pages + '页');
+		});
+	}
+	
+	function handleEmptyWidgetField(container) {
+		container.find('.display-field').each(function(){
+			var displayField = $(this);
+			if($.trim(displayField.html()) === '') {
+				displayField.html('&nbsp;');
+			}
 		});
 	}
 

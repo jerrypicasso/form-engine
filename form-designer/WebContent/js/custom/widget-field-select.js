@@ -30,7 +30,7 @@ function createSelectFieldWidget(config) {
 		'display':'inline-block',
 		'overflow':'hidden',
 		'text-align':'center',
-		'vertical-align':'bottom',
+		'vertical-align':'middle',
 		'white-space':'normal',
 		'width':'auto'
 	});

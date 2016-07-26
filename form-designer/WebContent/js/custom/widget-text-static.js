@@ -5,7 +5,7 @@ function createStaticTextWidget(config) {
 	$(text).addClass('droppable');
 	$(text).css({
 		'display':'inline-block',
-		'vertical-align':'bottom',
+		'vertical-align':'middle',
 		'overflow':'hidden',
 		'white-space':'nowrap',
 		'text-align':'center',

@@ -17,7 +17,7 @@ function createTextFieldWidget(config) {
 		'overflow':'hidden',
 		'text-align':'center',
 		'white-space':'normal',
-		'vertical-align':'bottom',
+		'vertical-align':'middle',
 		'width':'auto'
 	});
 	registerWidgetMousedownHandler(field);
