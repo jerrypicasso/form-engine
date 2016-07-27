@@ -51,7 +51,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 	}
 	
 	private String save(Map<String, Object> param) throws FormEngineException {
-		String sqlTpl = "INSERT INTO DIAGNOSIS(ID,PATIENT_CODE,CATEGORY,ICD_10,NAME) VALUES('${id}','${brbh}','${diagnosisType}','${diagnosisCode}','${diagnosisText}')";
+		String sqlTpl = "INSERT INTO DIAGNOSIS(ID,PATIENT_CODE,CATEGORY,ICD_10,NAME) VALUES('${id}','${patientCode}','${diagnosisType}','${diagnosisCode}','${diagnosisText}')";
 		Object diagnosisParent = param.get("diagnosisParent");
 		if(diagnosisParent != null && !"".equals(diagnosisParent)) {
 			sqlTpl = "INSERT INTO DIAGNOSIS_SUB(ID,DIAGNOSIS_ID,ICD_10,NAME) VALUES('${id}','${diagnosisParent}','${diagnosisCode}','${diagnosisText}')";

@@ -6,12 +6,12 @@ function createCheckWidget(config) {
 	$(field).addClass('droppable');
 	$(field).attr('field', config['field-name']);
 	$(field).attr('type', 'check');
-	if(config['is-row-data'] === '1') {
+	/*if(config['is-row-data'] === '1') {
 		$(field).addClass('row-field');
 	} 
 	else {
 		$(field).addClass('main-field');
-	}
+	}*/
 	$(field).css({
 		'display':'inline-block',
 		'border': '1px solid rgb(0, 0, 0)',
@@ -20,6 +20,7 @@ function createCheckWidget(config) {
 	    'overflow': 'hidden',
 	    'text-align': 'center',
 	    'white-space': 'normal',
+	    'vertical-align': 'middle',
 	    'width': '16px'
 	});
 	registerWidgetMousedownHandler(field);

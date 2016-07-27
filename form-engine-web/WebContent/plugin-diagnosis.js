@@ -1,19 +1,26 @@
-$('#container').bind('form-loaded', function(e, options){
-	var diagnosisWidget = $(this).find('.widget-custom-diagnosis');
-	queryDiagnosis(diagnosisWidget);
-});
-
-$('#container').bind('mode-changed', function(e, options){
-	if(options.mode === 'view') {
-		$(this).find('.widget-custom-diagnosis .display-field').unbind();
-		$(this).find('.widget-custom-diagnosis .editor-wrapper').remove();
-	}
-	else if(options.mode === 'edit') {
-		$(this).find('.widget-custom-diagnosis').each(function(){
-			var diagnosis = $(this);
-			diagnosis.addClass('editable');
-			createDiagnosisEditor(diagnosis);
-		});
+$.Engine.plugin('diagnosis',{
+	//实现afterFormLoaded方法
+	afterFormLoaded: function(options) {
+		var container = options.container;
+		var diagnosisWidget = container.find('.widget-custom-diagnosis');
+		if(diagnosisWidget.length > 0) {
+			queryDiagnosis(diagnosisWidget);
+		}
+	},
+	//实现afterModeChanged方法
+	afterModeChanged: function(options) {
+		var container = options.container;
+		if(options.mode === 'view') {
+			container.find('.widget-custom-diagnosis .display-field').unbind();
+			container.find('.widget-custom-diagnosis .editor-wrapper').remove();
+		}
+		else if(options.mode === 'edit') {
+			container.find('.widget-custom-diagnosis').each(function(){
+				var diagnosis = $(this);
+				diagnosis.addClass('editable');
+				createDiagnosisEditor(diagnosis, container.data('options'));
+			});
+		}
 	}
 });
 
@@ -52,7 +59,7 @@ function queryDiagnosis(diagnosisWidget) {
 	});
 }
 
-function createDiagnosisEditor(diagnosisWidget) {
+function createDiagnosisEditor(diagnosisWidget, opts) {
 	var diagnosisEditorWrapper = diagnosisWidget.find('.editor-wrapper');
 	if(diagnosisEditorWrapper.length <= 0) {
 		diagnosisEditorWrapper = $('<div class="editor-wrapper">');
@@ -94,7 +101,7 @@ function createDiagnosisEditor(diagnosisWidget) {
 			'diagnosisCode':diagnosisCode,
 			'diagnosisParent':null
 		};
-		$.extend(param, pageParams);
+		$.extend(param, opts);
 		$.ajax({
 			url:'form/plugin.process?action=save&handler=diagnosis',
 			data:param,
@@ -130,7 +137,7 @@ function createDiagnosisEditor(diagnosisWidget) {
 				'diagnosisCode':diagnosisCode,
 				'diagnosisParent':diagnosisId
 			};
-			$.extend(param, pageParams);
+			$.extend(param, opts);
 			$.ajax({
 				url:'form/plugin.process?action=save&handler=diagnosis',
 				data:param,

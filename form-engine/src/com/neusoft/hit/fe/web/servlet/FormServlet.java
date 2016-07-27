@@ -124,7 +124,7 @@ public class FormServlet extends HttpServlet {
 				imgUploadHandler.download(req, resp);
 			}
 			else if(servletPath.endsWith("/plugin.process")) {
-				/*String result = ResultInfo.getResult();
+				String result = ResultInfo.getResult();
 				String handlerName = req.getParameter("handler");
 				if(handlerName != null && handlerName.trim().length() > 0) {
 					Configuration config = Configuration.getInstance();
@@ -142,7 +142,7 @@ public class FormServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 				}
-				resp.getWriter().write(result);*/
+				resp.getWriter().write(result);
 			}
 		} catch (FormEngineException e) {
 			resp.getWriter().write(ResultInfo.getFailureResult(e.getMessage()));

@@ -1,6 +1,14 @@
 (function($) {
 	toastr.options = {positionClass: 'toast-top-center'};
 	
+	var plugins = {};
+	
+	$.Engine = {
+		'plugin': function(name, options) {
+			plugins[name] = options;
+		}	
+	};
+	
 	$.fn.form = function(funcName,options) {
 		if(funcName) {
 			var func = methods[funcName];
@@ -21,6 +29,7 @@
 			var mode = container.data('mode') || 'view';
 			$.extend(params, {'mode': mode});
 			if(options) {
+				container.data('options', options);
 				$.extend(params, options);
 			}
 			$.ajax({
@@ -45,6 +54,15 @@
 						func.apply(container, [{'mode':'edit'}]);
 					}
 					container.trigger('form-loaded', [{'mode':mode}]);
+					for(var name in plugins) {
+						plugin = plugins[name];
+						if(plugin.afterFormLoaded) {
+							plugin.afterFormLoaded.apply(container, [{
+								'container': container,
+								'mode': mode
+							}])
+						}
+					}
 				}
 			});
 		},
@@ -89,7 +107,6 @@
 				});
 				container.find('.widget-check').removeClass('editable');
 				container.find('.widget-check .check-field').unbind('click').html('');
-				container.trigger('mode-changed',[{'mode':'view'}]);
 			}
 			else {
 				var container = $(this);
@@ -202,7 +219,16 @@
 						}
 					});
 				});
-				container.trigger('mode-changed', [{'mode':'edit'}]);
+			}
+			container.trigger('mode-changed',[{'mode': mode}]);
+			for(var name in plugins) {
+				plugin = plugins[name];
+				if(plugin.afterModeChanged) {
+					plugin.afterModeChanged.apply(container, [{
+						'container': container,
+						'mode': mode
+					}])
+				}
 			}
 			container.data('mode', mode);
 			renderCheckboxWidgets(container);
@@ -563,6 +589,7 @@
 				dataField.prepend(editor);
 				KindEditor.create(editor, {
 					width: '100%',
+					newlineTag : 'br',
 					uploadJson : 'form/upload.process',
 					items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 							'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
@@ -649,7 +676,7 @@
 	}
 	
 	function handleEmptyWidgetField(container) {
-		container.find('.display-field').each(function(){
+		container.find('.display-field,.widget-text-dynamic').each(function(){
 			var displayField = $(this);
 			if($.trim(displayField.html()) === '') {
 				displayField.html('&nbsp;');

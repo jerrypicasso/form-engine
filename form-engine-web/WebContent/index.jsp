@@ -27,6 +27,8 @@
 <script type="text/javascript" src="toastr.min.js"></script>
 <script type="text/javascript" src="select2.min.js"></script>
 <script type="text/javascript" src="engine.js"></script>
+<script type="text/javascript" src="plugin-diagnosis.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#queryBtn').click(function(){
@@ -122,6 +124,5 @@
 		<input id="exportDoc" type="button" style="float:right;vertical-align:middle;" value="导出word"/>
 	</div>
 	<div id="container"></div>
-	<script type="text/javascript" src="plugin-diagnosis.js"></script>
 </body>
 </html>
