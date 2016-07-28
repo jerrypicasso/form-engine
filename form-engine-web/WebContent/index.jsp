@@ -36,6 +36,7 @@
 			$('#container').form('load', {
 				'patientCode': '1459047',
 				'staffCode':'9527',
+				'jzxh':'2009188',
 				'category':tplName
 			});
 		});
