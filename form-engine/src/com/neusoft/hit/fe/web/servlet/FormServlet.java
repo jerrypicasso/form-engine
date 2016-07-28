@@ -24,6 +24,7 @@ import com.neusoft.hit.fe.core.model.ExportParam;
 import com.neusoft.hit.fe.core.model.PluginCfgInfo;
 import com.neusoft.hit.fe.core.model.ResultInfo;
 import com.neusoft.hit.fe.core.model.StageParam;
+import com.neusoft.hit.fe.core.utility.CommonUtil;
 import com.neusoft.hit.fe.core.utility.Configuration;
 
 public class FormServlet extends HttpServlet {
@@ -132,13 +133,10 @@ public class FormServlet extends HttpServlet {
 					String handlerClassName = pluginCfg.getHandlerClassName();
 					try {
 						Class<?> clazz = Class.forName(handlerClassName);
-						PluginDataHandler handler = (PluginDataHandler) clazz.newInstance();
+						PluginDataHandler handler = (PluginDataHandler) CommonUtil
+								.create(clazz, pluginCfg.getPropertiesMap());
 						result = handler.handle(params);
 					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (InstantiationException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					}
 				}

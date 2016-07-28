@@ -148,6 +148,12 @@ public class Configuration {
 			if(classNode != null) {
 				plugin.setHandlerClassName(classNode.getText().trim());
 			}
+			List<?> propNodes = node.selectNodes("property");
+			for(int j = 0; j < propNodes.size(); j++) {
+				Node propNode = (Node)propNodes.get(j);
+				Node keyNode = propNode.selectSingleNode("@name");
+				plugin.getPropertiesMap().put(keyNode.getText().trim(), propNode.getText().trim());
+			}
 			plugins.put(plugin.getPluginName(), plugin);
 		}
 		return plugins;

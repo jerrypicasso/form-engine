@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,8 +12,10 @@ import org.apache.commons.logging.LogFactory;
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 
 import freemarker.cache.StringTemplateLoader;
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateHashModel;
 
 public class FreemarkerUtil {
 	
@@ -32,7 +35,7 @@ public class FreemarkerUtil {
 	 * @param rootMap
 	 * @return
 	 */
-	public static String getMixedString(String template, Object rootMap) throws FormEngineException {
+	public static String getMixedString(String template, Map<String, Object> rootMap) throws FormEngineException {
 		String mixed = null;
 		ByteArrayOutputStream os = null;
 		Writer out = null;
@@ -43,6 +46,13 @@ public class FreemarkerUtil {
 			Template sqlTemplate = configuration.getTemplate(key);
 			os = new ByteArrayOutputStream();
 			out = new OutputStreamWriter(os, "UTF-8");
+			
+			BeansWrapper wrapper = BeansWrapper.getDefaultInstance();
+			TemplateHashModel staticModels = wrapper.getStaticModels();
+			TemplateHashModel statics = (TemplateHashModel) staticModels
+					.get("com.neusoft.hit.fe.core.utility.CommonUtil");
+			rootMap.put("CommonUtil", statics);
+			
 			sqlTemplate.process(rootMap, out);
 			mixed = new String(os.toByteArray(), "UTF-8");
 		} catch (Exception e) {

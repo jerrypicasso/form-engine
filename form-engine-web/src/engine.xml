@@ -5,6 +5,9 @@
 		<url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
 		<user-name>system</user-name>
 		<password>neusoft</password>
+		<!-- <url>jdbc:oracle:thin:@192.168.3.101:1521:orcl</url>
+		<user-name>qyemr</user-name>
+		<password>simlink</password> -->
 		<initial-size>10</initial-size>
 		<max-active>20</max-active>
 		<max-idle>10000</max-idle>
@@ -16,10 +19,6 @@
 		<file-type>gif,jpg,jpeg,png,bmp</file-type>
 		<max-size>1000000</max-size>
 	</image-upload>
-	
-	<plugins>
-		<plugin name="diagnosis" class="com.neusoft.hit.fe.ext.diagnosis.DiagnosisDataHandler"/>
-	</plugins>
 	
 	<combo-configs>
 		<combo-config code="dict" name="字典">
@@ -61,4 +60,59 @@
 			<value-template>${result.ICD_CODE}</value-template>
 		</combo-config>
 	</combo-configs>
+	
+	<plugins>
+		<plugin name="diagnosis" class="com.neusoft.hit.fe.ext.diagnosis.DiagnosisDataHandler">
+			<property name="diagnosisSelectSql">
+				<![CDATA[
+					SELECT ID,ICD_10,LR AS NAME FROM ZDINFO 
+					WHERE JZXH = ${jzxh} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
+				]]>
+			</property>
+			<property name="diagnosisInsertSql">
+				<![CDATA[
+					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
+					INSERT INTO ZDINFO(ID,JZXH,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) 
+					VALUES('${CommonUtil.guid()}','${jzxh}','${diagnosisType}','${diagnosisCode}',
+					'${diagnosisText}','${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
+					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
+				]]>
+			</property>
+			<property name="subDiagnosisSelectSql">
+				<![CDATA[
+					SELECT SUB_ID AS ID,ZD_ID AS DIAGNOSIS_ID,ZD_NR NAME,ICD10_CODE ICD_10 FROM SUB_ZD_INFO 
+					WHERE ZD_ID = '${ID}' ORDER BY DIAGNOSTIC_ORDER1
+				]]>
+			</property>
+			<property name="subDiagnosisInsertSql">
+				<![CDATA[
+				 	<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
+					INSERT INTO SUB_ZD_INFO(SUB_ID,ZD_ID,ICD10_CODE,ZD_NR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) 
+					VALUES('${CommonUtil.guid()}','${diagnosisParent}','${diagnosisCode}','${diagnosisText}',
+					'${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
+					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
+				]]>
+			</property>
+			<property name="diagnosisOrderSql">
+				<![CDATA[
+					UPDATE ZDINFO SET DIAGNOSTIC_ORDER1 = ${seq} WHERE ID = '${id}'
+				]]>
+			</property>
+			<property name="subDiagnosisOrderSql">
+				<![CDATA[
+					UPDATE SUB_ZD_INFO SET DIAGNOSTIC_ORDER1 = ${seq} WHERE SUB_ID = '${id}'
+				]]>
+			</property>
+			<property name="diagnosisDeleteSql">
+				<![CDATA[
+					DELETE FROM ZDINFO WHERE ID = '${id}'
+				]]>
+			</property>
+			<property name="subDiagnosisDeleteSql">
+				<![CDATA[
+					DELETE FROM SUB_ZD_INFO WHERE SUB_ID = '${id}' OR ZD_ID = '${id}'
+				]]>
+			</property>
+		</plugin>
+	</plugins>
 </form-engine>

@@ -4,7 +4,7 @@ $.Engine.plugin('diagnosis',{
 		var container = options.container;
 		var diagnosisWidget = container.find('.widget-custom-diagnosis');
 		if(diagnosisWidget.length > 0) {
-			queryDiagnosis(diagnosisWidget);
+			queryDiagnosis(diagnosisWidget, container.data('options'));
 		}
 	},
 	//实现afterModeChanged方法
@@ -24,10 +24,12 @@ $.Engine.plugin('diagnosis',{
 	}
 });
 
-function queryDiagnosis(diagnosisWidget) {
+function queryDiagnosis(diagnosisWidget, opts) {
+	var param = {'diagnosisType':'340'};
+	$.extend(param, opts);
 	$.ajax({
 		url:'form/plugin.process?action=load&handler=diagnosis',
-		data : {'jzxh':'2911385', 'lx':'340', 'brbh':'1459047'},
+		data : param,
 		dataType : 'json',
 		success : function(data) {
 			var displayField = diagnosisWidget.find('.display-field');
@@ -109,7 +111,7 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
 			success : function(data) {
 				diagnosisEditorWrapper.find('.combo').select2('val', '');
 				diagnosisEditorWrapper.find('.combo').val('');
-				queryDiagnosis(diagnosisWidget);
+				queryDiagnosis(diagnosisWidget, opts);
 			}
 		});
 	});
@@ -145,7 +147,7 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
 				success : function(data) {
 					diagnosisEditorWrapper.find('.combo').select2('val','');
 					diagnosisEditorWrapper.find('.combo').val('');
-					queryDiagnosis(diagnosisWidget);
+					queryDiagnosis(diagnosisWidget, opts);
 				}
 			});
 		}
@@ -162,7 +164,7 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
 				data:{id: id},
 				dataType : 'json',
 				success : function(data) {
-					queryDiagnosis(diagnosisWidget);
+					queryDiagnosis(diagnosisWidget, opts);
 				}
 			});
 		}
