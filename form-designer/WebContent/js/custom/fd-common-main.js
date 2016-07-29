@@ -59,6 +59,9 @@ $(document).ready(function() {
 				else if(type === 'diagnosis') {
 					createDiagnosisWidget();
 				}
+				else if(type === 'plugin') {
+					showPluginInitConfigDialog();
+				}
 			}
 			else if($('.movable').length > 0 && dropZone != $('.movable')) {
 				if(dropZone.hasClass('widget-container')) {

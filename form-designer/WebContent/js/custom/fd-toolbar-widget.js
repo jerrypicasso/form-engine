@@ -59,6 +59,10 @@ function createWidgetControls() {
 		id:'diagnosis',
 		icon:'url(icon/iterator.png)',
 		title:'诊断'
+	},{
+		id:'plugin',
+		icon:'url(icon/plugin.png)',
+		title:'插件'
 	}];
 	for(var i = 0; i < arr.length; i++) {
 		createWidgetControl(arr[i]);

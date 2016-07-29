@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="css/custom/widget-field-select.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-page-count.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-page-number.css"/>
+    <link rel="stylesheet" type="text/css" href="css/custom/widget-plugin.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-custom-diagnosis.css"/>
     <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="js/toastr.min.js"></script>
@@ -52,6 +53,7 @@
     <script type="text/javascript" src="js/custom/widget-check.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-count.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-number.js"></script>
+    <script type="text/javascript" src="js/custom/widget-plugin.js"></script>
     <script type="text/javascript" src="js/plugins/widget-custom-diagnosis.js"></script>
 </head>
 <body style="padding:0;margin:0;font-family:SimSun;">
@@ -630,6 +632,46 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
+                    <div class="ok-btn"
+                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                        确定
+                    </div>
+                    <div style="width:30px;display:inline-block;"></div>
+                    <div class="cancel-btn"
+                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                        取消
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="plugin-init-dialog-tpl" style="width:400px;height:200px;display:none;">
+    <div class="dialog-title">插件初始化配置</div>
+    <form style="padding:15px;">
+        <table style="width:100%;table-layout:fixed;">
+        	<col style="width:15%;">
+        	<col style="width:85%;">
+        	<tr>
+                <td >类名</td>
+                <td>
+                	<input name="className" style="width:300px;"/>
+				</td>
+            </tr>
+            <tr>
+                <td>属性</td>
+                <td>
+                	<input name="attributes" style="width:300px;"/>
+				</td>
+            </tr>
+            <tr>
+            	<td>样式</td>
+                <td>
+                    <input name="styles" style="width:300px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">
                     <div class="ok-btn"
                          style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
                         确定

@@ -413,3 +413,34 @@ function showWidgetInitConfigDialog(tplClass, callback) {
 	mask.show();
 	dialog.show();
 }
+
+function showPluginInitConfigDialog() {
+	var mask = $('.mask-layer-tpl').clone();
+	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
+	var dialog = $('.plugin-init-dialog-tpl').clone();
+	dialog.removeClass('plugin-init-dialog-tpl');
+	dialog.addClass('dialog');
+	mask.find('.dialog-zone').append(dialog);
+	mask.appendTo(document.body);
+	dialog.find('.ok-btn').unbind('click').bind('click',function(){
+		var className = dialog.find('input[name=className]').val();
+		var attributes = dialog.find('input[name=attributes]').val();
+		var styles = dialog.find('input[name=styles]').val();
+		if(!className) {
+			alert('类名不能为空！');
+			return;
+		}
+		var config = {
+			className:className,
+			attributes:attributes,
+			styles:styles
+		};
+		createPluginWidget(config);
+		mask.remove();
+	});
+	dialog.find('.cancel-btn').unbind('click').bind('click', function(){
+		mask.remove();
+	});
+	mask.show();
+	dialog.show();
+}
