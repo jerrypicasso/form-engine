@@ -23,7 +23,7 @@ public class FreemarkerUtil {
 	private static Configuration configuration;
 	
 	static {
-		configuration = new Configuration();
+		configuration = new Configuration(Configuration.VERSION_2_3_25);
 		configuration.setNumberFormat("#");
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
 		configuration.setTemplateLoader(stringLoader);
@@ -47,7 +47,7 @@ public class FreemarkerUtil {
 			os = new ByteArrayOutputStream();
 			out = new OutputStreamWriter(os, "UTF-8");
 			
-			BeansWrapper wrapper = BeansWrapper.getDefaultInstance();
+			BeansWrapper wrapper =  new BeansWrapper(Configuration.VERSION_2_3_25);
 			TemplateHashModel staticModels = wrapper.getStaticModels();
 			TemplateHashModel statics = (TemplateHashModel) staticModels
 					.get("com.neusoft.hit.fe.core.utility.CommonUtil");

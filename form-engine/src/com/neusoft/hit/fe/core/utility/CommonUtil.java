@@ -2,6 +2,7 @@ package com.neusoft.hit.fe.core.utility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,6 +14,26 @@ public class CommonUtil {
 	
 	public static String guid() {
 		return UUID.randomUUID().toString().replaceAll("\\-", "");
+	}
+	
+	public static String join(List<Map<String, Object>> list, String field, String seperator, 
+			String begin, String end, String defaultVal) {
+		if(list == null || list.isEmpty()) {
+			return defaultVal;
+		}
+		StringBuilder builder = new StringBuilder();
+		if(begin != null) {
+			builder.append(begin);
+		}
+		for(int i = 0; i < list.size(); i++) {
+			Object obj = list.get(i).get(field);
+			builder.append(obj);
+			if(i < list.size() - 1) {
+				builder.append(seperator);
+			}
+		}
+		builder.append(end);
+		return builder.toString();
 	}
 	
 	public static <T> T create(Class<T> clazz, Map<String, String> propertyMap) {

@@ -24,20 +24,16 @@ function createWidgetControls() {
 		icon:'url(icon/date_field.png)',
 		title:'日期字段'
 	},{
-		id:'dict-field',
-		icon:'url(icon/dict_field.png)',
-		title:'字典字段'
-	},{
-		id:'staff-field',
+		id:'condition',
 		icon:'url(icon/staff_field.png)',
-		title:'人员字段'
+		title:'条件控制'
 	},{
 		id:'hidden-field',
 		icon:'url(icon/hidden_field.png)',
 		title:'隐藏字段'
 	},{
 		id:'select-field',
-		icon:'url(icon/hidden_field.png)',
+		icon:'url(icon/dict_field.png)',
 		title:'下拉框字段'
 	},{
 		id:'check',

@@ -90,6 +90,7 @@ body {
 .content {
 	position:relative;
 	background: rgb(250,250,210);
+	height:550px;
 	/* overflow: hidden; */
 }
 
@@ -276,7 +277,7 @@ body {
 }
 
 .selected-sql {
-	background: rgb(224,255,255);
+	background: rgb(224,255,255) !important;
 }
 
 .sql-wrapper {
@@ -289,6 +290,7 @@ body {
 }
 
 .sql-node {
+	background:#fff;
 	display:none;
 	border:1px dashed green;
 	margin:5px auto;

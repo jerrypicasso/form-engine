@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +20,6 @@ import com.neusoft.hit.fe.core.model.SqlTplInfo;
 import com.neusoft.hit.fe.core.utility.DBUtil;
 import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 
-import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
 import net.sf.json.JSONObject;
 
 public class FormLoadHandler {
@@ -35,21 +31,23 @@ public class FormLoadHandler {
 		String stagedForm = getStagedForm(rootMap);
 		String html = null;				
 		if(stagedForm == null || stagedForm.trim().length() <= 0) {
-			Configuration cfg = new Configuration();
-			StringTemplateLoader stringLoader = new StringTemplateLoader();
-			cfg.setTemplateLoader(stringLoader);
-			
 			String formTemplate = getFormTemplate(rootMap);
 			if(formTemplate != null && formTemplate.trim().length() > 0) {
 				HtmlDocument htmlDocument = HtmlDocument.parse(formTemplate);
 				regulateFormTemplate(htmlDocument);
-				loadDatasetByExecutingQuerySql(parseSqlTplMap(htmlDocument), rootMap);
+				List<SqlTplInfo> sqlTplMap = parseSqlTplTree(htmlDocument);
+				loadDatasetByExecutingQuerySql(sqlTplMap, rootMap);
 				
 				HtmlElement htmlElement = htmlDocument.getSingleElementByClass("paper");
 				String form = htmlElement.outerHtml();
 				form = form.replaceAll("<list", "<#list").replaceAll("</list", "</#list")
 						.replaceAll("expr=\"([^\"]+)\"", "$1");
+				form = form.replaceAll("<condition", "<#if").replaceAll("</condition", "</#if")
+						.replaceAll("expr=\"([^\"]+)\"", "$1");
+				form = form.replaceAll("&amp;", "&");
 				html = FreemarkerUtil.getMixedString(form, rootMap);
+				
+				
 				result.put("mode", rootMap.get("mode"));
 			}
 		}
@@ -135,10 +133,10 @@ public class FormLoadHandler {
 		//为每个行数据元素添加row-mode属性
 		List<HtmlElement> rowElements = htmlDocument.getElementsByClass("data-row");
 		for(HtmlElement rowElement : rowElements) {
-			HtmlElement iterElement = rowElement.parent();
+			HtmlElement iterElement = rowElement.getFirstParentElementByTag("list");
 			String var = iterElement.attr("var");
 			if(var != null && !var.trim().isEmpty()) {
-				rowElement.attr("row-mode", "${(" + var + ".rowMode)!}");
+				rowElement.attr("row-tpl", "${(" + var + ".rowTpl)!}");
 			}
 		}
 		//处理list元素
@@ -151,6 +149,13 @@ public class FormLoadHandler {
 			listElement.removeAttr("var");
 			listElement.removeAttr("class");
 			listElement.removeAttr("style");
+		}
+		//处理condition元素
+		List<HtmlElement> conditionElements = htmlDocument.getElementsByTag("condition");
+		for(HtmlElement conditionElement : conditionElements) {
+			conditionElement.removeClass("widget-condition");
+			conditionElement.removeAttr("class");
+			conditionElement.removeAttr("style");
 		}
 		//删除所有droppable和widget-container样式类
 		List<HtmlElement> elements = htmlDocument.getElementsByClass("droppable");
@@ -186,51 +191,51 @@ public class FormLoadHandler {
 		}
 	}
 	
-	private List<SqlTplInfo> parseSqlTplMap(HtmlDocument htmlDocument) throws FormEngineException {
-		List<SqlTplInfo> selectSqlList = new ArrayList<SqlTplInfo>();
-		List<HtmlElement> htmlElements = htmlDocument.getElementsByClass("sql-node");
-		for(HtmlElement htmlElement : htmlElements) {
-			SqlTplInfo sqlTpl = new SqlTplInfo();
-			HtmlElement sqlNameNode = htmlElement.getSingleElementByClass("sql-name");
-			if(sqlNameNode != null) {
-				String sqlName = sqlNameNode.innerHtml();
-				sqlTpl.setName(sqlName);
-			}
-			HtmlElement sqlResultTypeNode = htmlElement.getSingleElementByClass("sql-result-type");
-			if(sqlResultTypeNode != null) {
-				String sqlResultType = sqlResultTypeNode.innerHtml();
-				sqlTpl.setResultType(sqlResultType);
-			}
-			HtmlElement sqlResultLimitNode = htmlElement.getSingleElementByClass("sql-result-limit");
-			if(sqlResultLimitNode != null) {
-				String sqlResultLimitStr = sqlResultLimitNode.innerHtml();
-				if(!sqlResultLimitStr.trim().isEmpty()) {
-					Integer sqlResultLimit = Integer.parseInt(sqlResultLimitStr);
-					sqlTpl.setResultLimit(sqlResultLimit);
-				}
-			}
-			HtmlElement sqlNode = htmlElement.getSingleElementByClass("sql");
-			if(sqlNode != null) {
-				String sql = sqlNode.innerHtml();
-				sql = sql.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
-				sqlTpl.setSql(sql);
-			}
-			selectSqlList.add(sqlTpl);
+	private SqlTplInfo parseSqlTplNode(HtmlElement htmlElement) {
+		SqlTplInfo sqlTpl = new SqlTplInfo();
+		HtmlElement sqlNameNode = htmlElement.getSingleElementByClass("sql-name");
+		if(sqlNameNode != null) {
+			String sqlName = sqlNameNode.innerHtml();
+			sqlTpl.setName(sqlName);
 		}
-		Collections.sort(selectSqlList, new Comparator<SqlTplInfo>() {
-			@Override
-			public int compare(SqlTplInfo o1, SqlTplInfo o2) {
-				if("single".equals(o1.getResultType()) && !"single".equals(o1.getResultType())) {
-					return 1;
-				}
-				else if(!"single".equals(o1.getResultType()) && "single".equals(o1.getResultType())) {
-					return -1;
-				}
-				else {
-					return 0;
-				}
+		HtmlElement sqlResultTypeNode = htmlElement.getSingleElementByClass("sql-result-type");
+		if(sqlResultTypeNode != null) {
+			String sqlResultType = sqlResultTypeNode.innerHtml();
+			sqlTpl.setResultType(sqlResultType);
+		}
+		HtmlElement sqlResultLimitNode = htmlElement.getSingleElementByClass("sql-result-limit");
+		if(sqlResultLimitNode != null) {
+			String sqlResultLimitStr = sqlResultLimitNode.innerHtml();
+			if(!sqlResultLimitStr.trim().isEmpty()) {
+				Integer sqlResultLimit = Integer.parseInt(sqlResultLimitStr);
+				sqlTpl.setResultLimit(sqlResultLimit);
 			}
-		});
+		}
+		HtmlElement sqlVarNameNode = htmlElement.getSingleElementByClass("var-name");
+		if(sqlVarNameNode != null) {
+			String sqlVarName = sqlVarNameNode.innerHtml();
+			sqlTpl.setVarName(sqlVarName);
+		}
+		HtmlElement sqlNode = htmlElement.getSingleElementByClass("sql");
+		if(sqlNode != null) {
+			String sql = sqlNode.innerHtml();
+			sql = sql.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
+			sqlTpl.setSql(sql);
+		}
+		List<HtmlElement> children = htmlElement.children("sql-node");
+		for(HtmlElement child : children) {
+			sqlTpl.getChildren().add(parseSqlTplNode(child));
+		}
+		return sqlTpl;
+	}
+	
+	private List<SqlTplInfo> parseSqlTplTree(HtmlDocument htmlDocument) throws FormEngineException {
+		List<SqlTplInfo> selectSqlList = new ArrayList<SqlTplInfo>();
+		HtmlElement sqlWrapper = htmlDocument.getSingleElementByClass("sql-wrapper");
+		List<HtmlElement> children = sqlWrapper.children("sql-node");
+		for(HtmlElement htmlElement : children) {
+			selectSqlList.add(parseSqlTplNode(htmlElement));
+		}
 		return selectSqlList;
 	}
 	
@@ -243,10 +248,9 @@ public class FormLoadHandler {
 			String sql = sqlTpl.getSql();
 			Integer resultlimit = sqlTpl.getResultLimit();
 			sql = FreemarkerUtil.getMixedString(sql, rootMap);
-			Connection conn = null;
+			Connection conn = DBUtil.getConnection();
 			Statement stmt = null;
 			ResultSet rs = null;
-			conn = DBUtil.getConnection();
 			try {
 				stmt = conn.createStatement();
 				rs = stmt.executeQuery(sql);
@@ -256,13 +260,6 @@ public class FormLoadHandler {
 				} 
 				else if(resultType != null && resultType.startsWith("multi")) {
 					List<Map<String, Object>> records = new ArrayList<Map<String, Object>>();
-					if("add".equals(rootMap.get("mode"))) {
-						Map<String, Object> record = new HashMap<String, Object>();
-						record.put("rowMode", "new");
-						record.putAll(rootMap);
-						records.add(record);
-						rootMap.put("mode", "edit");
-					}
 					if(resultlimit != null) {
 						StringBuilder sqlBuilder = new StringBuilder();
 						Object page = rootMap.get(sqlName + "_page");
@@ -297,8 +294,14 @@ public class FormLoadHandler {
 						}
 					}
 					records.addAll(results);
+					//增加一条隐藏的空行，用来作为新增记录时的编辑模版
+					Map<String, Object> record = new HashMap<String, Object>();
+					record.put("rowTpl", "true");
+					records.add(record);
 					rootMap.put(sqlName, records.toArray());
 				}
+				List<SqlTplInfo> children = sqlTpl.getChildren();
+				loadDatasetByExecutingQuerySql(children, rootMap);
 			} catch (NumberFormatException e) {
 				LOGGER.error(e.toString(), e);
 				throw new FormEngineException("Error occurs during loading dataset by executing query sql !", e);

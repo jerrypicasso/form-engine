@@ -52,15 +52,30 @@ function showSqlManagementDialog(sqlName) {
 	mask.find('.dialog-zone').append(dialog);
 	mask.appendTo(document.body);
 	
+	var dependency = dialog.find('select[name=dependency]');
+	var sqlNames = [];
+	$('.sql-node[name='+ sqlName +']').find('.sql-node').each(function(){
+		sqlNames.push($(this).attr('name'));
+	});
+	$('.sql-node').each(function(){
+		var sqlNode = $(this);
+		var sqlNodeName = sqlNode.find('.sql-name').html();
+		if(sqlNodeName !== sqlName && sqlNames.indexOf(sqlNodeName) < 0) {
+			dependency.append('<option val="'+ sqlNodeName +'">' + sqlNodeName + '</option>');
+		}
+	});
 	if(sqlName) {
 		var sqlItem = $('.sql-node[name='+ sqlName +']');
 		var sqlVal = sqlItem.find('.sql').html();
 		var sqlResultType = sqlItem.find('.sql-result-type').html();
 		var sqlResultLimit = sqlItem.find('.sql-result-limit').html();
+		var parentName = sqlItem.parent('.sql-node').attr('name') || '';
+		
 		var varName = sqlItem.find('.var-name').html();
 		dialog.find('input[name=sql-name]').val(sqlName);
 		dialog.find('input[name=sql-result-limit]').val(sqlResultLimit);
 		dialog.find('select[name=sql-result-type]').val(sqlResultType);
+		dialog.find('select[name=dependency]').val(parentName);
 		if(varName) {
 			dialog.find('.var-name-wrapper').show();
 			dialog.find('input[name=var-name]').val(varName);
@@ -69,6 +84,7 @@ function showSqlManagementDialog(sqlName) {
 	}
 	dialog.find('.ok-btn').unbind('click').bind('click',function(){
 		var sqlName = dialog.find('input[name=sql-name]').val();
+		var dependency = dialog.find('select[name=dependency]').val();
 		var sqlResultLimit = dialog.find('input[name=sql-result-limit]').val();
 		var sqlResultType = dialog.find('select[name=sql-result-type]').val();
 		var varName = dialog.find('input[name=var-name]').val();
@@ -91,25 +107,27 @@ function showSqlManagementDialog(sqlName) {
 			sqlNode = $('.sql-wrapper-tpl').find('.sql-node').clone();
 			$('.sql-wrapper').append(sqlNode);
 		}
+		if(dependency) {
+			$('.sql-node[name='+ dependency +']').append(sqlNode);
+		} 
 		$(sqlNode).attr('name', $.trim(sqlName));
-		$(sqlNode).find('.sql-name').html($.trim(sqlName));
-		$(sqlNode).find('.sql-result-type').html(sqlResultType);
-		$(sqlNode).find('.var-name').html($.trim(varName));
-		$(sqlNode).find('.sql-result-limit').html(sqlResultLimit);
+		$(sqlNode).find('.sql-name:first').html($.trim(sqlName));
+		$(sqlNode).find('.sql-result-type:first').html($.trim(sqlResultType));
+		$(sqlNode).find('.var-name:first').html($.trim(varName));
+		$(sqlNode).find('.sql-result-limit:first').html($.trim(sqlResultLimit));
 		if($.trim(varName)) {
-			$(sqlNode).find('.var-name').show();
+			$(sqlNode).find('.var-name:first').show();
 		}
 		else {
-			$(sqlNode).find('.var-name').hide();
+			$(sqlNode).find('.var-name:first').hide();
 		}
-		if(sqlResultLimit) {
-			$(sqlNode).find('.sql-result-limit').show();
+		if($.trim(sqlResultLimit)) {
+			$(sqlNode).find('.sql-result-limit:first').show();
 		}
 		else {
-			$(sqlNode).find('.sql-result-limit').hide();
+			$(sqlNode).find('.sql-result-limit:first').hide();
 		}
-		$(sqlNode).find('.sql').html(sql);
-		$(sqlNode).find('.sql_name').html();
+		$(sqlNode).find('.sql:first').html(sql);
 		registerSelectedSqlNodeHandler(sqlNode);
 		$(sqlNode).show();
 		mask.remove();
@@ -125,6 +143,7 @@ function registerSelectedSqlNodeHandler(sqlNode) {
 	$(sqlNode).bind('click', function() {
 		$('.selected-sql').removeClass('selected-sql');
 		$(this).addClass('selected-sql');
+		return false;
 	});
 }
 

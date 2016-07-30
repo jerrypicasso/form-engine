@@ -62,6 +62,9 @@ $(document).ready(function() {
 				else if(type === 'plugin') {
 					showPluginInitConfigDialog();
 				}
+				else if(type === 'condition') {
+					showConditionInitConfigDialog();
+				}
 			}
 			else if($('.movable').length > 0 && dropZone != $('.movable')) {
 				if(dropZone.hasClass('widget-container')) {

@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,16 +91,7 @@ public class DBUtil {
 			ResultSetMetaData meta = rs.getMetaData();
 			int columnNum =  meta.getColumnCount();
 			if(rs.next()) {
-				record = new HashMap<String, Object>();
-				for(int i = 0; i < columnNum; i++) {
-					String columnName = meta.getColumnLabel(i+1);
-					Object value = rs.getObject(columnName);
-					if(value instanceof Clob) {
-						Clob temp = ((Clob)value);
-						value = temp.getSubString(1l, (int)temp.length());
-					}
-					record.put(columnName, value);
-				}
+				record = convertResultSetToMap(rs, meta, columnNum);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -120,22 +110,34 @@ public class DBUtil {
 			ResultSetMetaData meta = rs.getMetaData();
 			int columnNum =  meta.getColumnCount();
 			while(rs.next()) {
-				Map<String, Object> record = new LinkedHashMap<String, Object>();
-				for(int i = 0; i < columnNum; i++) {
-					String columnName = meta.getColumnLabel(i+1);
-					Object value = rs.getObject(columnName);
-					if(value instanceof Clob) {
-						Clob temp = ((Clob)value);
-						value = temp.getSubString(1l, (int)temp.length());
-					}
-					record.put(columnName, value);
-				}
+				Map<String, Object> record = convertResultSetToMap(rs, meta, columnNum);
 				records.add(record);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return records;
+	}
+	
+	private static Map<String, Object> convertResultSetToMap(ResultSet rs, ResultSetMetaData meta, int columnNum) throws SQLException {
+		Map<String, Object> record = new LinkedHashMap<String, Object>();
+		for(int i = 0; i < columnNum; i++) {
+			String columnName = meta.getColumnLabel(i+1);
+			String columnType = meta.getColumnTypeName(i+1);
+			Object value = null;
+			if("TIMESTAMP".equals(columnType)) {
+				value = rs.getTimestamp(columnName);
+			}
+			else if("CLOB".equals(columnType)) {
+				Clob clob = rs.getClob(columnName);
+				value = clob.getSubString(1, (int)clob.length());
+			} 
+			else {
+				value = rs.getObject(columnName);
+			}
+			record.put(columnName, value);
+		}
+		return record;
 	}
 	
 	/**

@@ -45,11 +45,10 @@
 					createPaginationBars(container);
 					renderCheckboxWidgets(container);
 					createExportForm();
+					container.find('.data-row[row-tpl=true]').hide();
 					var mode = container.data('mode');
 					if(mode == 'edit') {
 						container.data('mode', 'edit');
-						var line = container.find('.data-row[row-mode=new]');
-						createEditableRow(line);
 						var func = methods['toggle'];
 						func.apply(container, [{'mode':'edit'}]);
 					}
@@ -110,13 +109,14 @@
 			}
 			else {
 				var container = $(this);
-				var iteratorWrapper = container.find('.iterator-wrapper');
-				iteratorWrapper.find('.edit-wrapper').remove();
-				iteratorWrapper.each(function(){
+				var iteratorWrappers = container.find('.iterator-wrapper');
+				iteratorWrappers.find('.edit-wrapper').remove();
+				iteratorWrappers.each(function(){
+					var iteratorWrapper = $(this);
 					var editWrapper = $('<div class="edit-wrapper">');
 					var insertBtn = $('<input type="button" class="edit-btn" value="新增"/>');
 					insertBtn.unbind('click').bind('click', function(){
-						insertDataRow(container);
+						insertDataRow(iteratorWrapper);
 					});
 					insertBtn.appendTo(editWrapper);
 					var updateBtn = $('<input type="button" class="edit-btn" value="修改"/>');
@@ -739,10 +739,14 @@
 		}
 	}
 	
-	function insertDataRow(container) {
-		var param = {'mode': 'add'};
+	function insertDataRow(iteratorWrapper) {
+		/*var param = {'mode': 'add'};
 		var func = methods['load'];
-		func.apply(container, [param]);
+		func.apply(container, [param]);*/
+		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
+		iteratorWrapper.prepend(newRow);
+		createEditableRow(newRow);
+		newRow.show();
 	}
 
 	function updateDataRow(container) {
@@ -814,7 +818,9 @@
 			editors.each(function(){
 				var fieldName = $(this).attr('field');
 				var fieldValue = $(this).val();
-				recordData[fieldName] = fieldValue;
+				if(fieldName) {
+					recordData[fieldName] = fieldValue;
+				}
 			});
 			$.ajax({
 				url:'form/save.process',

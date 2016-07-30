@@ -55,6 +55,16 @@ public class HtmlElement {
 		return htmlElement;
 	}
 	
+	public HtmlElement getFirstParentElementByTag(String tagName) {
+		Elements parents = element.parents();
+		for(Element element : parents) {
+			if(element.tagName().equalsIgnoreCase(tagName)) {
+				return new HtmlElement(element);
+			}
+		}
+		return null;
+	}
+	
 	public void removeAttr(String attributeKey) {
 		element.removeAttr(attributeKey);
 	}
@@ -98,5 +108,16 @@ public class HtmlElement {
 	
 	public HtmlElement parent() {
 		return new HtmlElement(element.parent());
+	}
+	
+	public List<HtmlElement> children(String className) {
+		List<HtmlElement> elements = new ArrayList<HtmlElement>();
+		Elements children = element.children();
+		for(Element element : children) {
+			if(element.hasClass(className)) {
+				elements.add(new HtmlElement(element));
+			}
+		}
+		return elements;
 	}
 }

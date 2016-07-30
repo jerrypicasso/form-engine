@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="css/custom/widget-page-count.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-page-number.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-plugin.css"/>
+    <link rel="stylesheet" type="text/css" href="css/custom/widget-condition.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-custom-diagnosis.css"/>
     <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="js/toastr.min.js"></script>
@@ -54,6 +55,7 @@
     <script type="text/javascript" src="js/custom/widget-page-count.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-number.js"></script>
     <script type="text/javascript" src="js/custom/widget-plugin.js"></script>
+    <script type="text/javascript" src="js/custom/widget-condition.js"></script>
     <script type="text/javascript" src="js/plugins/widget-custom-diagnosis.js"></script>
 </head>
 <body style="padding:0;margin:0;font-family:SimSun;">
@@ -523,7 +525,7 @@
     </form>
 </div>
 <!-- sql管理对话框 -->
-<div class="sql-management-dialog-tpl" style="width:400px;height:330px;display:none;">
+<div class="sql-management-dialog-tpl" style="width:400px;height:350px;display:none;">
     <div class="dialog-title">新增sql</div>
     <form style="padding:15px;">
         <table style="width:100%;">
@@ -532,6 +534,14 @@
                 <td>
                     <input name="sql-name" type="text" style="width:100%;"/>
                 </td>
+            </tr>
+            <tr>
+            	<td style="width:100px;">依赖数据集</td>
+            	<td>
+            		<select name="dependency" style="width:100%;">
+            			<option value="">无</option>
+            		</select>
+            	</td>
             </tr>
             <tr>
                 <td style="width:100px;">结果集类型</td>
@@ -672,6 +682,34 @@
             </tr>
             <tr>
                 <td align="center" colspan="2">
+                    <div class="ok-btn"
+                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                        确定
+                    </div>
+                    <div style="width:30px;display:inline-block;"></div>
+                    <div class="cancel-btn"
+                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                        取消
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="condition-init-dialog-tpl" style="width:400px;height:160px;display:none;">
+    <div class="dialog-title">条件控制</div>
+    <form style="padding:15px;">
+        <table style="width:100%;table-layout:fixed;">
+        	<col style="width:20%;">
+        	<col style="width:80%;">
+            <tr>
+            	<td>表达式：</td>
+                <td>
+                    <input name="expression" style="width:100%;"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
                     <div class="ok-btn"
                          style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
                         确定
