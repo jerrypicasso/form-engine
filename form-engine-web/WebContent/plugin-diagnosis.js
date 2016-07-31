@@ -16,6 +16,8 @@ $.Engine.plugin('diagnosis', {
             container.find('.widget-custom-diagnosis').removeClass('editable');
             container.find('.widget-custom-diagnosis .display-field').unbind();
             container.find('.widget-custom-diagnosis .editor-wrapper').remove();
+            container.find('.widget-custom-diagnosis .model-wrapper').remove();
+            container.find('.widget-custom-diagnosis .addDiagnosisBox').remove();
             container.find('.widget-custom-diagnosis .diagnosis-list').removeClass('edit');
         }
         else if (options.mode === 'edit') {
@@ -24,6 +26,8 @@ $.Engine.plugin('diagnosis', {
                 var diagnosis = $(this);
                 diagnosis.addClass('editable');
                 createDiagnosisEditor(diagnosis, container.data('options'));
+                diagnosis.find('.editor-wrapper').before('<div class="diagnosisEditorWrapper"></div>');//添加诊断模板区域
+                createDiagnosisModel(diagnosis, container.data('options'));//穿件诊断模板控件
             });
         }
     }
@@ -45,7 +49,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode) {
                 for (var i = 0; i < data.length; i++) {
                     var li = $('<li id="' + data[i].ID + '" type="main" class="selectable">'), index = i + 1;
                     if (data.length > 1) {
-                        li.append('<b class="index">'+index + '</b><b>. ' + data[i].NAME + '</b><span class="icd">' + data[i].ICD_10 + '</span>');
+                        li.append('<b class="index">' + index + '</b><b>. ' + data[i].NAME + '</b><span class="icd">' + data[i].ICD_10 + '</span>');
                     } else {
                         li.append('<b>' + data[i].NAME + '</b><span class="icd">' + data[i].ICD_10 + '</span>');
                     }
@@ -90,6 +94,25 @@ function queryDiagnosis(diagnosisWidget, opts, mode) {
 
 }
 
+function createDiagnosisModel(diagnosisWidget, opts){
+    var diagnosisModelWrapper =diagnosisWidget.find('.diagnosisEditorWrapper');
+    diagnosisModelWrapper.css({'padding':'5 5 5 5'}).append('<div style="background-color: #337FE5;height:100%;color:white">诊断模板</div>');
+    $.ajax({
+        url: 'form/plugin.process?action=modelLoad&handler=diagnosis',
+        data: opts,
+        dataType: 'json',
+        success: function (data) {
+            diagnosisModelWrapper.empty();
+            if (data.length > 0) {
+                //todo 完成展示模板区域
+            }
+        }
+    });
+
+
+}
+
+
 function createDiagnosisEditor(diagnosisWidget, opts) {
     var diagnosisEditorWrapper = diagnosisWidget.find('.editor-wrapper'),
         diagnosisType = diagnosisWidget.attr('diagnosistype');
@@ -109,12 +132,24 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
             '</div>'].join(''));
         diagnosisWidget.append(diagnosisEditorWrapper);
     }
+
+    //如果diagnosisType为修正诊断，便显示添加修正诊断按钮
+    if ('350' === diagnosisType) {
+        diagnosisWidget.find('.display-field').before('<div class="addDiagnosisBox"><input type="button" class="addDiagnosis" value="添加修正诊断区域"/></div>');
+        diagnosisWidget.find('.addDiagnosisBox input[type="button"].addDiagnosis').unbind('click').bind('click', function () {
+            /*   var newDianosis = diagnosisWidget.clone();
+             diagnosisWidget.parent('td').append(newDianosis);*/
+            //todo 创建新修正控件的方法
+        })
+    }
+
+
     renderInputToSelect2(diagnosisEditorWrapper.find('.combo'));
-    diagnosisEditorWrapper.find('.combo').on('change',function(e){
+    diagnosisEditorWrapper.find('.combo').on('change', function (e) {
         var comboTextBox = diagnosisEditorWrapper.find('.comboTextBox').show();
         diagnosisEditorWrapper.find('.combo').select2("container").hide();
         diagnosisEditorWrapper.find('.comboText').val(e.added.name);
-        comboTextBox.find('.cancel').bind('click',function(){
+        comboTextBox.find('.cancel').bind('click', function () {
             diagnosisEditorWrapper.find('.combo').select2("container").show();
             comboTextBox.hide();
         })
@@ -128,12 +163,12 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
             diagnosisText = diagnosisEditorWrapper.find('.combo').select2('data').name;
         }
 
-        if(diagnosisEditorWrapper.find('.comboTextBox .comboText').val()&&diagnosisEditorWrapper.find('.comboTextBox .comboText').val().trim()!=''){
+        if (diagnosisEditorWrapper.find('.comboTextBox .comboText').val() && diagnosisEditorWrapper.find('.comboTextBox .comboText').val().trim() != '') {
             diagnosisText = diagnosisEditorWrapper.find('.comboTextBox .comboText').val();
         }
 
 
-        if(!diagnosisCode||diagnosisCode.trim()===''){
+        if (!diagnosisCode || diagnosisCode.trim() === '') {
             alert('诊断内容不能为空！');
             return;
         }
@@ -158,6 +193,9 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
             }
         });
     });
+
+
+    /*添加自诊断*/
     diagnosisEditorWrapper.find('.add-sub').unbind('click').bind('click', function () {
         var selected = $('li.selected');
         var diagnosisCode = null;
@@ -168,12 +206,12 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
                 diagnosisText = diagnosisEditorWrapper.find('.combo').select2('data').name;
             }
 
-            if(diagnosisEditorWrapper.find('.comboTextBox .comboText').val()&&diagnosisEditorWrapper.find('.comboTextBox .comboText').val().trim()!=''){
+            if (diagnosisEditorWrapper.find('.comboTextBox .comboText').val() && diagnosisEditorWrapper.find('.comboTextBox .comboText').val().trim() != '') {
                 diagnosisText = diagnosisEditorWrapper.find('.comboTextBox .comboText').val();
             }
 
 
-            if(!diagnosisCode||diagnosisCode.trim()===''){
+            if (!diagnosisCode || diagnosisCode.trim() === '') {
                 alert('诊断内容不能为空！');
                 return;
             }
@@ -220,26 +258,26 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
         }
     });
     diagnosisEditorWrapper.find('.up').unbind('click').bind('click', function () {
-        var selected = diagnosisWidget.find('li.selected'),index=selected.find('b.index'),subIndex = selected.find('span.index'),idx,preIdx,temp;
+        var selected = diagnosisWidget.find('li.selected'), index = selected.find('b.index'), subIndex = selected.find('span.index'), idx, preIdx, temp;
         if (selected && selected.length > 0) {
             var type = selected.attr('type');
             var prev = selected.prev('li[type=' + type + ']');
 
             if (prev && prev.length > 0) {
-                if(index&&index.length>0){
+                if (index && index.length > 0) {
                     idx = index.text();
                     preIdx = prev.find('b.index').text();
                     temp = idx;
                     idx = preIdx;
-                    preIdx =temp;
+                    preIdx = temp;
                     selected.find('b.index').text(idx);
                     prev.find('b.index').text(preIdx);
-                }else if(subIndex&&subIndex.length>0){
+                } else if (subIndex && subIndex.length > 0) {
                     idx = subIndex.text();
                     preIdx = prev.find('span.index').text();
                     temp = idx;
                     idx = preIdx;
-                    preIdx =temp;
+                    preIdx = temp;
                     selected.find('span.index').text(idx);
                     prev.find('span.index').text(preIdx);
                 }
@@ -269,25 +307,25 @@ function createDiagnosisEditor(diagnosisWidget, opts) {
         }
     });
     diagnosisEditorWrapper.find('.down').unbind('click').bind('click', function () {
-        var selected = diagnosisWidget.find('li.selected'),index=selected.find('b.index'),subIndex = selected.find('span.index'),idx,nextIdx,temp;
+        var selected = diagnosisWidget.find('li.selected'), index = selected.find('b.index'), subIndex = selected.find('span.index'), idx, nextIdx, temp;
         if (selected && selected.length > 0) {
             var type = selected.attr('type');
             var next = selected.next('li[type=' + type + ']');
             if (next && next.length > 0) {
-                if(index&&index.length>0){
+                if (index && index.length > 0) {
                     idx = index.text();
                     nextIdx = next.find('b.index').text();
                     temp = idx;
                     idx = nextIdx;
-                    nextIdx =temp;
+                    nextIdx = temp;
                     selected.find('b.index').text(idx);
                     next.find('b.index').text(nextIdx);
-                }else if(subIndex&&subIndex.length>0){
+                } else if (subIndex && subIndex.length > 0) {
                     idx = subIndex.text();
                     nextIdx = next.find('span.index').text();
                     temp = idx;
                     idx = nextIdx;
-                    nextIdx =temp;
+                    nextIdx = temp;
                     selected.find('span.index').text(idx);
                     next.find('span.index').text(nextIdx);
                 }
@@ -364,8 +402,8 @@ function renderInputToSelect2(input) {
         }
     });
 
-    input.on('change',function(e){
+    input.on('change', function (e) {
 
-        JSON.stringify({val:e.val, added:e.added, removed:e.removed})
+        JSON.stringify({val: e.val, added: e.added, removed: e.removed})
     })
 }
