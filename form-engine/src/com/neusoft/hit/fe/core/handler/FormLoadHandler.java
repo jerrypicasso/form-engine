@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -149,6 +150,10 @@ public class FormLoadHandler {
 			listElement.removeAttr("var");
 			listElement.removeAttr("class");
 			listElement.removeAttr("style");
+			HtmlElement listWrapper = listElement.parent();
+			listWrapper.attr("total-row", "${(" + itemsName + "_pagination.ROW_COUNT)!}");
+			listWrapper.attr("total-page", "${(" + itemsName + "_pagination.PAGE_COUNT)!}");
+			listWrapper.attr("page-param-name", itemsName + "_page");
 		}
 		//处理condition元素
 		List<HtmlElement> conditionElements = htmlDocument.getElementsByTag("condition");
@@ -250,17 +255,20 @@ public class FormLoadHandler {
 			sql = FreemarkerUtil.getMixedString(sql, rootMap);
 			Connection conn = DBUtil.getConnection();
 			Statement stmt = null;
-			ResultSet rs = null;
+			ResultSet recordRs = null;
+			ResultSet paginationRs = null;
 			try {
 				stmt = conn.createStatement();
-				rs = stmt.executeQuery(sql);
 				if("single".equals(resultType)) {
-					Map<String, Object> record = DBUtil.getSingleResult(rs);
+					recordRs = stmt.executeQuery(sql);
+					Map<String, Object> record = DBUtil.getSingleResult(recordRs);
 					rootMap.put(sqlName, record);
 				} 
 				else if(resultType != null && resultType.startsWith("multi")) {
+					String recordSql = sql;
+					String paginationSql = null;
 					List<Map<String, Object>> records = new ArrayList<Map<String, Object>>();
-					if(resultlimit != null) {
+					if(resultlimit != null && resultlimit > 0) {
 						StringBuilder sqlBuilder = new StringBuilder();
 						Object page = rootMap.get(sqlName + "_page");
 						if(page == null) {
@@ -282,9 +290,16 @@ public class FormLoadHandler {
 							sqlBuilder.append(sql).append(" LIMIT ").append(resultlimit)
 								.append(" OFFSET ").append(begin);
 						}
-						sql = sqlBuilder.toString();
+						recordSql = sqlBuilder.toString();
+						
+						sqlBuilder.setLength(0);
+						sqlBuilder.append("SELECT COUNT(*) AS TOTAL FROM (");
+						sqlBuilder.append(sql);
+						sqlBuilder.append(")");
+						paginationSql = sqlBuilder.toString();
 					}
-					List<Map<String, Object>> results = DBUtil.getMultiResults(rs);
+					recordRs = stmt.executeQuery(recordSql);
+					List<Map<String, Object>> results = DBUtil.getMultiResults(recordRs);
 					if("multi-fixed".equals(resultType)) {
 						int size = results.size();
 						if(size < resultlimit) {
@@ -299,6 +314,21 @@ public class FormLoadHandler {
 					record.put("rowTpl", "true");
 					records.add(record);
 					rootMap.put(sqlName, records.toArray());
+					
+					//如果paginationSql不为空，则计算出分页参数
+					if(paginationSql != null) {
+						paginationRs = stmt.executeQuery(paginationSql);
+						Map<String, Object> pagination = DBUtil.getSingleResult(paginationRs);
+						if(pagination != null) {
+							Object total = pagination.get("TOTAL");
+							int rowCount = NumberUtils.toInt(total.toString(), 0);
+							int pageCount = rowCount/resultlimit + (rowCount%resultlimit > 0 ? 1 : 0);
+							pagination.clear();
+							pagination.put("ROW_COUNT", rowCount);
+							pagination.put("PAGE_COUNT", pageCount);
+							rootMap.put(sqlName + "_pagination", pagination);
+						}
+					}
 				}
 				List<SqlTplInfo> children = sqlTpl.getChildren();
 				loadDatasetByExecutingQuerySql(children, rootMap);
@@ -308,7 +338,8 @@ public class FormLoadHandler {
 			} catch (SQLException e) {
 				throw new FormEngineException("Error occurs during loading dataset by executing query sql !", e);
 			} finally {
-				DBUtil.close(conn, stmt, rs);
+				DBUtil.close(paginationRs);
+				DBUtil.close(conn, stmt, recordRs);
 			}
 		}
 	}

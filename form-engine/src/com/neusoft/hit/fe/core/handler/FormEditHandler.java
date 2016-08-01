@@ -109,12 +109,12 @@ public class FormEditHandler {
 		Object tableName = params.get("tableName");
 		Object primaryKeyName = params.get("primaryKeyName");
 		if(primaryKeyName == null || "".equals(primaryKeyName)) {
-			primaryKeyName = "ID";
+			primaryKeyName = "GUID";
 		}
 		Object primaryKeyValue = params.get("primaryKeyValue");
 		Object dropFlagName = params.get("dropFlagName");
 		if(dropFlagName == null || "".equals(dropFlagName)) {
-			dropFlagName = "SCBZW";
+			dropFlagName = "DEL_FLAG";
 		}
 		Object dropFlagValue = params.get("dropFlagValue");
 		if(dropFlagValue == null || "".equals(dropFlagValue)) {

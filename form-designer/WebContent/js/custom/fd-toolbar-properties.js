@@ -124,7 +124,7 @@ function createPropertiesControls() {
 		label:'迭代变量',
 		type:'text',
 		parent:'widget-settings'
-	},{
+	}/*,{
 		name:'totalPage',
 		label:'分页总数',
 		type:'text',
@@ -134,9 +134,19 @@ function createPropertiesControls() {
 		label:'记录总数',
 		type:'text',
 		parent:'widget-settings'
-	},{
+	}*/,{
 		name:'tableName',
 		label:'对应表名',
+		type:'text',
+		parent:'widget-settings'
+	},{
+		name:'primaryKeyName',
+		label:'主键名',
+		type:'text',
+		parent:'widget-settings'
+	},{
+		name:'dropKeyName',
+		label:'删除键名',
 		type:'text',
 		parent:'widget-settings'
 	}];
@@ -300,12 +310,19 @@ function resetAndHideAllPropertiesFields() {
 	var itemNameField = propPanel.find('input[name=itemName]');
 	itemNameField.val('');
 	itemNameField.parent().hide();
-	var totalPageField = propPanel.find('input[name=totalPage]');
+	/*var totalPageField = propPanel.find('input[name=totalPage]');
 	totalPageField.val('');
 	totalPageField.parent().hide();
 	var totalRowField = propPanel.find('input[name=totalRow]');
 	totalRowField.val('');
-	totalRowField.parent().hide();
+	totalRowField.parent().hide();*/
+	var primaryKeyNameField = propPanel.find('input[name=primaryKeyName]');
+	primaryKeyNameField.val('');
+	primaryKeyNameField.parent().hide();
+	var dropKeyNameField = propPanel.find('input[name=dropKeyName]');
+	dropKeyNameField.val('');
+	dropKeyNameField.parent().hide();
+	
 	var tableNameField = propPanel.find('input[name=tableName]');
 	tableNameField.val('');
 	tableNameField.parent().hide();
@@ -483,13 +500,21 @@ function registerWidgetPropertiesHandlers() {
 		var val = $(this).prev().val();
 		$('.selected-widget').find('list').attr('var', val);
 	});
-	propPanel.find('input[name=totalPage]').next().bind('click', function(){
+	/*propPanel.find('input[name=totalPage]').next().bind('click', function(){
 		var val = $(this).prev().val();
 		$('.selected-widget').attr('total-page', val);
 	});
 	propPanel.find('input[name=totalRow]').next().bind('click', function(){
 		var val = $(this).prev().val();
 		$('.selected-widget').attr('total-row', val);
+	});*/
+	propPanel.find('input[name=primaryKeyName]').next().bind('click', function(){
+		var val = $(this).prev().val();
+		$('.selected-widget').attr('primary-key', val);
+	});
+	propPanel.find('input[name=dropKeyName]').next().bind('click', function(){
+		var val = $(this).prev().val();
+		$('.selected-widget').attr('drop-key', val);
 	});
 	propPanel.find('input[name=tableName]').next().bind('click', function(){
 		var val = $(this).prev().val();
@@ -745,13 +770,21 @@ function prepareRelativePropertiesFields(widget) {
 		itemNameField.val(widget.find('list').attr('var'));
 		itemNameField.parent().show();
 		
-		var totalPageField = propPanel.find('input[name=totalPage]');
+		/*var totalPageField = propPanel.find('input[name=totalPage]');
 		totalPageField.val(widget.attr('total-page'));
 		totalPageField.parent().show();
 		
 		var totalRowField = propPanel.find('input[name=totalRow]');
 		totalRowField.val(widget.attr('total-row'));
-		totalRowField.parent().show();
+		totalRowField.parent().show();*/
+		
+		var primaryKeyNameField = propPanel.find('input[name=primaryKeyName]');
+		primaryKeyNameField.val(widget.attr('primary-key'));
+		primaryKeyNameField.parent().show();
+		
+		var dropKeyNameField = propPanel.find('input[name=dropKeyName]');
+		dropKeyNameField.val(widget.attr('drop-key'));
+		dropKeyNameField.parent().show();
 		
 		var tableNameField = propPanel.find('input[name=tableName]');
 		tableNameField.val(widget.attr('table-name'));

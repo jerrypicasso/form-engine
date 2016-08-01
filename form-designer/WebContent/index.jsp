@@ -266,7 +266,7 @@
                     <input name="iterator-name" class="config-item" type="hidden"/>
                 </td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>分页总数</td>
                 <td>
                     <input name="page-count" class="config-item" type="text" style="width:100%;"/>
@@ -277,11 +277,23 @@
                 <td colspan="2">
                     <input name="row-count" class="config-item" type="text" style="width:100%"/>
                 </td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>绑定库表</td>
                 <td colspan="2">
                     <input name="table-name" class="config-item" type="text" style="width:100%"/>
+                </td>
+            </tr>
+            <tr>
+            	<td>主键</td>
+            	<td colspan="2">
+                    <input name="primary-key" class="config-item" type="text" style="width:100%"/>
+                </td>
+            </tr>
+            <tr>
+            	<td>删除键</td>
+            	<td colspan="2">
+                    <input name="drop-key" class="config-item" type="text" style="width:100%"/>
                 </td>
             </tr>
             <tr>

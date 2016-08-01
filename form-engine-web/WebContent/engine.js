@@ -35,6 +35,7 @@
 			$.ajax({
 				url : 'form/load.process',
 				data : params,
+				type : 'post',
 				dataType : 'json',
 				success : function(data) {
 					//将返回的表单html放在container中
@@ -121,22 +122,22 @@
 					insertBtn.appendTo(editWrapper);
 					var updateBtn = $('<input type="button" class="edit-btn" value="修改"/>');
 					updateBtn.unbind('click').bind('click', function(){
-						updateDataRow(container);
+						updateDataRow(iteratorWrapper);
 					});
 					updateBtn.appendTo(editWrapper);
 					var deleteBtn = $('<input type="button" class="edit-btn" value="删除"/>');
 					deleteBtn.unbind('click').bind('click', function(){
-						deleteDataRow(container);
+						deleteDataRow(iteratorWrapper);
 					});
 					deleteBtn.appendTo(editWrapper);
 					var saveRowBtn = $('<input type="button" class="edit-btn" value="保存"/>');
 					saveRowBtn.unbind('click').bind('click', function(){
-						saveDataRow(container);
+						saveDataRow(iteratorWrapper);
 					});
 					saveRowBtn.appendTo(editWrapper);
 					var cancelBtn = $('<input type="button" class="edit-btn" value="取消"/>');
 					cancelBtn.unbind('click').bind('click', function(){
-						cancelEditRow(container);
+						cancelEditRow(iteratorWrapper);
 					});
 					cancelBtn.appendTo(editWrapper);
 					//$(this).addClass('editable');
@@ -146,6 +147,7 @@
 				container.find('.data-row').click(function(){
 					container.find('.data-row').removeClass('selected');
 					$(this).addClass('selected');
+					return false;
 				});
 				//鼠标移入后，边框高亮，表示可选
 				container.find('.data-row').mouseenter(function() {
@@ -561,7 +563,6 @@
 					else {
 						checkField.html('√');
 						//如果是单选设置，则将其余的checkbox都设为''
-						console.log(checkGroupType);
 						if(checkGroupType == 'single') {
 							parent.find('.widget-check .check-field').each(function(){
 								if($(this).prev().html() != realVal) {
@@ -667,11 +668,11 @@
 					param[pageParamName] = pages - 1;
 					func.apply(container, [param]);
 				});
+				var lastOptions = container.data('lastOptions');
+				var currentPage = lastOptions[pageParamName] || 0;
+				currentPage++;
+				$('#' + pageParamName).html('第' + currentPage + '页/共' + pages + '页');
 			}
-			var lastOptions = container.data('lastOptions');
-			var currentPage = lastOptions[pageParamName] || 0;
-			currentPage++;
-			$('#' + pageParamName).html('第' + currentPage + '页/共' + pages + '页');
 		});
 	}
 	
@@ -710,12 +711,14 @@
 		});
 	}
 
-	function createEditableRow(row) {
-		var wrapperWidth = 103;
-		var wrapperHeight = 32;
+	function createEditableRow(iteratorId, row) {
 		if(row && row.length > 0) {
 			row.find('.row-field').each(function(){
-				createFieldEditor($(this));
+				var rowField = $(this);
+				var iteratorWrapper = rowField.parents('.iterator-wrapper');
+				if(iteratorId === iteratorWrapper.attr('id')) {
+					createFieldEditor(rowField);
+				}
 			});
 			row.removeClass('editable');
 			row.addClass('editing');
@@ -740,21 +743,20 @@
 	}
 	
 	function insertDataRow(iteratorWrapper) {
-		/*var param = {'mode': 'add'};
-		var func = methods['load'];
-		func.apply(container, [param]);*/
 		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
+		newRow.attr('row-mode','new');
 		iteratorWrapper.prepend(newRow);
-		createEditableRow(newRow);
+		var iteratorId = iteratorWrapper.attr('id');
+		createEditableRow(iteratorId, newRow);
 		newRow.show();
 	}
 
-	function updateDataRow(container) {
-		var selected = container.find('.data-row.selected');
+	function updateDataRow(iteratorWrapper) {
+		var selected = iteratorWrapper.find('.data-row.selected');
 		if(selected && selected.length > 0) {
 			if(!selected.hasClass('editing')) {
-				container.find('.data-row[row-mode=new]').remove();
-				container.find('.data-row.editing').each(function(){
+				iteratorWrapper.find('.data-row[row-mode=new]').remove();
+				iteratorWrapper.find('.data-row.editing').each(function(){
 					$(this).removeClass('editing');
 					$(this).find('.editor').each(function(){
 						if($(this).hasClass('select')) {
@@ -764,9 +766,10 @@
 					$(this).find('.editor').remove();
 					$(this).find('.display-field').show();
 				});
-				var primaryField = selected.find('.row-field[primary-key=true]');
-				if($.trim(primaryField && primaryField.find('.value-field').html()).length > 0) {
-					createEditableRow(selected);
+				var primaryField = selected.find('.row-field[primary-key=true]:first');
+				if(primaryField && $.trim(primaryField.find('.value-field').html()).length > 0) {
+					var iteratorId = iteratorWrapper.attr('id');
+					createEditableRow(iteratorId,selected);
 				}
 				else {
 					toastr['warning']('此行主键为空值，无法修改！');
@@ -779,25 +782,45 @@
 		}
 	}
 
-	function deleteDataRow(container) {
-		var selected = container.find('.data-row.selected');
-		var rowDataWrapper = selected.parents('.iterator-wrapper');
-		var tableName = rowDataWrapper.attr('table-name');
-		var rowId = rowDataWrapper.find('.selected .row-field[field=id] .value-field').html();
+	function deleteDataRow(iteratorWrapper) {
+		var selected = iteratorWrapper.find('.data-row.selected');
 		if(selected && selected.length > 0) {
-			$.ajax({
-				url:'form/drop.process',
-				data:{'id': $.trim(rowId), 'table':tableName},
-				success:function(){
-					var func = methods['load'];
-					func.apply(container);
-				}
-			});
+			var tableName = iteratorWrapper.attr('table-name');
+			var primaryKeyName = iteratorWrapper.attr('primary-key') || 'GUID';
+			var primaryKeyValue = null;
+			var primaryKey = selected.find('.row-field[field='+ primaryKeyName +']:first');
+			if(primaryKey && primaryKey.length > 0) {
+				primaryKeyValue = primaryKey.find('.value-field').html();
+			}
+			var dropFlagName = iteratorWrapper.attr('drop-key') || 'DEL_FLAG';
+			var dropFlagValue = iteratorWrapper.attr('drop-value') || '1';
+			if(primaryKeyValue) {
+				$.ajax({
+					url:'form/drop.process',
+					data:{
+						'tableName':tableName,
+						'primaryKeyName':primaryKeyName,
+						'primaryKeyValue':primaryKeyValue,
+						'dropFlagName':dropFlagName,
+						'dropFlagValue':dropFlagValue
+					},
+					success:function(){
+						var func = methods['load'];
+						func.apply(container);
+					}
+				});
+			}
+			else {
+				toastr['warning']('此行主键为空值，无法修改！');
+			}
+		}
+		else {
+			toastr['warning']('请选择一条记录！');
 		}
 	}
 
-	function saveDataRow(container) {
-		var row = container.find('.data-row.editing');
+	function saveDataRow(iteratorWrapper) {
+		var row = iteratorWrapper.children('.data-row.editing');
 		var editors = row.find('.editor');
 		var msg = [];
 		validateField(editors, msg);
@@ -843,9 +866,9 @@
 		}
 	}
 
-	function cancelEditRow(container) {
-		container.find('.data-row[row-mode=new]').remove();
-		container.find('.data-row.editing').each(function(){
+	function cancelEditRow(iteratorWrapper) {
+		iteratorWrapper.children('.data-row[row-mode=new]').remove();
+		iteratorWrapper.children('.data-row.editing').each(function(){
 			$(this).removeClass('editing');
 			$(this).find('.editor').each(function(){
 				if($(this).hasClass('select')) {
