@@ -141,7 +141,7 @@ function createPropertiesControls() {
 		parent:'widget-settings'
 	},{
 		name:'primaryKeyName',
-		label:'主键名',
+		label:'主键名称',
 		type:'text',
 		parent:'widget-settings'
 	},{
@@ -594,7 +594,7 @@ function prepareRelativePropertiesFields(widget) {
 	else if(widget.hasClass('widget-field-text')) {
 		widgetTypeField.val('文本字段');
 	}
-	else if(widget.hasClass('widget-iterator')) {
+	else if(widget.hasClass('iterator-wrapper')) {
 		widgetTypeField.val('迭代器');
 	}
 	else if(widget.hasClass('widget-page-count')) {

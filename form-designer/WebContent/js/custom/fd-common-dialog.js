@@ -368,12 +368,12 @@ function showWidgetInitConfigDialog(tplClass, callback) {
 	dialog.find('input[name=dataset-name]').bind('dblclick', function() {
 		showPickDatasetFieldDialog(dialog);
 	});
-	dialog.find('input[name=page-count]').bind('dblclick', function() {
+	/*dialog.find('input[name=page-count]').bind('dblclick', function() {
 		showPickDatasetFieldDialog($(this));
 	});
 	dialog.find('input[name=row-count]').bind('dblclick', function() {
 		showPickDatasetFieldDialog($(this));
-	});
+	});*/
 	dialog.find('select[name=is-row-data]').val('0');
 	var dropZone = $('.drop-zone');
 	if(dropZone.hasClass('cell')) {
