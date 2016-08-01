@@ -212,3 +212,30 @@ input.editor {
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
+
+.edit-wrapper{
+	text-align: center;
+}
+
+
+/*diagnosis插件用css*/
+.edit-wrapper>div{
+	display:inline-block;
+}
+
+.diagnosis-list span.icd{
+	display: none;
+
+}
+.widget-custom-diagnosis.editable{
+	box-shadow: 0 0 2px 2px rgb(34, 139, 34);
+}
+
+.diagnosis-list.edit span.icd{
+	display: inline-block;
+	position: relative;
+	right: 20px;
+	float: right
+}
+
+/*diagnosis插件用css*/
