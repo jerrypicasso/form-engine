@@ -48,11 +48,6 @@
 					createExportForm();
 					container.find('.data-row[row-tpl=true]').hide();
 					var mode = container.data('mode');
-					if(mode == 'edit') {
-						container.data('mode', 'edit');
-						var func = methods['toggle'];
-						func.apply(container, [{'mode':'edit'}]);
-					}
 					container.trigger('form-loaded', [{'mode':mode}]);
 					for(var name in plugins) {
 						plugin = plugins[name];
@@ -62,6 +57,11 @@
 								'mode': mode
 							}])
 						}
+					}
+					if(mode == 'edit') {
+						container.data('mode', 'edit');
+						var func = methods['toggle'];
+						func.apply(container, [{'mode':'edit'}]);
 					}
 				}
 			});
@@ -109,7 +109,6 @@
 				container.find('.widget-check .check-field').unbind('click').html('');
 			}
 			else {
-				var container = $(this);
 				var iteratorWrappers = container.find('.iterator-wrapper');
 				iteratorWrappers.find('.edit-wrapper').remove();
 				iteratorWrappers.each(function(){
@@ -222,7 +221,6 @@
 					});
 				});
 			}
-			container.trigger('mode-changed',[{'mode': mode}]);
 			for(var name in plugins) {
 				plugin = plugins[name];
 				if(plugin.afterModeChanged) {
@@ -233,6 +231,7 @@
 				}
 			}
 			container.data('mode', mode);
+			container.trigger('mode-changed',[{'mode': mode}]);
 			renderCheckboxWidgets(container);
 		},
 		'save': function(options) {
@@ -385,12 +384,23 @@
 			var href = window.location.href;
 			href = href.substring(0, href.lastIndexOf('/'));
 			$(parts).each(function(){
+				//去除隐藏值域
 				$(this).find('.value-field').remove();
+				//替换img地址
 				$(this).find('img').each(function(){
 					var img = $(this);
 					var relativeHref = img.attr('src');
 					img.attr('src', href + relativeHref);
 				});
+				//表格数据中的text文本域样式中的inline-block改为block,否则打印会有断行问题
+				$(this).find('.row-field.widget-field-text').css('display','block');
+				//分页处理的表格，表头不需要加-fs-table-paginate:paginate
+				$(this).find('thead .widget-table').each(function(){
+					var table = $(this);
+					table.attr('style', table.attr('style').replace('-fs-table-paginate:paginate;',''));
+				});
+				//表头和表体的容器单元格需要设为border:none否则打印出来表头和表体之间有间隙
+				//TODO
 			});
 			
 			var headerHeight = container.find('.header').height();

@@ -4,9 +4,8 @@
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="com.neusoft.hit.fe.core.utility.DBUtil"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,18 +13,24 @@
 <link rel="stylesheet" type="text/css" href="toastr.css" />
 <link rel="stylesheet" type="text/css" href="select2.css" />
 <link rel="stylesheet" type="text/css" href="form.css" />
+<link rel="stylesheet" href="css/font-awesome.css" />
 <link rel="stylesheet" href="kindeditor/themes/default/default.css" />
 <link rel="stylesheet" href="kindeditor/plugins/code/prettify.css" />
-<link rel="stylesheet" href="css/font-awesome.css" />
+<!-- <link rel="stylesheet" href="jquery-ui-1.12.0/jquery-ui.min.css" />
+<link rel="stylesheet" href="jquery-ui-1.12.0/ext/jquery-ui-timepicker-addon.min.css" /> -->
 <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
+<!-- <script type="text/javascript" src="jquery-ui-1.12.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.12.0/ext/jquery-ui-timepicker-addon.min.js"></script> -->
 <script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="kindeditor/kindeditor-all-min.js"></script>
 <script type="text/javascript" src="kindeditor/lang/zh-CN.js"></script>
 <script type="text/javascript" src="kindeditor/plugins/code/prettify.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="toastr.min.js"></script>
 <script type="text/javascript" src="select2.min.js"></script>
 <script type="text/javascript" src="engine.js"></script>
 <script type="text/javascript" src="plugin-diagnosis.js"></script>
+<script type="text/javascript" src="plugin-nursing.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -57,6 +62,7 @@
 				type:'pdf'
 			});
 		});
+		
 		//禁用右键菜单
 		$(document).bind("contextmenu",function(e){
 	        return false;
