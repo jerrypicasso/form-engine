@@ -61,7 +61,7 @@ public class FormServlet extends HttpServlet {
 			String paramName = parameterNames.nextElement();
 			params.put(paramName, req.getParameter(paramName));
 		}
-		
+
 		try {
 			if(servletPath.endsWith("/load.process")) {
 				String result = formLoadHandler.load(params);

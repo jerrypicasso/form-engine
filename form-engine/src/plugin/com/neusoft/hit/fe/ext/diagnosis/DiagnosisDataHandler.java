@@ -4,9 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.neusoft.hit.fe.core.utility.CommonUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -30,6 +34,13 @@ public class DiagnosisDataHandler implements PluginDataHandler {
     private String subDiagnosisOrderSql;
     private String diagnosisDeleteSql;
     private String subDiagnosisDeleteSql;
+    private String modelSelectSql;
+    private String diagnosisSelectSqlAll;
+    private String modelSaveSql;
+    private String modelDeleteSql;
+    private String modelSortSql;
+
+
 
     private String load(Map<String, Object> param) throws FormEngineException {
         String result = null;
@@ -62,9 +73,18 @@ public class DiagnosisDataHandler implements PluginDataHandler {
     private String save(Map<String, Object> param) throws FormEngineException {
         Object diagnosisParent = param.get("diagnosisParent");
         String sql = null;
+        Object children1 = param.get("children");
+        JSONArray children =null;
+        if(children1!=null){
+            children = JSONArray.fromObject(param.get("children"));
+        }
+        String guid = null;
         if (diagnosisParent != null && !"".equals(diagnosisParent)) {
+            param.put("guid",CommonUtil.guid());
             sql = FreemarkerUtil.getMixedString(subDiagnosisInsertSql, param);
         } else {
+            guid = CommonUtil.guid();
+            param.put("guid",guid );
             sql = FreemarkerUtil.getMixedString(diagnosisInsertSql, param);
         }
         Connection conn = null;
@@ -77,6 +97,38 @@ public class DiagnosisDataHandler implements PluginDataHandler {
             LOGGER.error(e.toString(), e);
         } finally {
             DBUtil.close(conn, stmt, null);
+        }
+
+        /*应用于诊断模板存储子数据*/
+        if(children!=null&&children.size()>0&&!children.isEmpty()){
+            conn = null;
+            stmt = null;
+            String sqlTemplate = subDiagnosisInsertSql;
+            try {
+                conn = DBUtil.getConnection();
+                conn.setAutoCommit(false);
+                stmt = conn.prepareStatement(sqlTemplate);
+                for (int i = 0; i < children.size(); i++) {
+                    sql = sqlTemplate;
+                    JSONObject jsonObj = (JSONObject) children.get(i);
+                    jsonObj.put("diagnosisParent",guid);
+                    jsonObj.put("staffCode",param.get("staffCode"));
+                    jsonObj.put("guid",CommonUtil.guid());
+                    sql = FreemarkerUtil.getMixedString(sql, jsonObj);
+                    stmt.executeUpdate(sql);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                LOGGER.error(e.toString(), e);
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    LOGGER.error(e.toString(), ex);
+                }
+            } finally {
+                DBUtil.close(conn, stmt, null);
+            }
+
         }
         return ResultInfo.getResult();
     }
@@ -143,15 +195,198 @@ public class DiagnosisDataHandler implements PluginDataHandler {
         return ResultInfo.getResult();
     }
 
-    private String modelLoad(Map<String, Object> params) {
+    private String modelLoad(Map<String, Object> param) throws FormEngineException {
+        String result;
+        String sql = FreemarkerUtil.getMixedString(modelSelectSql, param);
+        List<DiagnosisModel> diagnosisModelList = DBUtil.executeList(DiagnosisModel.class, sql);
+        List<DiagnosisModel> grzdResults = new ArrayList<DiagnosisModel>();
+        Map<String,Object> results = new HashMap<String, Object>();
+
+        for(int x = 0 ;x<diagnosisModelList.size();x++){
+            if(StringUtils.isBlank(diagnosisModelList.get(x).getPid())||"0".equals(diagnosisModelList.get(x).getPid())){
+                DiagnosisModel diagnosisModel = diagnosisModelList.get(x);
+                String id = diagnosisModel.getId();
+                List<DiagnosisModel> children = new ArrayList<DiagnosisModel>();
+                for (int y = 0 ;y<diagnosisModelList.size();y++) {
+                    if (id.equals(diagnosisModelList.get(y).getPid())) {
+                        children.add(diagnosisModelList.get(y));
+                    }
+                }
+                if(children.size()>0){
+                    diagnosisModel.setChildren(children);
+                }
+                grzdResults.add(diagnosisModel);
+            }
+        }
+        results.put("grzdList",grzdResults);
 
 
-        return null;
+        sql = FreemarkerUtil.getMixedString(diagnosisSelectSqlAll, param);
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            List<Map<String, Object>> diagnosisList = DBUtil.getMultiResults(rs);
+            rs.close();
+            for (Map<String, Object> diagnosis : diagnosisList) {
+                sql = FreemarkerUtil.getMixedString(subDiagnosisSelectSql, diagnosis);
+                rs = stmt.executeQuery(sql);
+                List<Map<String, Object>> subDiagnosisList = DBUtil.getMultiResults(rs);
+                rs.close();
+                diagnosis.put("items", subDiagnosisList);
+            }
+            results.put("bczdList",diagnosisList);
+        } catch (SQLException e) {
+            LOGGER.error(e.toString(), e);
+        } finally {
+            DBUtil.close(conn, stmt, rs);
+        }
+
+
+
+
+        result = JSONObject.fromObject(results).toString();
+        return result;
     }
 
-    private String modelSace(Map<String, Object> params) {
+    private String modelSave(Map<String, Object> param)throws FormEngineException {
+        String sql = null;
+        JSONArray children =null;
+        if(param.get("children")!=null){
+            children = JSONArray.fromObject(param.get("children"));
+        }
+        String guid = CommonUtil.guid();
+        param.put("guid",guid);
+        sql = FreemarkerUtil.getMixedString(modelSaveSql, param);
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = DBUtil.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            LOGGER.error(e.toString(), e);
+        } finally {
+            DBUtil.close(conn, stmt, null);
+        }
 
-        return null;
+        if(children!=null&&children.size()>0&&!children.isEmpty()){
+            conn = null;
+            stmt = null;
+            String sqlTemplate = modelSaveSql;
+            try {
+                conn = DBUtil.getConnection();
+                conn.setAutoCommit(false);
+                stmt = conn.prepareStatement(sqlTemplate);
+                for (int i = 0; i < children.size(); i++) {
+                    sql = sqlTemplate;
+                    JSONObject jsonObj = (JSONObject) children.get(i);
+                    jsonObj.put("diagnosisParent",guid);
+                    jsonObj.put("staffCode",param.get("staffCode"));
+                    jsonObj.put("guid",CommonUtil.guid());
+                    sql = FreemarkerUtil.getMixedString(sql, jsonObj);
+                    stmt.executeUpdate(sql);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                LOGGER.error(e.toString(), e);
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    LOGGER.error(e.toString(), ex);
+                }
+            } finally {
+                DBUtil.close(conn, stmt, null);
+            }
+
+        }
+        return ResultInfo.getResult();
+    }
+
+    private String modelDelete(Map<String, Object> param)throws FormEngineException {
+        String sql = null;
+        JSONArray children =null;
+        if(param.get("children")!=null){
+            children = JSONArray.fromObject(param.get("children"));
+        }
+
+        sql = FreemarkerUtil.getMixedString(modelDeleteSql, param);
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = DBUtil.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            LOGGER.error(e.toString(), e);
+        } finally {
+            DBUtil.close(conn, stmt, null);
+        }
+
+        if(children!=null&&children.size()>0&&!children.isEmpty()){
+            conn = null;
+            stmt = null;
+            String sqlTemplate = modelDeleteSql;
+            try {
+                conn = DBUtil.getConnection();
+                conn.setAutoCommit(false);
+                stmt = conn.prepareStatement(sqlTemplate);
+                for (int i = 0; i < children.size(); i++) {
+                    sql = sqlTemplate;
+                    JSONObject jsonObj = (JSONObject) children.get(i);
+                    sql = FreemarkerUtil.getMixedString(sql, jsonObj);
+                    stmt.executeUpdate(sql);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                LOGGER.error(e.toString(), e);
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    LOGGER.error(e.toString(), ex);
+                }
+            } finally {
+                DBUtil.close(conn, stmt, null);
+            }
+
+        }
+        return ResultInfo.getResult();
+    }
+
+    private String modelSort(Map<String, Object> param)throws FormEngineException {
+
+        Object records = param.get("records");
+        if (records != null) {
+            JSONArray arr = JSONArray.fromObject(records);
+            String sqlTemplate = modelSortSql;
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+                conn = DBUtil.getConnection();
+                conn.setAutoCommit(false);
+                stmt = conn.prepareStatement(sqlTemplate);
+                for (int i = 0; i < arr.size(); i++) {
+                    String sql = sqlTemplate;
+                    JSONObject jsonObj = (JSONObject) arr.get(i);
+                    sql = FreemarkerUtil.getMixedString(sql, jsonObj);
+                    stmt.executeUpdate(sql);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                LOGGER.error(e.toString(), e);
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    LOGGER.error(e.toString(), ex);
+                }
+            } finally {
+                DBUtil.close(conn, stmt, null);
+            }
+        }
+        return ResultInfo.getResult();
     }
 
 
@@ -169,13 +404,16 @@ public class DiagnosisDataHandler implements PluginDataHandler {
             result = sort(params);
         } else if("modelLoad".equals(action)){
             result = modelLoad(params);
-        } else if("modelSace".equals(action)){
-            result = modelSace(params);
+        } else if("modelSave".equals(action)){
+            result = modelSave(params);
+        } else if("modelDelete".equals(action)){
+            result = modelDelete(params);
+        } else if("modelSort".equals(action)){
+            result = modelSort(params);
         }
 
         return result;
     }
-
 
 
 
@@ -241,5 +479,45 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 
     public void setSubDiagnosisDeleteSql(String subDiagnosisDeleteSql) {
         this.subDiagnosisDeleteSql = subDiagnosisDeleteSql;
+    }
+
+    public String getModelSelectSql() {
+        return modelSelectSql;
+    }
+
+    public void setModelSelectSql(String modelSelectSql) {
+        this.modelSelectSql = modelSelectSql;
+    }
+
+    public String getModelSaveSql() {
+        return modelSaveSql;
+    }
+
+    public void setModelSaveSql(String modelSaveSql) {
+        this.modelSaveSql = modelSaveSql;
+    }
+
+    public String getDiagnosisSelectSqlAll() {
+        return diagnosisSelectSqlAll;
+    }
+
+    public void setDiagnosisSelectSqlAll(String diagnosisSelectSqlAll) {
+        this.diagnosisSelectSqlAll = diagnosisSelectSqlAll;
+    }
+
+    public String getModelDeleteSql() {
+        return modelDeleteSql;
+    }
+
+    public void setModelDeleteSql(String modelDeleteSql) {
+        this.modelDeleteSql = modelDeleteSql;
+    }
+
+    public String getModelSortSql() {
+        return modelSortSql;
+    }
+
+    public void setModelSortSql(String modelSortSql) {
+        this.modelSortSql = modelSortSql;
     }
 }

@@ -4,9 +4,6 @@
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="com.neusoft.hit.fe.core.utility.DBUtil"%>
-<%@page import="java.io.File"%>
-<%@page import="java.util.Properties"%>
-<%@page import="java.io.InputStream"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -19,6 +16,7 @@
 <link rel="stylesheet" type="text/css" href="form.css" />
 <link rel="stylesheet" href="kindeditor/themes/default/default.css" />
 <link rel="stylesheet" href="kindeditor/plugins/code/prettify.css" />
+<link rel="stylesheet" href="css/font-awesome.css" />
 <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="kindeditor/kindeditor-all-min.js"></script>

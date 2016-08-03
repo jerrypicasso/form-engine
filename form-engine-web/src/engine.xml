@@ -1,118 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form-engine>
-	<data-source>
-		<driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
-		<url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
-		<user-name>system</user-name>
-		<password>neusoft</password>
-		<!-- <url>jdbc:oracle:thin:@192.168.3.101:1521:orcl</url>
-		<user-name>qyemr</user-name>
-		<password>simlink</password> -->
-		<initial-size>10</initial-size>
-		<max-active>20</max-active>
-		<max-idle>10000</max-idle>
-		<max-wait>1000</max-wait>
-	</data-source>
-	
-	<image-upload>
-		<save-path>D:/test/upload</save-path>
-		<file-type>gif,jpg,jpeg,png,bmp</file-type>
-		<max-size>1000000</max-size>
-	</image-upload>
-	
-	<combo-configs>
-		<combo-config code="dict" name="字典">
-			<sql-template>
-				<![CDATA[
+    <data-source>
+        <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+        <url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
+        <user-name>system</user-name>
+        <password>simlink</password>
+
+        <!--<url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
+        <user-name>system</user-name>
+        <password>simlink</password>-->
+
+        <initial-size>10</initial-size>
+        <max-active>20</max-active>
+        <max-idle>10000</max-idle>
+        <max-wait>1000</max-wait>
+    </data-source>
+
+    <image-upload>
+        <save-path>D:/test/upload</save-path>
+        <file-type>gif,jpg,jpeg,png,bmp</file-type>
+        <max-size>1000000</max-size>
+    </image-upload>
+
+    <combo-configs>
+        <combo-config code="dict" name="字典">
+            <sql-template>
+                <![CDATA[
 				SELECT VAL,TXT FROM DICT WHERE CATEGORY = ${param.category} 
 				<#if param.master??> 
 					AND PID = ${param.master} 
 				</#if> 
 				]]>
-			</sql-template>
-			<display-template><![CDATA[ <div style="color:#333;">${result.txt}</div> ]]></display-template>
-			<value-template>${result.val}</value-template>
-		</combo-config>
-		
-		<combo-config code="staff" name="人员">
-			<sql-template>
-				<![CDATA[
+            </sql-template>
+            <display-template><![CDATA[ <div style="color:#333;">${result.txt}</div> ]]></display-template>
+            <value-template>${result.val}</value-template>
+        </combo-config>
+
+        <combo-config code="staff" name="人员">
+            <sql-template>
+                <![CDATA[
 				SELECT DISTINCT YGBH,XM FROM VIEW_YGJBXX WHERE ZC_TYPE = ${param.filter} 
 				<#if param.fuzzy??> 
 					AND XM LIKE '%${param.fuzzy}%' 
 				</#if>
 				]]>
-			</sql-template>
-			<display-template><![CDATA[ <div style="color:#333;">${result.XM}</div> ]]></display-template>
-			<value-template>${result.YGBH}</value-template>
-		</combo-config>
-		
-		<combo-config code="icd" name="ICD">
-			<sql-template>
-				<![CDATA[
+            </sql-template>
+            <display-template><![CDATA[ <div style="color:#333;">${result.XM}</div> ]]></display-template>
+            <value-template>${result.YGBH}</value-template>
+        </combo-config>
+
+        <combo-config code="icd" name="ICD">
+            <sql-template>
+                <![CDATA[
 				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE 1=1 
 				<#if param.fuzzy??> 
 					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%') 
 				</#if>
 				]]>
-			</sql-template>
-			<display-template><![CDATA[ <div style="color:#333;">${result.ICD_NAME}</div> ]]></display-template>
-			<value-template>${result.ICD_CODE}</value-template>
-		</combo-config>
-	</combo-configs>
-	
-	<plugins>
-		<plugin name="diagnosis" class="com.neusoft.hit.fe.ext.diagnosis.DiagnosisDataHandler">
-			<property name="diagnosisSelectSql">
-				<![CDATA[
+            </sql-template>
+            <display-template>${result.ICD_NAME}</display-template>
+            <value-template>${result.ICD_CODE}</value-template>
+        </combo-config>
+    </combo-configs>
+
+    <plugins>
+        <plugin name="diagnosis" class="com.neusoft.hit.fe.ext.diagnosis.DiagnosisDataHandler">
+            <property name="diagnosisSelectSql">
+                <![CDATA[
 					SELECT ID,ICD_10,LR AS NAME FROM ZDINFO 
-					WHERE JZXH = ${jzxh} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
+					WHERE BRID = ${patientCode} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
 				]]>
-			</property>
-			<property name="diagnosisInsertSql">
-				<![CDATA[
+            </property>
+            <property name="diagnosisInsertSql">
+                <![CDATA[
 					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
-					INSERT INTO ZDINFO(ID,JZXH,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) 
-					VALUES('${CommonUtil.guid()}','${jzxh}','${diagnosisType}','${diagnosisCode}',
+					INSERT INTO ZDINFO(ID,BRID,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)
+					VALUES('${guid}','${patientCode}','${diagnosisType}','${diagnosisCode}',
 					'${diagnosisText}','${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
 					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
 				]]>
-			</property>
-			<property name="subDiagnosisSelectSql">
-				<![CDATA[
+            </property>
+            <property name="subDiagnosisSelectSql">
+                <![CDATA[
 					SELECT SUB_ID AS ID,ZD_ID AS DIAGNOSIS_ID,ZD_NR NAME,ICD10_CODE ICD_10 FROM SUB_ZD_INFO 
 					WHERE ZD_ID = '${ID}' ORDER BY DIAGNOSTIC_ORDER1
 				]]>
-			</property>
-			<property name="subDiagnosisInsertSql">
-				<![CDATA[
+            </property>
+            <property name="subDiagnosisInsertSql">
+                <![CDATA[
 				 	<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
 					INSERT INTO SUB_ZD_INFO(SUB_ID,ZD_ID,ICD10_CODE,ZD_NR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) 
-					VALUES('${CommonUtil.guid()}','${diagnosisParent}','${diagnosisCode}','${diagnosisText}',
+					VALUES('${guid}','${diagnosisParent}','${diagnosisCode}','${diagnosisText}',
 					'${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
 					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
 				]]>
-			</property>
-			<property name="diagnosisOrderSql">
-				<![CDATA[
+            </property>
+            <property name="diagnosisOrderSql">
+                <![CDATA[
 					UPDATE ZDINFO SET DIAGNOSTIC_ORDER1 = ${seq} WHERE ID = '${id}'
 				]]>
-			</property>
-			<property name="subDiagnosisOrderSql">
-				<![CDATA[
+            </property>
+            <property name="subDiagnosisOrderSql">
+                <![CDATA[
 					UPDATE SUB_ZD_INFO SET DIAGNOSTIC_ORDER1 = ${seq} WHERE SUB_ID = '${id}'
 				]]>
-			</property>
-			<property name="diagnosisDeleteSql">
-				<![CDATA[
+            </property>
+            <property name="diagnosisDeleteSql">
+                <![CDATA[
 					DELETE FROM ZDINFO WHERE ID = '${id}'
 				]]>
-			</property>
-			<property name="subDiagnosisDeleteSql">
-				<![CDATA[
+            </property>
+            <property name="subDiagnosisDeleteSql">
+                <![CDATA[
 					DELETE FROM SUB_ZD_INFO WHERE SUB_ID = '${id}' OR ZD_ID = '${id}'
 				]]>
-			</property>
-		</plugin>
-	</plugins>
+            </property>
+            <property name="modelSelectSql">
+                <![CDATA[
+					SELECT ID as "id",LR as "lr",ICD_10 as "icd_10",PID as "pid" FROM ZD_MODEL WHERE CREATE_ID = '${staffCode}' ORDER BY ZD_ORDER
+				]]>
+            </property>
+            <property name="diagnosisSelectSqlAll">
+                <![CDATA[
+					SELECT ID,ICD_10,LR AS NAME FROM ZDINFO
+					WHERE BRID = ${patientCode} ORDER BY DIAGNOSTIC_ORDER1
+				]]>
+            </property>
+            <property name="modelSaveSql">
+                <![CDATA[
+					INSERT INTO ZD_MODEL (ID,LR,ICD_10,PID,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)VALUES
+	                ('${guid}','${diagnosisText}','${diagnosisCode}','${(diagnosisParent)!}','${staffCode}',TO_DATE ('${now}','yyyy-mm-dd hh24:mi:ss'),
+		            '${staffCode}',TO_DATE ('${now}','yyyy-mm-dd hh24:mi:ss'))
+				]]>
+            </property>
+            <property name="modelDeleteSql">
+                <![CDATA[
+					DELETE FROM ZD_MODEL WHERE ID = '${guid}'
+				]]>
+            </property>
+            <property name="modelSortSql">
+                <![CDATA[
+					UPDATE ZD_MODEL SET ZD_ORDER = ${seq} WHERE ID = '${id}'
+				]]>
+            </property>
+        </plugin>
+    </plugins>
 </form-engine>

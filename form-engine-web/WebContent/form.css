@@ -219,6 +219,12 @@ input.editor {
 
 
 /*diagnosis插件用css*/
+.selectable span:hover{
+	cursor: pointer;
+	color:#FF2F2F;
+}
+
+
 .edit-wrapper>div{
 	display:inline-block;
 }
@@ -236,6 +242,45 @@ input.editor {
 	position: relative;
 	right: 20px;
 	float: right
+}
+.diagnosis-model-list .list-title i:hover{
+	cursor: pointer;
+}
+
+.diagnosis-model-list li i:hover{
+	cursor: pointer;
+}
+
+
+.model-title input{
+	display: inline-block;
+	padding:1px 1px 1px 1px;
+	border-radius: 2px 2px 2px 2px;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	-o-border-radius: 2px 2px 2px 2px;
+	background-color: white;
+}
+.model-title input:hover{
+	cursor: pointer;
+}
+
+.hover:hover{
+	cursor: pointer;
+}
+
+div.model-wrapper{
+	margin: 5px 5px 5px 5px;
+	border:1px solid #337FE5;
+}
+
+div.model-wrapper>ul{
+	overflow-y: auto;
+	height:250px;
+	width:350px;
+}
+
+div.model-wrapper i.fa{
+	color:#337FE5;;
 }
 
 /*diagnosis插件用css*/

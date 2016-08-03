@@ -1,17 +1,17 @@
 package com.neusoft.hit.fe.core.utility;
 
+import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
+import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.apache.commons.dbcp.BasicDataSource;
-
-import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
 
 /**
  * 数据库工具类
@@ -20,6 +20,8 @@ import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
  */
 public class DBUtil {
 
+
+    private static final Log LOGGER = LogFactory.getLog(DBUtil.class);
     /**
      * 数据库驱动类名
      */
@@ -230,6 +232,7 @@ public class DBUtil {
 
     /**
      * 将数据集转换成list
+     *
      * @param cls
      * @param sql
      * @param <T>
@@ -250,6 +253,7 @@ public class DBUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LOGGER.error(e.toString(), e);
         } finally {
             close(con, ps, rs);
         }
@@ -259,6 +263,7 @@ public class DBUtil {
 
     /**
      * 将结果转换成对象
+     *
      * @param cls
      * @param rs
      * @param <T>
