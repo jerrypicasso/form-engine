@@ -27,7 +27,8 @@ $.Engine.plugin('diagnosis', {
             container.find('.widget-custom-diagnosis').each(function () {
                 var diagnosis = $(this);
                 diagnosis.addClass('editable');
-
+                var editTrigger = $('<input type="button" value="编辑" class="editTrigger" style="position: absolute;right:0;top:0"/>')
+                    .appendTo(diagnosis);
 
                 queryDiagnosis(diagnosis,container.data('options'),'edit',container)
             });
@@ -89,9 +90,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode,container) {
             diagnosisWidget.data("zdLists", data);//将每次读取的节点放入容器中
             diagnosisWidget.find('.comboTextBox').hide();
             if (!mode || mode === 'edit') {
-                var editTrigger = $('<input type="button" value="编辑" class="editTrigger" style="position: absolute;right:0;top:0"/>')
-                    .appendTo(diagnosisWidget)
-                    .on('click',function(){
+                diagnosisWidget.find('.editTrigger').on('click',function(){
                     if (!diagnosisWidget.find('.editor-wrapper') || diagnosisWidget.find('.editor-wrapper').length <= 0) {
 
                         container.find('.widget-custom-diagnosis .display-field').unbind();
@@ -147,7 +146,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode,container) {
  * @param opts
  * @param container
  */
-function createDiagnosisModel(diagnosisWidget, opts,container) {
+function createDiagnosisModel(diagnosisWidget, opts,container,showGrzd) {
     var diagnosisModelWrapper = diagnosisWidget.find('.model-wrapper'),diagnosisType =diagnosisWidget.attr('diagnosistype'),
         modelTitleBox = $('<div class="model-title" style="background-color: #337FE5;line-height:30px;height:30px;color:white">诊断模板</div>'),
         displayField = diagnosisWidget.find('.display-field');
@@ -213,9 +212,12 @@ function createDiagnosisModel(diagnosisWidget, opts,container) {
                     }
 
                 }
-
-                list.find('li').hide();
-
+                if(showGrzd){
+                    list.find('li.bczd').hide();
+                    list.find('li.grzd[type="sub"]').hide();
+                }else{
+                    list.find('li').hide();
+                }
                 /*诊断的dropdown*/
                 var l = list.find('li').not('.sub');
                 var i = l.find('i');
@@ -337,7 +339,7 @@ function createDiagnosisModel(diagnosisWidget, opts,container) {
                     if(selected&&selected.length>0){
 
                         param = {
-                            diagnosisText: selected.find('b.text').text(),
+                            diagnosisText: selected.find('b.text').text().trim()||selected.find('span.text').text().trim(),
                             diagnosisCode: selected.find('span.icd').text(),
                             diagnosisParent: null,
                             staffCode: opts.staffCode
@@ -347,7 +349,7 @@ function createDiagnosisModel(diagnosisWidget, opts,container) {
                             selected.find('li[type="sub"]').each(function(){
                                 children.push({
                                     diagnosisText: $(this).find('span.text').text(),
-                                    diagnosisCode: selected.find('span.icd').text(),
+                                    diagnosisCode: selected.find('span.icd').text().trim(),
                                     staffCode: opts.staffCode
                                 });
                             });
@@ -364,7 +366,7 @@ function createDiagnosisModel(diagnosisWidget, opts,container) {
                             success: function (data) {
                                 queryDiagnosis(diagnosisWidget, opts, 'edit',container);
                                 container.find('.widget-custom-diagnosis .model-wrapper').remove();
-                                createDiagnosisModel(diagnosisWidget, opts,container);
+                                createDiagnosisModel(diagnosisWidget, opts,container,true);
                             }
                         });
                     }else{
@@ -409,7 +411,7 @@ function createDiagnosisModel(diagnosisWidget, opts,container) {
                         success: function (data) {
                             queryDiagnosis(diagnosisWidget, opts, 'edit',container);
                             container.find('.widget-custom-diagnosis .model-wrapper').remove();
-                            createDiagnosisModel(diagnosisWidget, opts,container);
+                            createDiagnosisModel(diagnosisWidget, opts,container,true);
                         }
                     });
 
@@ -471,7 +473,7 @@ function createDiagnosisModel(diagnosisWidget, opts,container) {
                     var next = selected.next('li[type=' + type + ']');
 
                     if (next && next.length > 0) {
-                        next.before(selected);
+                        next.after(selected);
                     }
                     var brothers = selected.parent().find('li[type=' + type + ']');
                     var records = [];
