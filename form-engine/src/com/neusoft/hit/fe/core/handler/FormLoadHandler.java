@@ -154,6 +154,7 @@ public class FormLoadHandler {
 			listWrapper.attr("total-row", "${(" + itemsName + "_pagination.ROW_COUNT)!}");
 			listWrapper.attr("total-page", "${(" + itemsName + "_pagination.PAGE_COUNT)!}");
 			listWrapper.attr("page-param-name", itemsName + "_page");
+			listWrapper.attr("name", itemsName);
 		}
 		//处理condition元素
 		List<HtmlElement> conditionElements = htmlDocument.getElementsByTag("condition");
