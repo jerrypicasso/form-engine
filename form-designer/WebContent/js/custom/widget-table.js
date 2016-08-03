@@ -357,8 +357,8 @@ function markRowColResizable(e) {
 	var cell = $(this);
 	var top = cell.offset().top;
 	var left = cell.offset().left;
-	var width = cell.width();
-	var height = cell.height();
+	var width = cell.innerWidth();
+	var height = cell.innerHeight();
 	var pageX = e.pageX;
 	var pageY = e.pageY;
 	if(left + width - pageX < 1 ) {

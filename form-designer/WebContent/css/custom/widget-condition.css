@@ -1,6 +1,10 @@
 .widget-condition {
-	display:block;
-	width:100%;
 	min-height:24px;
 	background:rgb(255,255,150);	
+}
+
+condition {
+	width: 100%;
+	display: block;
+	padding: 0px 0px 5px 0px !important;
 }
