@@ -128,8 +128,9 @@
             </property>
             <property name="modelSaveSql">
                 <![CDATA[
+                <#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
 					INSERT INTO ZD_MODEL (ID,LR,ICD_10,PID,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)VALUES
-	                ('${guid}','${diagnosisText}','${diagnosisCode}','${(diagnosisParent)!}','${staffCode}',TO_DATE ('${now}','yyyy-mm-dd hh24:mi:ss'),
+	                ('${guid}','${diagnosisText}','${diagnosisCode}','${diagnosisParent!}','${staffCode}',TO_DATE ('${now}','yyyy-mm-dd hh24:mi:ss'),
 		            '${staffCode}',TO_DATE ('${now}','yyyy-mm-dd hh24:mi:ss'))
 				]]>
             </property>
