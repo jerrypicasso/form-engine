@@ -52,7 +52,7 @@
         <combo-config code="icd" name="ICD">
             <sql-template>
                 <![CDATA[
-				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE 1=1 
+				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE ICD_TYPE = '${param.filter}'
 				<#if param.fuzzy??> 
 					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%') 
 				</#if>
