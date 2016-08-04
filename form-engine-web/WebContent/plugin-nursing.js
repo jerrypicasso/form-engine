@@ -64,29 +64,18 @@ $.Engine.plugin('nursing', {
         	//隐藏占位行
         	$('.data-row .empty').hide();
         	var nursingWidgets = container.find('.widget-plugin-nursing');
-        	
+        	var opts = container.data('options');
         	nursingWidgets.each(function () {
         		var nursingWidget = $(this);
                 var iterName = nursingWidget.attr('iterator');
-                var sumName = nursingWidget.attr('sum-name');
-                var ioTable = nursingWidget.attr('io-table');
-                var inName = nursingWidget.attr('in-name');
-                var inFields = nursingWidget.attr('in-fields');
-                var outName = nursingWidget.attr('out-name');
-                var outFields = nursingWidget.attr('out-fields');
-                var auditField = nursingWidget.attr('audit-field');
-                
+                var ioSql = nursingWidget.html();
                 var iteratorWrapper = $('.iterator-wrapper[name='+ iterName +']');
                 var editWrapper = iteratorWrapper.children('.edit-wrapper:first');
                 var ioButton = $('<input class="edit-btn" type="button" value="新增出入量统计"/>');
+                var params = {ioSql : ioSql};
+                $.extend(params, opts);
                 ioButton.unbind('click').bind('click', function(){
-                	showSumIntakeOutputDialog({
-                		ioTable : ioTable,
-                		inName : inName,
-                		inFields : inFields,
-                		outName : outName,
-                		outFields : outFields
-                	});
+                	showSumIntakeOutputDialog(container,params);
                 });
                 editWrapper.append(ioButton);
         	});
@@ -95,27 +84,48 @@ $.Engine.plugin('nursing', {
     }
 });
 
-function showSumIntakeOutputDialog(options) {
-	var content = ['<table>',
+function showSumIntakeOutputDialog(container, options) {
+	var content = ['<table style="width:100%;">',
 	               '<tr>',
-	               '<td>开始时间：</td>',
-	               '<td><input class="beginTime"/></td>',
+	               '<td align="right">开始时间：</td>',
+	               '<td><input style="width:130px;" class="beginTime"/></td>',
 	               '</tr>',
 	               '<tr>',
-	               '<td>结束时间：</td>',
-	               '<td><input class="endTime"/></td>',
-	               '</tr>',
-	               '<tr>',
-	               '<td><input class="ok" type="button" value="确定"></td>',
-	               '<td><input class="cancel" type="button" value="取消"/></td>',
+	               '<td align="right">结束时间：</td>',
+	               '<td><input style="width:130px;" class="endTime"/></td>',
 	               '</tr>',
 	               '</table>'].join('');
-	/**/
+	/*弹出层*/
 	layer.open({
 		type : 1,
 		skin : 'layui-layer-rim', // 加上边框
-		area : [ '420px', '240px' ], // 宽高
+		area : [ '240px', '160px' ], // 宽高
 		content : content,
+		btn:['确定','取消'],
+		yes: function(index, self){
+			var beginTime = self.find('.beginTime').val();
+			var endTime = self.find('.endTime').val();
+			if(beginTime && endTime) {
+				var params = {
+					'beginTime': beginTime,
+					'endTime': endTime
+				};
+				$.extend(params, options);
+				$.ajax({
+					url:'form/plugin.process?handler=nursing',
+					type:'post',
+					dataType: 'json',
+					data: params,
+					success: function(){
+						layer.close(index);
+						container.form('reload');
+					}
+				});
+			}
+		},
+		cancel : function(index) {
+			layer.close(index);
+		},
 		success : function(self, index) {
 			self.find('.beginTime,.endTime').bind('click', function(){
 				WdatePicker({
@@ -123,31 +133,6 @@ function showSumIntakeOutputDialog(options) {
 					dateFmt:'yyyy-MM-dd HH:mm:ss',
 					maxDate:'%y-%M-%d %H:%m:%s'
 				});
-			});
-			
-			self.find('.ok').bind('click', function(){
-				var beginTime = self.find('.beginTime').val();
-				var endTime = self.find('.endTime').val();
-				if(beginTime && endTime) {
-					var params = {
-							beginTime: beginTime,
-							endTime: endTime
-					};
-					$.extend(params, options);
-					/*$.ajax({
-						url:'',
-						type:'post',
-						dataType: 'json',
-						param: params,
-						success: function(){
-							
-						}
-					});*/
-				}
-			});
-			
-			self.bind('.cancel').bind('click', function(){
-				layer.close(index)
 			});
 		}
 	});

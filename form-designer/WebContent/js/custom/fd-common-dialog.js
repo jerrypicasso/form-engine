@@ -82,6 +82,9 @@ function showLoadPaperDialog() {
 				$('.widget-custom-diagnosis').each(function(){
 					registerWidgetMousedownHandler(this);
 				});
+				$('.widget-plugin-nursing').each(function(){
+					registerWidgetMousedownHandler(this);
+				});
 				$('.widget-plugin').each(function(){
 					registerWidgetMousedownHandler(this);
 				});

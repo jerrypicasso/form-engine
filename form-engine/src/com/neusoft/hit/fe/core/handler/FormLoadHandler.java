@@ -131,6 +131,9 @@ public class FormLoadHandler {
 	}
 	
 	private void regulateFormTemplate(HtmlDocument htmlDocument) throws FormEngineException {
+		//移除content的style属性，让其高度自适应
+		HtmlElement content = htmlDocument.getSingleElementByClass("content");
+		content.removeAttr("style");
 		//为每个行数据元素添加row-mode属性
 		List<HtmlElement> rowElements = htmlDocument.getElementsByClass("data-row");
 		for(HtmlElement rowElement : rowElements) {

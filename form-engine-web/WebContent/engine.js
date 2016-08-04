@@ -380,7 +380,7 @@
 			footer.width(container.find('.footer').width());
 			footer.css('margin','0 auto');
 			//如果行高不大于48则不允许行内分页,(是否要在页面加载完后触发?)
-			container.find('.content table.data-row').each(function(){
+			$(container).find('.content table.data-row').each(function(){
 				if($(this).height() <= 48) {
 					var style = $(this).attr('style');
 					style = style + "page-break-inside:avoid;"
@@ -434,6 +434,11 @@
 			$('#export-form').find('input[name=margin-left]').val(marginLeft);
 			$('#export-form').find('input[name=direction]').val(direction);
 			$('#export-form').submit();
+		},
+		'reload':function(options) {
+			var container = $(this);
+			var func = methods['load'];
+			func.apply(container);
 		}
 	};
 	

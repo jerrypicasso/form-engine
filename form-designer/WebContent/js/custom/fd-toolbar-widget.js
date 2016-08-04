@@ -53,8 +53,12 @@ function createWidgetControls() {
 		title:'总共页数'
 	},{
 		id:'diagnosis',
-		icon:'url(icon/iterator.png)',
+		icon:'url(icon/diagnosis.png)',
 		title:'诊断'
+	},{
+		id:'nursing',
+		icon:'url(icon/nursing.png)',
+		title:'护理记录'
 	},{
 		id:'plugin',
 		icon:'url(icon/plugin.png)',
