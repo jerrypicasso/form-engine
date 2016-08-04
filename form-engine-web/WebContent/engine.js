@@ -299,7 +299,7 @@
 			var mode = container.data('mode');
 			if(mode == 'edit') {
 				KindEditor.sync('textarea');
-				//KindEditor.remove('textarea');
+				KindEditor.remove('textarea');
 				var paper = container.find('.paper');
 				paper.find('.widget-check').removeClass('editable');
 				paper.find('.main-field').each(function(){
@@ -341,7 +341,16 @@
 				});
 				paper.find('.tool-bar').remove();
 				
-				container.trigger('mode-changed',[{'mode': 'view'}]);
+				//插件都变为view状态
+				for(var name in plugins) {
+					plugin = plugins[name];
+					if(plugin.afterModeChanged) {
+						plugin.afterModeChanged.apply(container, [{
+							'container': container,
+							'mode': 'view'
+						}])
+					}
+				}
 				
 				var html = paper.prop('outerHTML');
 				var param = {'content': html};
