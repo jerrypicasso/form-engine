@@ -56,14 +56,17 @@ $(document).ready(function() {
 				else if(type === 'page-count') {
 					createPageCountWidget();
 				}
-				else if(type === 'diagnosis') {
-					createDiagnosisWidget();
+				else if(type === 'condition') {
+					showConditionInitConfigDialog();
 				}
 				else if(type === 'plugin') {
 					showPluginInitConfigDialog();
 				}
-				else if(type === 'condition') {
-					showConditionInitConfigDialog();
+				else if(type === 'diagnosis') {
+					createDiagnosisWidget();
+				}
+				else if(type === 'nursing') {
+					showNursingPluginInitConfigDialog();
 				}
 			}
 			else if($('.movable').length > 0 && dropZone != $('.movable')) {
@@ -164,7 +167,7 @@ $(document).ready(function() {
 		paperWrapper.find('.selected-widget').removeClass('selected-widget');
 		paperWrapper.find('.sql-wrapper').hide();
 		paperWrapper.find('.selected-sql').removeClass('selected-sql');
-		paperWrapper.find('.content').removeAttr('style');
+		//paperWrapper.find('.content').removeAttr('style');
 		var paper = paperWrapper.find('.paper');
 		var name = paper.attr('name');
 		var code = paper.attr('code');
