@@ -67,8 +67,40 @@
         <plugin name="diagnosis" class="com.neusoft.hit.fe.ext.diagnosis.DiagnosisDataHandler">
             <property name="diagnosisSelectSql">
                 <![CDATA[
-					SELECT ID,ICD_10,LR AS NAME FROM ZDINFO 
+					SELECT ID,ICD_10,LR AS NAME FROM ZDINFO
 					WHERE BRID = ${patientCode} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
+				]]>
+            </property>
+            <property name="diagnosisSelectSql2">
+                <![CDATA[
+					SELECT * FROM ZDINFO
+					WHERE BRID = ${patientCode} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
+				]]>
+            </property>
+            <property name="hasDiagnosisSql">
+                <![CDATA[
+                    SELECT
+                        ZD.CREATE_ID AS "createId",
+                        YG.XM AS "createName",
+                        ZC.ID AS "creatorZcId",
+                        ZC.ZC_NAME AS "creatorZcName",
+                        to_char(ZD.CREATE_TIME, 'yyyy-mm-dd') AS "createTime"，
+                        ZD.MODIFY_ID AS "modifyId",
+                        to_char(ZD.MODIFY_TIME, 'yyyy-mm-dd') AS "modifyTime",
+                        YGM.XM AS "modfiyName",
+                        ZCM.ID AS "modifyZcId",
+                        ZCM.ZC_NAME AS "modifyZcName",
+                        ZD.SYNC AS "sync"
+                    FROM
+                        ZDINFO ZD
+                    LEFT JOIN YGJBXX YG ON YG.YGBH = ZD.CREATE_ID
+                    LEFT JOIN ZC_INFO ZC ON ZC.ID = YG.ZC
+                    LEFT JOIN YGJBXX YGM ON YGM.YGBH = ZD.MODIFY_ID
+                    LEFT JOIN ZC_INFO ZCM ON ZCM.ID = YG.ZC
+                    WHERE
+                        ZD.BRID = '${patientCode}'
+                        AND ZD.LX = '${diagnosisType}'
+                        AND rownum<=1
 				]]>
             </property>
             <property name="diagnosisInsertSql">
@@ -76,21 +108,59 @@
 					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
 					INSERT INTO ZDINFO(ID,BRID,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)
 					VALUES('${guid}','${patientCode}','${diagnosisType}','${diagnosisCode}',
-					'${diagnosisText}','${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
+					'${diagnosisText}','${createId}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
 					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
+				]]>
+            </property>
+            <property name="diagnosisSyncSql">
+                <![CDATA[
+					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
+					INSERT INTO ZDINFO(ID,BRID,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME,SYNC)
+					VALUES('${guid}','${BRID}','${LX}','${ICD_10}',
+					'${LR}','${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
+					to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'Y')
+				]]>
+            </property>
+
+
+            <property name="diagnosisUpdateAllSql">
+                <![CDATA[
+					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
+					UPDATE  ZDINFO SET MODIFY_ID = '${staffCode}',MODIFY_TIME = to_date('${now}','yyyy-mm-dd hh24:mi:ss') WHERE BRID = '${patientCode}' AND LX = '${diagnosisType}'
+				]]>
+            </property>
+            <property name="changeSyncStatusSql">
+                <![CDATA[
+					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
+					UPDATE  ZDINFO SET SYNC='${syncStatus}' WHERE BRID = '${patientCode}' AND LX = '10' OR LX = '20'
 				]]>
             </property>
             <property name="subDiagnosisSelectSql">
                 <![CDATA[
-					SELECT SUB_ID AS ID,ZD_ID AS DIAGNOSIS_ID,ZD_NR NAME,ICD10_CODE ICD_10 FROM SUB_ZD_INFO 
+					SELECT SUB_ID AS ID,ZD_ID AS DIAGNOSIS_ID,ZD_NR NAME,ICD10_CODE ICD_10 FROM SUB_ZD_INFO
+					WHERE ZD_ID = '${ID}' ORDER BY DIAGNOSTIC_ORDER1
+				]]>
+            </property>
+            <property name="subDiagnosisSelectSql2">
+                <![CDATA[
+					SELECT * FROM SUB_ZD_INFO
 					WHERE ZD_ID = '${ID}' ORDER BY DIAGNOSTIC_ORDER1
 				]]>
             </property>
             <property name="subDiagnosisInsertSql">
                 <![CDATA[
 				 	<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
-					INSERT INTO SUB_ZD_INFO(SUB_ID,ZD_ID,ICD10_CODE,ZD_NR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) 
+					INSERT INTO SUB_ZD_INFO(SUB_ID,ZD_ID,ICD10_CODE,ZD_NR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)
 					VALUES('${guid}','${diagnosisParent}','${diagnosisCode}','${diagnosisText}',
+					'${createId}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
+					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
+				]]>
+            </property>
+            <property name="subDiagnosisSyncSql">
+                <![CDATA[
+				 	<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
+					INSERT INTO SUB_ZD_INFO(SUB_ID,ZD_ID,ICD10_CODE,ZD_NR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)
+					VALUES('${guid}','${diagnosisParent}','${ICD10_CODE}','${ZD_NR}',
 					'${staffCode}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
 					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
 				]]>
@@ -108,6 +178,21 @@
             <property name="diagnosisDeleteSql">
                 <![CDATA[
 					DELETE FROM ZDINFO WHERE ID = '${id}'
+				]]>
+            </property>
+            <property name="dropRYdiagnosisSql">
+                <![CDATA[
+					DELETE FROM ZDINFO WHERE BRID = ${patientCode} AND LX = '20'
+				]]>
+            </property>
+            <property name="dropSubRYdiagnosisSql">
+                <![CDATA[
+					DELETE FROM SUB_ZD_INFO WHERE ZD_ID = '${ID}'
+				]]>
+            </property>
+            <property name="syncdiagnosisSql">
+                <![CDATA[
+					DELETE FROM ZDINFO WHERE BRID = ${patientCode} AND LX = '20'
 				]]>
             </property>
             <property name="subDiagnosisDeleteSql">

@@ -226,7 +226,7 @@ input.editor {
 }
 
 .diagnosis-list.edit span.icd {
-    display: inline-block;
+    display: inline-block !important;
     position: relative;
     right: 5px;
     width:50px;
@@ -268,12 +268,17 @@ input.editor {
     word-wrap: break-word
 }
 
-.diagnosis-list > li > span.text {
+.diagnosis-list >li>span.text {
+    width: 175px;
+    word-wrap: break-word
+}
+
+.diagnosis-list >li>ul>li>span.text {
     width: 165px;
     word-wrap: break-word
 }
 
-.diagnosis-list > li > span {
+.diagnosis-list>li>span {
     display: inline-block;
     vertical-align: top;
 
@@ -349,7 +354,7 @@ div.model-wrapper i.fa {
     position: fixed;
     z-index: 9999;
     background-color: white;
-    width: 773px;
+   /* width: 773px;*/
     box-shadow: 0px 0px 3px 3px gray;
     -moz-box-shadow: 0px 0px 3px 3px gray;
     -webkit-box-shadow: 0px 0px 3px 3px gray;
@@ -370,6 +375,9 @@ div.model-wrapper i.fa {
 .widget-custom-diagnosis.model-modal > .display-field>ul{
     height:260px;
     overflow: auto;
+}
+.widget-custom-diagnosis.model-modal >.display-field>.signature-box{
+    display: none;
 }
 .widget-custom-diagnosis.model-modal > .model-wrapper>ul{
     width:260px;
@@ -446,4 +454,11 @@ div.model-wrapper i.fa {
     margin-left:5px;
 }
 
+.signature-box span.tool:hover{
+    cursor:pointer;
+    background-color: #bbbbbb;
+}
+.signature-box span.tool{
+    margin-left: 10px;
+}
 /*diagnosis插件用css*/
