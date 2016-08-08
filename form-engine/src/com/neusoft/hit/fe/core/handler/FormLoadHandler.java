@@ -62,7 +62,7 @@ public class FormLoadHandler {
 	
 	private String getStagedForm(Map<String, Object> rootMap) throws FormEngineException {
 		String stagedFormStr = null;
-		String sql = "SELECT * FROM STAGE_FORM_STORAGE WHERE STAFF_CODE = ? AND PATIENT_CODE = ? AND CATEGORY = ?";
+		String sql = "SELECT * FROM STAGE_FORM_STORAGE WHERE KEY = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -70,9 +70,7 @@ public class FormLoadHandler {
 			conn = DBUtil.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(sql);
-				stmt.setObject(1, rootMap.get("staffCode"));
-				stmt.setObject(2, rootMap.get("patientCode"));
-				stmt.setObject(3, rootMap.get("category"));
+				stmt.setObject(1, rootMap.get("stageKey"));
 				rs = stmt.executeQuery();
 				Map<String, Object> record = DBUtil.getSingleResult(rs);
 				if(record != null) {

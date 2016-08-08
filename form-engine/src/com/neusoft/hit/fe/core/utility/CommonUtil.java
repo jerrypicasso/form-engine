@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -22,6 +23,10 @@ public class CommonUtil {
 		Date now = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return formatter.format(now);
+	}
+	
+	public static String md5(String data) {
+		return DigestUtils.md5Hex(data);
 	}
 	
 	public static String join(List<Map<String, Object>> list, String field, String seperator, 
