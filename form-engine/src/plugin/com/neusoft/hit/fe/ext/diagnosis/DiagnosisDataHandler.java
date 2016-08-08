@@ -147,8 +147,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
             stmt.executeUpdate(sql);
 
 
-            if ("10".equals(param.get("diagnosisType")) || 10 == param.get("diagnosisType") ||
-                    "20".equals(param.get("diagnosisType")) || 20 == param.get("diagnosisType")) {
+            if (param.get("diagnosisType") != null && ("10".equals(param.get("diagnosisType").toString()) || "20".equals(param.get("diagnosisType").toString()))) {
                 param.put("syncStatus", DiagnosisDataHandler.FALSE);
                 sql = FreemarkerUtil.getMixedString(changeSyncStatusSql, param);
                 stmt.executeUpdate(sql);
@@ -208,8 +207,9 @@ public class DiagnosisDataHandler implements PluginDataHandler {
             stmt.executeUpdate(sql);
             sql = FreemarkerUtil.getMixedString(diagnosisUpdateAllSql, param);
             stmt.executeUpdate(sql);
-            if ("10".equals(param.get("diagnosisType")) || 10 == param.get("diagnosisType") ||
-                    "20".equals(param.get("diagnosisType")) || 20 == param.get("diagnosisType")) {
+            if (param.get("diagnosisType") != null
+                    && ("10".equals(param.get("diagnosisType").toString())
+                    || "20".equals(param.get("diagnosisType").toString()))) {
                 param.put("syncStatus", DiagnosisDataHandler.FALSE);
                 sql = FreemarkerUtil.getMixedString(changeSyncStatusSql, param);
             }
