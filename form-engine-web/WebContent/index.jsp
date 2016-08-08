@@ -18,7 +18,8 @@
 <link rel="stylesheet" href="kindeditor/plugins/code/prettify.css" />
 <!-- <link rel="stylesheet" href="jquery-ui-1.12.0/jquery-ui.min.css" />
 <link rel="stylesheet" href="jquery-ui-1.12.0/ext/jquery-ui-timepicker-addon.min.css" /> -->
-<script type="text/javascript" src="jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="jquery-1.9.1.js"></script>
+<!-- <script type="text/javascript" src="jquery-2.0.3.min.js"></script> -->
 <!-- <script type="text/javascript" src="jquery-ui-1.12.0/jquery-ui.min.js"></script>
 <script type="text/javascript" src="jquery-ui-1.12.0/ext/jquery-ui-timepicker-addon.min.js"></script> -->
 <script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>

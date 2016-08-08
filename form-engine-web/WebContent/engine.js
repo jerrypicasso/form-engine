@@ -50,7 +50,7 @@
 					var mode = container.data('mode');
 					container.trigger('form-loaded', [{'mode':mode}]);
 					for(var name in plugins) {
-						var plugin = plugins[name];
+						plugin = plugins[name];
 						if(plugin.afterFormLoaded) {
 							plugin.afterFormLoaded.apply(container, [{
 								'container': container,
@@ -222,7 +222,7 @@
 				});
 			}
 			for(var name in plugins) {
-				var plugin = plugins[name];
+				plugin = plugins[name];
 				if(plugin.afterModeChanged) {
 					plugin.afterModeChanged.apply(container, [{
 						'container': container,
@@ -237,18 +237,25 @@
 		'save': function(options) {
 			KindEditor.sync('textarea');
 			var msg = [];
-			var records = {};
+			var records = [];
 			var container = $(this);
 			container.find('.main-field').each(function() {
 				var dataField = $(this);
 				var editor = dataField.find('.editor');
 				validateField(editor, msg);
 				var fieldName = dataField.attr('field');
-				var value = editor.val();
+				var tableName = dataField.attr('table');
+				var primaryKey = dataField.attr('primary-key');
+				var fieldValue = editor.val();
 				if(editor.hasClass('select')) {
-					value = editor.select2('val');
+					fieldValue = editor.select2('val');
 				}
-				records[fieldName] = value;
+				records.push({
+					'tableName' : tableName,
+					'fieldName' : fieldName,
+					'fieldValue': fieldValue,
+					'isPrimary' : primaryKey
+				});
 			});
 			if(msg.length > 0) {
 				toastr['error'](msg.join('<br/>'));
@@ -267,9 +274,9 @@
 					var primaryKeyValue = primaryKeyField.find('.value-field').html();
 					var data = {};
 					var params = {
-						'tableName':tableName,
-						'primaryKeyName':primaryKeyName,
-						'primaryKeyValue':primaryKeyValue,
+						//'tableName':tableName,
+						//'primaryKeyName':primaryKeyName,
+						//'primaryKeyValue':primaryKeyValue,
 						'record':JSON.stringify(records)	
 					};
 					$.extend(data, container.data('lastOptions'));
@@ -343,7 +350,7 @@
 				
 				//插件都变为view状态
 				for(var name in plugins) {
-					var plugin = plugins[name];
+					plugin = plugins[name];
 					if(plugin.afterModeChanged) {
 						plugin.afterModeChanged.apply(container, [{
 							'container': container,
@@ -754,17 +761,18 @@
 
 	function createExportForm() {
 		if($('#export-form').length <= 0) {
-			var form = $('<form id="export-form" method="post" target="_blank" style="display:none;">');
-			form.append('<input type="hidden" name="header"/>');
-			form.append('<input type="hidden" name="footer"/>');
-			form.append('<input type="hidden" name="content"/>');
-			form.append('<input type="hidden" name="header-height"/>');
-			form.append('<input type="hidden" name="footer-height"/>');
-			form.append('<input type="hidden" name="margin-top"/>');
-			form.append('<input type="hidden" name="margin-right"/>');
-			form.append('<input type="hidden" name="margin-bottom"/>');
-			form.append('<input type="hidden" name="margin-left"/>');
-			form.append('<input type="hidden" name="direction">');
+			var form = ['<form id="export-form" method="post" target="_blank" style="display:none;">',
+						'<input type="hidden" name="header"/>',
+						'<input type="hidden" name="footer"/>',
+						'<input type="hidden" name="content"/>',
+						'<input type="hidden" name="header-height"/>',
+						'<input type="hidden" name="footer-height"/>',
+						'<input type="hidden" name="margin-top"/>',
+						'<input type="hidden" name="margin-right"/>',
+						'<input type="hidden" name="margin-bottom"/>',
+						'<input type="hidden" name="margin-left"/>',
+						'<input type="hidden" name="direction"/>',
+						'</form>'].join('');
 			$(document.body).append(form);
 		}
 	}
@@ -838,7 +846,7 @@
 				});
 			}
 			else {
-				toastr['warning']('此行主键为空值，无法修改！');
+				toastr['warning']('此行主键为空值，无法删除！');
 			}
 		}
 		else {
@@ -855,7 +863,7 @@
 			toastr['error'](msg.join('<br/>'));
 			return false;
 		}
-		var recordData = {};
+		var records = [];
 		var rowDataWrapper = row.parents('.iterator-wrapper');
 		var tableName = rowDataWrapper.attr('table-name');
 		var primaryKeyField = row.find('.row-field[primary-key=true]');
@@ -865,21 +873,28 @@
 		if(primaryKeyField.length > 0) {
 			var primaryKeyName = primaryKeyField.attr('field');
 			var primaryKeyValue = primaryKeyField.find('.value-field').html();
-			editors.each(function(){
+			row.find('.row-field').each(function(){
 				var fieldName = $(this).attr('field');
-				var fieldValue = $(this).val();
-				if(fieldName) {
-					recordData[fieldName] = fieldValue;
+				var tableName = $(this).attr('table');
+				var primaryKey = $(this).attr('primary-key');
+				var fieldValue = $(this).find('.editor').val();
+				if(fieldName && tableName) {
+					records.push({
+						'tableName':tableName,
+						'fieldName':fieldName,
+						'fieldValue':fieldValue,
+						'isPrimary':primaryKey
+					});
 				}
 			});
 			$.ajax({
 				url:'form/save.process',
 				type: 'post',
 				data:{
-					'tableName':tableName,
-					'primaryKeyName':primaryKeyName,
-					'primaryKeyValue':primaryKeyValue,
-					'record':JSON.stringify(recordData)
+					//'tableName':tableName,
+					//'primaryKeyName':primaryKeyName,
+					//'primaryKeyValue':primaryKeyValue,
+					'record':JSON.stringify(records)
 				},
 				success:function() {
 					var func = methods['load'];

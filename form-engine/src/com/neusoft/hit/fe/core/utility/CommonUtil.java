@@ -2,6 +2,8 @@ package com.neusoft.hit.fe.core.utility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,6 +16,12 @@ public class CommonUtil {
 	
 	public static String guid() {
 		return UUID.randomUUID().toString().replaceAll("\\-", "");
+	}
+	
+	public static String now() {
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return formatter.format(now);
 	}
 	
 	public static String join(List<Map<String, Object>> list, String field, String seperator, 

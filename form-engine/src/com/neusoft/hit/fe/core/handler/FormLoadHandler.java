@@ -184,15 +184,15 @@ public class FormLoadHandler {
 			element.removeClass("col-resizable");
 			element.removeClass("row-resizable");
 			element.removeAttr("coordinate");
-			element.removeAttr("table");
+			element.removeAttr("grid");
 			if("".equals(element.attr("class"))) {
 				element.removeAttr("class");
 			}
 		}
 		//清理所有表格
-		elements = htmlDocument.getElementsByAttribute("table");
+		elements = htmlDocument.getElementsByAttribute("grid");
 		for(HtmlElement element : elements) {
-			element.removeAttr("table");
+			element.removeAttr("grid");
 			element.removeAttr("index");
 			if("".equals(element.attr("class"))) {
 				element.removeAttr("class");
@@ -340,6 +340,7 @@ public class FormLoadHandler {
 				LOGGER.error(e.toString(), e);
 				throw new FormEngineException("Error occurs during loading dataset by executing query sql !", e);
 			} catch (SQLException e) {
+				LOGGER.error(e.toString(), e);
 				throw new FormEngineException("Error occurs during loading dataset by executing query sql !", e);
 			} finally {
 				DBUtil.close(paginationRs);
