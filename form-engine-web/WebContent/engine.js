@@ -50,7 +50,7 @@
 					var mode = container.data('mode');
 					container.trigger('form-loaded', [{'mode':mode}]);
 					for(var name in plugins) {
-						plugin = plugins[name];
+						var plugin = plugins[name];
 						if(plugin.afterFormLoaded) {
 							plugin.afterFormLoaded.apply(container, [{
 								'container': container,
@@ -222,7 +222,7 @@
 				});
 			}
 			for(var name in plugins) {
-				plugin = plugins[name];
+				var plugin = plugins[name];
 				if(plugin.afterModeChanged) {
 					plugin.afterModeChanged.apply(container, [{
 						'container': container,
@@ -343,7 +343,7 @@
 				
 				//插件都变为view状态
 				for(var name in plugins) {
-					plugin = plugins[name];
+					var plugin = plugins[name];
 					if(plugin.afterModeChanged) {
 						plugin.afterModeChanged.apply(container, [{
 							'container': container,
