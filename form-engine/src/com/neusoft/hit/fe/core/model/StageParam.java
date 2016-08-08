@@ -1,10 +1,8 @@
 package com.neusoft.hit.fe.core.model;
 
 public class StageParam {
+	private String key;
 	private String content;
-	private String staffCode;
-	private String patientCode;
-	private String category;
 
 	public String getContent() {
 		return content;
@@ -13,31 +11,15 @@ public class StageParam {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
-	public String getStaffCode() {
-		return staffCode;
-	}
-
-	public void setStaffCode(String staffCode) {
-		this.staffCode = staffCode;
-	}
-
-	public String getPatientCode() {
-		return patientCode;
-	}
-
-	public void setPatientCode(String patientCode) {
-		this.patientCode = patientCode;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
 	
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 	public static StageParam create() {
 		return new StageParam();
 	}

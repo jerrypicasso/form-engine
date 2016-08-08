@@ -133,9 +133,7 @@ public class FormEditHandler {
 			}
 			StringBuilder delStageSql = new StringBuilder();
 			delStageSql.append("DELETE FROM STAGE_FORM_STORAGE ");
-			delStageSql.append("WHERE STAFF_CODE = '").append(params.get("staffCode")).append("' ");
-			delStageSql.append("AND PATIENT_CODE = '").append(params.get("patientCode")).append("' ");
-			delStageSql.append("AND CATEGORY = '").append(params.get("category")).append('\'');
+			delStageSql.append("WHERE KEY = '").append(params.get("stageKey")).append('\'');
 			stmt.executeUpdate(delStageSql.toString());
 			conn.commit();
 		} catch (SQLException e) {
@@ -188,12 +186,10 @@ public class FormEditHandler {
 	}
 	
 	public void stage(StageParam param) throws FormEngineException {
+		String key = param.getKey();
 		String content = param.getContent();
-		String staffCode = param.getStaffCode();
-		String patientCode = param.getPatientCode();
-		String category = param.getCategory();
-		String deleteSql = "DELETE FROM STAGE_FORM_STORAGE WHERE STAFF_CODE = ? AND PATIENT_CODE = ? AND CATEGORY = ?";
-		String insertSql = "INSERT INTO STAGE_FORM_STORAGE(ID, STAFF_CODE, PATIENT_CODE, CATEGORY, CONTENT) VALUES(?,?,?,?,?)";
+		String deleteSql = "DELETE FROM STAGE_FORM_STORAGE WHERE KEY = ?";
+		String insertSql = "INSERT INTO STAGE_FORM_STORAGE(ID, KEY, CONTENT) VALUES(?,?,?)";
 		Connection conn = null;
 		PreparedStatement deleteStmt = null;
 		PreparedStatement insertStmt = null;
@@ -201,16 +197,12 @@ public class FormEditHandler {
 			conn = DBUtil.getConnection();
 			conn.setAutoCommit(false);
 			deleteStmt = conn.prepareStatement(deleteSql);
-			deleteStmt.setString(1, staffCode);
-			deleteStmt.setString(2, patientCode);
-			deleteStmt.setString(3, category);
+			deleteStmt.setString(1, key);
 			deleteStmt.executeUpdate();
 			insertStmt = conn.prepareStatement(insertSql);
 			insertStmt.setString(1, CommonUtil.guid());
-			insertStmt.setString(2, staffCode);
-			insertStmt.setString(3, patientCode);
-			insertStmt.setString(4, category);
-			insertStmt.setString(5, content);
+			insertStmt.setString(2, key);
+			insertStmt.setString(3, content);
 			insertStmt.executeUpdate();
 			conn.commit();
 			conn.setAutoCommit(true);

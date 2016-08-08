@@ -49,11 +49,7 @@
 		});
 		$('#tempSaveBtn').click(function(){
 			var tplName = $('#chooseTpl').val();
-			$('#container').form('stage', {
-				'patientCode': '1459047',
-				'staffCode':'9527',
-				'category':tplName
-			});
+			$('#container').form('stage');
 		});
 		$('#saveBtn').click(function(){
 			$('#container').form('save');

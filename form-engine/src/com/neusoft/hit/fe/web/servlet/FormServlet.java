@@ -77,10 +77,8 @@ public class FormServlet extends HttpServlet {
 			}
 			else if(servletPath.endsWith("/stage.process")) {
 				StageParam param = StageParam.create();
-				param.setCategory(req.getParameter("category"));
+				param.setKey(req.getParameter("key"));
 				param.setContent(req.getParameter("content"));
-				param.setPatientCode(req.getParameter("patientCode"));
-				param.setStaffCode(req.getParameter("staffCode"));
 				formEditHandler.stage(param);
 				resp.getWriter().write(ResultInfo.getResult());
 			}

@@ -31,6 +31,9 @@
 			if(options) {
 				container.data('options', options);
 				$.extend(params, options);
+				$.extend(params,{
+					'stageKey': JSON.stringify(options)
+				});
 			}
 			$.ajax({
 				url : 'form/load.process',
@@ -277,7 +280,8 @@
 						//'tableName':tableName,
 						//'primaryKeyName':primaryKeyName,
 						//'primaryKeyValue':primaryKeyValue,
-						'record':JSON.stringify(records)	
+						'record':JSON.stringify(records),
+						'stageKey':JSON.stringify(container.data('options'))
 					};
 					$.extend(data, container.data('lastOptions'));
 					$.extend(data, params);
@@ -360,8 +364,13 @@
 				}
 				
 				var html = paper.prop('outerHTML');
-				var param = {'content': html};
-				$.extend(param, options);
+				var opts = container.data('options');
+				var key = JSON.stringify(opts);
+				console.log(key);
+				var param = {
+					'key': key,
+					'content': html
+				};
 				$.ajax({
 					url:'form/stage.process',
 					type:'post',
