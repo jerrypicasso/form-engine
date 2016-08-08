@@ -528,7 +528,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 
             sql = FreemarkerUtil.getMixedString(dropRYdiagnosisSql, param);
             stmt.executeUpdate(sql);
-
+            stmt.close();
 
             conn.setAutoCommit(false);
             stmt = conn.prepareStatement(sqlTemplate);
