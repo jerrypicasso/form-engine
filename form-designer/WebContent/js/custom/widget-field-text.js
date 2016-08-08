@@ -5,6 +5,7 @@ function createTextFieldWidget(config) {
 	$(field).addClass('widget-field-text');
 	$(field).addClass('droppable');
 	$(field).attr('field', config['field-name']);
+	$(field).attr('table', config['table-name']);
 	$(field).attr('type', 'text');
 	if(config['is-row-data'] === '1') {
 		$(field).addClass('row-field');

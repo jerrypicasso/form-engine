@@ -142,7 +142,7 @@ public class DBUtil {
 				names.add(columnName);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if(rs != null) {

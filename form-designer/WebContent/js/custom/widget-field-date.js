@@ -5,6 +5,7 @@ function createDateFieldWidget(config) {
 	$(field).addClass('widget-field-date');
 	$(field).addClass('droppable');
 	$(field).attr('field', config['field-name']);
+	$(field).attr('table', config['table-name']);
 	$(field).attr('type', 'date');
 	if(config['is-row-data'] === '1') {
 		$(field).addClass('row-field');

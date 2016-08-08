@@ -8,7 +8,7 @@
     List<Map<String, Object>> list = DBUtil.getMultiResults("SELECT * FROM COMBO_WIDGET_CONFIG WHERE 'DEL_FLAG' != '1'");
     request.setAttribute("combos", list);
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -32,7 +32,8 @@
     <link rel="stylesheet" type="text/css" href="css/custom/widget-condition.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-custom-diagnosis.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-plugin-nursing.css"/>
-    <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/layer/layer.js"></script>
     <script type="text/javascript" src="js/toastr.min.js"></script>
     <script type="text/javascript" src="js/Math.uuid.js"></script>
     <script type="text/javascript" src="js/custom/fd-common-main.js"></script>
@@ -157,13 +158,11 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <div class="ok-btn"
-                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                    <div class="ok-btn">
                         确定
                     </div>
                     <div style="width:30px;display:inline-block;"></div>
-                    <div class="cancel-btn"
-                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                    <div class="cancel-btn">
                         取消
                     </div>
                 </td>
@@ -315,7 +314,7 @@
     </div>
 </div>
 <!-- 读写字段初始化配置对话框 -->
-<div class="field-init-config-dialog-tpl" style="width:320px;height:240px;display:none;">
+<div class="field-init-config-dialog-tpl" style="width:320px;height:280px;display:none;">
     <div class="dialog-title">初始化配置</div>
     <div style="padding:15px;">
         <table style="width:100%;">
@@ -335,6 +334,12 @@
                 <td>表字段</td>
                 <td colspan="3">
                     <input name="field-name" class="config-item" type="text" style="width:100%;" required="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>数据表</td>
+                <td colspan="3">
+                    <input name="table-name" class="config-item" type="text" style="width:100%;" required="true"/>
                 </td>
             </tr>
             <tr>
@@ -369,7 +374,7 @@
         </table>
     </div>
 </div>
-<div class="select-init-config-dialog-tpl" style="width:320px;height:300px;display:none;">
+<div class="select-init-config-dialog-tpl" style="width:330px;height:330px;display:none;">
     <div class="dialog-title">初始化配置</div>
     <div style="padding:15px;">
         <table style="width:100%;table-layout:fixed;">
@@ -387,6 +392,12 @@
                 <td>显示值</td>
                 <td colspan="3">
                     <textarea name="disp-value" class="config-item" style="width:100%;height:60px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>数据库表</td>
+                <td colspan="3">
+                    <input name="table-name" class="config-item" type="text" style="width:100%;" required="true"/>
                 </td>
             </tr>
             <tr>
@@ -645,6 +656,40 @@
         </table>
     </form>
 </div>
+<!-- 表字段选择辅助对话框 -->
+<div class="pick-table-field-dialog-tpl" style="width:400px;height:500px;display:none;">
+    <div class="dialog-title">绑定数据集字段</div>
+    <form style="padding:15px;">
+        <table style="width:100%;table-layout:fixed;">
+            <tr>
+                <td style="width:50%;height:400px;border:1px solid #cdcdcd;" valign="top">
+                    <div style="height:100%;overflow:auto;">
+                        <ul class="tables-wrapper"></ul>
+                    </div>
+                </td>
+                <td style="width:50%;height:400px;border:1px solid #cdcdcd;overflow:auto;" valign="top">
+                    <div style="height:100%;overflow:auto;">
+                        <ul class="fields-wrapper"></ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <div class="ok-btn"
+                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                        确定
+                    </div>
+                    <div style="width:30px;display:inline-block;"></div>
+                    <div class="cancel-btn"
+                         style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">
+                        取消
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- 编辑脚本对话框 -->
 <div class="edit-script-dialog-tpl" style="width:800px;height:500px;display:none;">
     <div class="dialog-title">编辑脚本</div>
     <form style="padding:15px;">

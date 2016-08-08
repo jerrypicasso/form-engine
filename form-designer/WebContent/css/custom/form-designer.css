@@ -361,3 +361,23 @@ ul.fields-wrapper li {
 	text-align:left;
 	padding:0 10px;
 }
+
+.dialog .ok-btn {
+	cursor:pointer;
+	background:rgb(67, 142, 185);
+	width:80px;
+	height:30px;
+	line-height:30px;
+	color:#fff;
+	display:inline-block;
+}
+
+.dialog .cancel-btn {
+	cursor:pointer;
+	background:rgb(67, 142, 185);
+	width:80px;
+	height:30px;
+	line-height:30px;
+	color:#fff;
+	display:inline-block;
+}

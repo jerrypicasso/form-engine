@@ -5,6 +5,7 @@ function createNumberFieldWidget(config) {
 	$(field).addClass('widget-field-number');
 	$(field).addClass('droppable');
 	$(field).attr('field', config['field-name']);
+	$(field).attr('table', config['table-name']);
 	$(field).attr('type', 'number');
 	if(config['is-row-data'] === '1') {
 		$(field).addClass('row-field');

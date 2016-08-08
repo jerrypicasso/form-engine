@@ -10,7 +10,7 @@ function createTableWidget(config) {
 	}
 	var style = 'width:0;border-collapse:collapse;table-layout:fixed;font-size:14px;';
 	if(config['is-pagination-table'] === '1') {
-		style = style + '-fs-table-paginate:paginate;word-break:break-all;border-spacing:0;'
+		style = style + '-fs-table-paginate:paginate;word-break:break-all;border-spacing:0;';
 	}
 	if(config['check-group-type']) {
 		$(table).attr('check-group-type', config['check-group-type']);
@@ -25,7 +25,7 @@ function createTableWidget(config) {
 	}
 	colWidth = Math.floor(colWidth);
 	var colGroup = document.createElement('colgroup');
-	$(colGroup).attr('table', $(table).attr('id'));
+	$(colGroup).attr('grid', $(table).attr('id'));
 	$(colGroup).appendTo(table);
 	for(var k = 0; k < column; k++) {
 		var col = document.createElement('col');
@@ -39,13 +39,13 @@ function createTableWidget(config) {
 			var tr = document.createElement('tr');
 			$(tr).attr('index', m);
 			$(tr).attr('id', Math.uuidFast().toLowerCase());
-			$(tr).attr('table', $(table).attr('id'));
+			$(tr).attr('grid', $(table).attr('id'));
 			//行高默认为20像素
 			$(tr).height(20);
 			for (var n = 0; n < column; n++) {
 				var th = document.createElement('th');
 				$(th).attr('coordinate', n + '-' + m);
-				$(th).attr('table', $(table).attr('id'));
+				$(th).attr('grid', $(table).attr('id'));
 				$(th).addClass('droppable');
 				$(th).addClass('cell');
 				$(th).addClass('widget-container');
@@ -62,13 +62,13 @@ function createTableWidget(config) {
 		var tr = document.createElement('tr');
 		$(tr).attr('index', i);
 		$(tr).attr('id', Math.uuidFast().toLowerCase());
-		$(tr).attr('table', $(table).attr('id'));
+		$(tr).attr('grid', $(table).attr('id'));
 		//行高默认为20像素
 		$(tr).height(20);
 		for (var j = 0; j < column; j++) {
 			var td = document.createElement('td');
 			$(td).attr('coordinate', j + '-' + i);
-			$(td).attr('table', $(table).attr('id'));
+			$(td).attr('grid', $(table).attr('id'));
 			$(td).addClass('droppable');
 			$(td).addClass('cell');
 			$(td).addClass('widget-container');
@@ -87,7 +87,7 @@ function createTableWidget(config) {
 	//使表格的宽度与其父容器的宽度一致
 	var offset = $(table).parent().width() - $(table).width() - 1;
 	if(offset > 0) {
-		var cols = $(table).find('colgroup[table='+ $(table).attr('id') +'] col');
+		var cols = $(table).find('colgroup[grid='+ $(table).attr('id') +'] col');
 		for(var i = 0; i < offset; i++) {
 			var oldWidth = $(cols[i]).width();
 			$(cols[i]).width(++oldWidth); 
@@ -105,7 +105,7 @@ function emptyCells() {
 /*传染算法，始终保持方形选择区域*/
 function infect(tPart, tag, minX, minY, maxX, maxY) {
 	var table = tPart.parent();
-	tPart.find(tag + '[table='+ table.attr('id') +']').each(function() {
+	tPart.find(tag + '[grid='+ table.attr('id') +']').each(function() {
 		var cell = $(this);
 		var xy = cell.attr('coordinate').split('-');
 		//最小x坐标
@@ -223,7 +223,7 @@ function splitCells() {
 		cell.removeClass('selected-widget');
 		if(colspan > 1 || rowspan > 1) {
 			var tPart = cell.parent().parent();
-			var tableId = cell.attr('table');
+			var tableId = cell.attr('grid');
 			var table = $('#' + tableId);
 			var xy = cell.attr('coordinate').split('-');
 			var beginX = parseInt(xy[0]);
@@ -238,14 +238,14 @@ function splitCells() {
 			for (var i = beginY; i <= endY; i++) {
 				//插在哪格后面
 				var coordinate = (beginX - 1) + '-' + i;
-				var prevCell = tPart.find(tag + '[coordinate=' + coordinate + '][table=' + tableId + ']');
+				var prevCell = tPart.find(tag + '[coordinate=' + coordinate + '][grid=' + tableId + ']');
 				//插在哪行最前面
-				var row = tPart.find('tr[index=' + i + '][table=' + tableId + ']');
+				var row = tPart.find('tr[index=' + i + '][grid=' + tableId + ']');
 				for (var j = beginX; j <= endX; j++) {
 					var unit = document.createElement(tag);
 					$(unit).addClass(tag + '-border-invisible');
 					$(unit).attr('coordinate', j + '-' + i);
-					$(unit).attr('table', tableId);
+					$(unit).attr('grid', tableId);
 					$(unit).addClass('droppable');
 					$(unit).addClass('cell');
 					//如果前格存在则插在其后面
@@ -338,7 +338,7 @@ function beginSelectCells() {
 			for (var y = minY; y <= maxY; y++) {
 				var position = x + '-' + y;
 				var tableId = table.attr('id');
-				var units = tPart.find(tag + '[coordinate=' + position + '][table=' + tableId + ']');
+				var units = tPart.find(tag + '[coordinate=' + position + '][grid=' + tableId + ']');
 				units.addClass('selected-widget');
 			}
 		}
@@ -393,9 +393,9 @@ function beforeMousemoveAction(e) {
 		}
 		else if(cell.hasClass('col-resizable')) {
 			$('col.resizable').removeClass('resizable');
-			var table = cell.attr('table');
+			var table = cell.attr('grid');
 			var index = cell.attr('coordinate').split('-')[0];
-			var col = $('colgroup[table=' + table + '] col').get(index);
+			var col = $('colgroup[grid=' + table + '] col').get(index);
 			$(col).addClass('resizable');
 			$(col).data('x', e.pageX);
 			$(document.body).unbind('mousemove', beginResizeCol);
@@ -410,7 +410,7 @@ function beforeMousemoveAction(e) {
 			var table = cell.parents('table:eq(0)');
 			var tPart = cell.parent().parent();
 			var tag = this.tagName.toLowerCase();
-			var cells = tPart.find(tag + '[table='+ table.attr('id') +']');
+			var cells = tPart.find(tag + '[grid='+ table.attr('id') +']');
 			cells.unbind('mouseover', beginSelectCells);
 			cells.bind('mouseover', beginSelectCells);
 			$(document.body).unbind('mouseup', endSelectCells);
@@ -432,7 +432,7 @@ function registerCellEventHandlers(table) {
 function referColSetting() {
 	var selectedCell = $('.cell.selected-widget');
 	if(selectedCell.length >= 0) {
-		var tableId = selectedCell.attr('table');
+		var tableId = selectedCell.attr('grid');
 		var table = $('#' + tableId);
 		table.addClass('col-setting-referenced');
 	}
@@ -442,14 +442,13 @@ function applyColSetting() {
 	var selectedCell = $('.cell.selected-widget');
 	var referencedTable = $('table.col-setting-referenced');
 	if(selectedCell.length >= 0) {
-		var applyingTableId = selectedCell.attr('table');
+		var applyingTableId = selectedCell.attr('grid');
 		var referencedTableId = referencedTable.attr('id');
 		if(applyingTableId != referencedTableId) {
-			var colgroup = referencedTable.find('colgroup[table='+ referencedTableId +']').clone();
-			console.log(colgroup);
+			var colgroup = referencedTable.find('colgroup[grid='+ referencedTableId +']').clone();
 			var applyingTable = $('#' + applyingTableId);
-			applyingTable.find('colgroup[table='+ applyingTableId +']').remove();
-			colgroup.attr('table', applyingTableId);
+			applyingTable.find('colgroup[grid='+ applyingTableId +']').remove();
+			colgroup.attr('grid', applyingTableId);
 			applyingTable.prepend(colgroup);
 		}
 	}

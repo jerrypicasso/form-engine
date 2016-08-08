@@ -5,6 +5,7 @@ function createSelectFieldWidget(config) {
 	$(field).addClass('widget-field-select');
 	$(field).addClass('droppable');
 	$(field).attr('field', config['field-name']);
+	$(field).attr('table', config['table-name']);
 	$(field).attr('category', config['category']);
 	$(field).attr('filter', config['filter']);
 	$(field).attr('type', 'select');

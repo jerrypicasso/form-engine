@@ -135,7 +135,7 @@ function removeWidget() {
 	if(confirm("是否要删除该元素？")) {
 		var selectedWidget = $('.selected-widget');
 		if(selectedWidget.is('td') || selectedWidget.is('th')) {
-			var tableId = selectedWidget.attr('table');
+			var tableId = selectedWidget.attr('grid');
 			selectedWidget = $('#' + tableId);
 		}
 		selectedWidget.remove();
@@ -202,9 +202,9 @@ function setProperWidth() {
 			width = width + $(this).width();
 		});
 		if(width > 0) {
-			var tableId = selectedWidget.attr('table');
+			var tableId = selectedWidget.attr('grid');
 			var colIndex = selectedWidget.attr('coordinate').split('-')[0];
-			var col = $('colgroup[table='+ tableId +']').find('col:eq('+ colIndex +')');
+			var col = $('colgroup[grid='+ tableId +']').find('col:eq('+ colIndex +')');
 			col.css('width', width);
 		}
 	}

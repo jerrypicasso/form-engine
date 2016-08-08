@@ -122,8 +122,12 @@ public class FormDesignerServlet extends HttpServlet {
 		}
 		else if("/loadFields.do".equals(servletPath)) {
 			String sql = req.getParameter("sql");
-			sql = sql.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("\\$\\{[^}]+\\}", "0");
-			List<String> fieldNames = DBUtil.getFieldNames(sql);
+			String fakeSql = sql.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("\\$\\{[^}]+\\}", "-1");
+			List<String> fieldNames = DBUtil.getFieldNames(fakeSql);
+			if(fieldNames.isEmpty()) {
+				fakeSql = sql.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("\\$\\{[^}]+\\}", "'-1'");
+				fieldNames = DBUtil.getFieldNames(fakeSql);
+			}
 			resp.setContentType("text/json;charset=utf-8");
 			JSONArray jsonArr = JSONArray.fromObject(fieldNames);
 			resp.getWriter().write(jsonArr.toString());

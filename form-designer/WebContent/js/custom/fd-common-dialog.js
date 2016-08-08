@@ -350,6 +350,37 @@ function showSelectInitConfigDialog() {
 	dialog.show();
 }
 
+function showPickTableDialog(field) {
+	var mask = $('.mask-layer-tpl').clone();
+	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
+	var dialog = ['<div class="dialog" style="width:300px;height:160px;">',
+	              '<div class="dialog-title">选择库表</div>',
+	              '<form style="padding:15px;">',
+	              '<table style="width:100%;table-layout:fixed;">',
+	              '<tr><td style="width:100%;" valign="top">',
+	              '<select name="table-name" style="width:100%;height:100%;"></select></td></tr>',
+	              '<tr><td colspan="2" align="center">',
+	              '<div class="ok-btn">确定</div>',
+	              '<div style="width:30px;display:inline-block;"></div>',
+	              '<div class="cancel-btn">取消</div></td></tr>',
+	              '</table>',
+	              '</div>'].join('');
+	mask.find('.dialog-zone').append(dialog);
+	mask.appendTo(document.body);
+	
+	//TODO
+	
+	mask.find('.ok-btn').unbind('click').bind('click',function(){
+		$('.drop-zone').removeClass('drop-zone');
+		mask.remove();
+	});
+	mask.find('.cancel-btn').unbind('click').bind('click',function() {
+		$('.drop-zone').removeClass('drop-zone');
+		mask.remove();
+	});
+	mask.show();
+}
+
 function showWidgetInitConfigDialog(tplClass, callback) {
 	var mask = $('.mask-layer-tpl').clone();
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
@@ -370,6 +401,9 @@ function showWidgetInitConfigDialog(tplClass, callback) {
 	});
 	dialog.find('input[name=dataset-name]').bind('dblclick', function() {
 		showPickDatasetFieldDialog(dialog);
+	});
+	dialog.find('input[name=table-name]').bind('dblclick', function() {
+		showPickTableDialog($(this));
 	});
 	/*dialog.find('input[name=page-count]').bind('dblclick', function() {
 		showPickDatasetFieldDialog($(this));

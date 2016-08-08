@@ -60,6 +60,11 @@ function createPropertiesControls() {
 		type:'text',
 		parent:'widget-settings'
 	},{
+		name:'tableName',
+		label:'对应表名',
+		type:'text',
+		parent:'widget-settings'
+	},{
 		name:'primaryKey',
 		label:'是否主键',
 		options:[{key:'',value:'否',defaultValue:true},{key:'true',value:'是'}],
@@ -135,11 +140,6 @@ function createPropertiesControls() {
 		type:'text',
 		parent:'widget-settings'
 	}*/,{
-		name:'tableName',
-		label:'对应表名',
-		type:'text',
-		parent:'widget-settings'
-	},{
 		name:'primaryKeyName',
 		label:'主键名称',
 		type:'text',
@@ -518,7 +518,7 @@ function registerWidgetPropertiesHandlers() {
 	});
 	propPanel.find('input[name=tableName]').next().bind('click', function(){
 		var val = $(this).prev().val();
-		$('.selected-widget').attr('table-name', val);
+		$('.selected-widget').attr('table', val);
 	});
 	propPanel.find('select[name=overflow]').next().bind('click', function(){
 		var val = $(this).prev().val();
@@ -785,9 +785,14 @@ function prepareRelativePropertiesFields(widget) {
 		var dropKeyNameField = propPanel.find('input[name=dropKeyName]');
 		dropKeyNameField.val(widget.attr('drop-key'));
 		dropKeyNameField.parent().show();
-		
+	}
+	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
+			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')
+			|| widget.hasClass('widget-field-staff') || widget.hasClass('widget-field-hidden')
+			|| widget.hasClass('widget-check') || widget.hasClass('widget-field-select')
+			|| widget.hasClass('iterator-wrapper')) {
 		var tableNameField = propPanel.find('input[name=tableName]');
-		tableNameField.val(widget.attr('table-name'));
+		tableNameField.val(widget.attr('table'));
 		tableNameField.parent().show();
 	}
 	if(widget.hasClass('widget-field-hidden')) {
