@@ -24,7 +24,7 @@ function showNursingPluginInitConfigDialog() {
 	            '<form style="padding:15px;">',
 	            '<table style="width:100%;table-layout:fixed;">',
 	            '<tr><td>关联迭代器名称：</td></tr>',
-                '<tr><td valign="top"><input name="iterName" style="width:100%;"></textarea></td></tr>',
+                '<tr><td valign="top"><input name="iterName" style="width:100%;"></td></tr>',
 	            '<tr><td>计算出入量sql：</td></tr>',
                 '<tr><td valign="top"><textarea name="ioSql" style="width:100%;height:200px;"></textarea></td></tr>',
                 '<tr>',

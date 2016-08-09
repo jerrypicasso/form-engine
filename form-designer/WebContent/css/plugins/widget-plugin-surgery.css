@@ -1,0 +1,11 @@
+.widget-plugin-surgery {
+	vertical-align:center;
+	background:blue;
+	min-height:24px;
+	overflow:hidden;
+}
+
+.widget-plugin-surgery.drop-zone {
+	border-left:2px solid red;
+}
+

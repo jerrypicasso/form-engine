@@ -19,14 +19,14 @@ public class NursingDataHandler implements PluginDataHandler {
 	private static final Log LOGGER = LogFactory.getLog(NursingDataHandler.class);
 	
 	@Override
-	public String handle(Map<String, Object> rootMap) throws FormEngineException {
-		Object ioSql = rootMap.get("ioSql");
-		Object beginTime = rootMap.get("beginTime");
-		Object endTime = rootMap.get("endTime");
-		Object patientCode = rootMap.get("patientCode");
+	public String handle(Map<String, Object> params) throws FormEngineException {
+		Object ioSql = params.get("ioSql");
+		Object beginTime = params.get("beginTime");
+		Object endTime = params.get("endTime");
+		Object patientCode = params.get("patientCode");
 		if(ioSql != null && beginTime != null && endTime != null && patientCode != null) {
 			String sql = ioSql.toString().replaceAll("@\\{([^\\}]*)\\}", "\\${$1}");
-			sql = FreemarkerUtil.getMixedString(sql, rootMap);
+			sql = FreemarkerUtil.getMixedString(sql, params);
 			Connection conn = null;
 			Statement stmt = null;
 			conn = DBUtil.getConnection();

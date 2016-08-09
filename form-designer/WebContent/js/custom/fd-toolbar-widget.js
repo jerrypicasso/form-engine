@@ -60,6 +60,10 @@ function createWidgetControls() {
 		icon:'url(icon/nursing.png)',
 		title:'护理记录'
 	},{
+		id:'surgery',
+		icon:'url(icon/surgery.png)',
+		title:'手术'
+	},{
 		id:'plugin',
 		icon:'url(icon/plugin.png)',
 		title:'插件'
