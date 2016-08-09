@@ -85,6 +85,9 @@ function showLoadPaperDialog() {
 				$('.widget-plugin-nursing').each(function(){
 					registerWidgetMousedownHandler(this);
 				});
+				$('.widget-plugin-surgery').each(function(){
+					registerWidgetMousedownHandler(this);
+				});
 				$('.widget-plugin').each(function(){
 					registerWidgetMousedownHandler(this);
 				});
