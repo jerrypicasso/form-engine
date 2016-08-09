@@ -423,7 +423,12 @@ function registerWidgetPropertiesHandlers() {
 	});
 	propPanel.find('select[name=required]').next().bind('click',function(){
 		var val = $(this).prev().val();
-		$('.selected-widget').attr('required', val);
+		if(val) {
+			$('.selected-widget').attr('required', val);
+		}
+		else {
+			$('.selected-widget').removeAttr('required');
+		}
 	});
 	propPanel.find('input[name=fieldName]').next().bind('click',function(){
 		var val = $(this).prev().val();

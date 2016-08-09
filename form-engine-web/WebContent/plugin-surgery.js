@@ -123,7 +123,12 @@
 			success: function(data){
 				for(var i = 0; i < data.length; i++) {
 					var item = $('<span class="surgery-item">');
-					item.css({'display':'inline-block','padding-right':'5px'});
+					if(direction === 'horizontal') {
+						item.css({'display':'inline-block','padding-right':'5px'});
+					}
+					else {
+						item.css({'display':'block'});
+					}
 					item.html((i + 1) + '.' + data[i].SSMC);
 					item.attr('id', data[i].GUID);
 					item.bind('click', function(){

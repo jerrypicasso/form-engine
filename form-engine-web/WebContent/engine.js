@@ -290,9 +290,14 @@
 						type:'post',
 						data:data,
 						success:function(data){
-							container.data('mode', 'view');
-							var func = methods['load'];
-							func.apply(container);
+							if(data.success == false) {
+								toastr['error'](data.message);
+							}
+							else {
+								container.data('mode', 'view');
+								var func = methods['load'];
+								func.apply(container);
+							}
 						}
 					});
 				}
@@ -319,19 +324,17 @@
 					var editor = mainField.find('.editor');
 					var value = editor.val();
 					var valueField = mainField.find('.value-field');
-					valueField.html(value);
 					var displayField = mainField.find('.display-field');
 					var text = '';
 					if(editor.hasClass('select')) {
+						value = editor.select2('val');
 						text = editor.select2('data').name;
 						editor.select2('destroy');
-					}
-					if(editor.is('textarea')) {
-						
 					}
 					else {
 						text = value;
 					}
+					valueField.html(value);
 					displayField.html(text);
 					editor.remove();
 					displayField.show();
@@ -366,7 +369,6 @@
 				var html = paper.prop('outerHTML');
 				var opts = container.data('options');
 				var key = JSON.stringify(opts);
-				console.log(key);
 				var param = {
 					'key': key,
 					'content': html
@@ -873,8 +875,8 @@
 			return false;
 		}
 		var records = [];
-		var rowDataWrapper = row.parents('.iterator-wrapper');
-		var tableName = rowDataWrapper.attr('table-name');
+		//var rowDataWrapper = row.parents('.iterator-wrapper');
+		//var tableName = rowDataWrapper.attr('table-name');
 		var primaryKeyField = row.find('.row-field[primary-key=true]');
 		if(primaryKeyField.length <= 0) {
 			primaryKeyField = row.find('.row-field[field=id]');
@@ -886,7 +888,11 @@
 				var fieldName = $(this).attr('field');
 				var tableName = $(this).attr('table');
 				var primaryKey = $(this).attr('primary-key');
-				var fieldValue = $(this).find('.editor').val();
+				var editor = $(this).find('.editor');
+				var fieldValue = editor.val();
+				if(editor.hasClass('select')) {
+					fieldValue = editor.select2('val');
+				}
 				if(fieldName && tableName) {
 					records.push({
 						'tableName':tableName,
