@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.neusoft.hit.fe.core.api.PluginDataHandler;
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.ResultInfo;
@@ -15,6 +18,8 @@ import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 
 public class SurgeryDataHandler implements PluginDataHandler {
 
+	private static final Log LOGGER = LogFactory.getLog(SurgeryDataHandler.class);
+	
 	@Override
 	public String handle(Map<String, Object> params) throws FormEngineException {
 		String result = ResultInfo.getResult();
@@ -43,9 +48,8 @@ public class SurgeryDataHandler implements PluginDataHandler {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql.toString());
 			records = DBUtil.getMultiResults(rs);
-			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		} finally {
 			DBUtil.close(conn, stmt, rs);
 		}
@@ -65,7 +69,7 @@ public class SurgeryDataHandler implements PluginDataHandler {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		} finally {
 			DBUtil.close(conn, stmt, null);
 		}
@@ -82,7 +86,7 @@ public class SurgeryDataHandler implements PluginDataHandler {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		} finally {
 			DBUtil.close(conn, stmt, null);
 		}

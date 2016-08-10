@@ -33,6 +33,7 @@
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-custom-diagnosis.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-plugin-nursing.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-plugin-surgery.css"/>
+    <link rel="stylesheet" type="text/css" href="css/plugins/widget-plugin-audit.css"/>
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/layer/layer.js"></script>
     <script type="text/javascript" src="js/toastr.min.js"></script>
@@ -62,6 +63,7 @@
     <script type="text/javascript" src="js/plugins/widget-custom-diagnosis.js"></script>
     <script type="text/javascript" src="js/plugins/widget-plugin-nursing.js"></script>
     <script type="text/javascript" src="js/plugins/widget-plugin-surgery.js"></script>
+    <script type="text/javascript" src="js/plugins/widget-plugin-audit.js"></script>
 </head>
 <body style="padding:0;margin:0;font-family:SimSun;">
 <div class="main-frame">

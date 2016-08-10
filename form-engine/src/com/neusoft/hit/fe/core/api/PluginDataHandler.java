@@ -6,6 +6,6 @@ import com.neusoft.hit.fe.core.exception.FormEngineException;
 
 public interface PluginDataHandler {
 	
-	public String handle(Map<String, Object> rootMap) throws FormEngineException;
+	public String handle(Map<String, Object> params) throws FormEngineException;
 	
 }

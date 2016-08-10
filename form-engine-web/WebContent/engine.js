@@ -164,7 +164,10 @@
 				//双击可编辑
 				container.find('.data-row').bind('dblclick', function() {
 					if(!$(this).hasClass('editing')) {
-						container.find('.data-row[row-mode=new]').remove();
+						$(this).addClass('selected');
+						var iteratorWrapper = $(this).parents('.iterator-wrapper:first');
+						updateDataRow(iteratorWrapper);
+						/*container.find('.data-row[row-mode=new]').remove();
 						container.find('.data-row.editing').each(function(){
 							$(this).removeClass('editing');
 							$(this).find('.editor').each(function(){
@@ -175,7 +178,7 @@
 							$(this).find('.editor').remove();
 							$(this).find('.display-field').show();
 						});
-						createEditableRow($(this));
+						createEditableRow($(this));*/
 					}
 				});
 				//主表数据可编辑状态
@@ -429,6 +432,8 @@
 					var table = $(this);
 					table.attr('style', table.attr('style').replace('-fs-table-paginate:paginate;',''));
 				});
+				//去除分页栏
+				$(this).find('.page-wrapper').remove();
 				//表头和表体的容器单元格需要设为border:none否则打印出来表头和表体之间有间隙
 				//TODO
 			});

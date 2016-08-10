@@ -31,6 +31,7 @@
 <script type="text/javascript" src="select2.min.js"></script>
 <script type="text/javascript" src="engine.js"></script>
 <script type="text/javascript" src="plugin-diagnosis.js"></script>
+<script type="text/javascript" src="plugin-audit.js"></script>
 <script type="text/javascript" src="plugin-nursing.js"></script>
 <script type="text/javascript" src="plugin-surgery.js"></script>
 <script type="text/javascript">

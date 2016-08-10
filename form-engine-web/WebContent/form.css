@@ -116,7 +116,7 @@
 
 .display-field {
     min-width: 14px;
-    display: block;
+    display: inline-block;
 }
 
 .selected .row-field {
@@ -473,6 +473,7 @@ div.model-wrapper i.fa {
 	cursor: pointer;
 	padding: 5px !important;
 	margin: 5px !important;
+	display: inline-block !important;
 }
 
 .widget-plugin-surgery.editable .display-field .surgery-item.selected {

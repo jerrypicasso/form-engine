@@ -1,0 +1,10 @@
+.widget-plugin-audit {
+	background:green;
+	min-height:24px;
+	min-width:40px;
+	overflow:hidden;
+}
+
+.widget-plugin-audit.drop-zone {
+	border-left:2px solid red;
+}
