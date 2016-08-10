@@ -64,6 +64,10 @@ function createWidgetControls() {
 		icon:'url(icon/surgery.png)',
 		title:'手术'
 	},{
+		id:'audit',
+		icon:'url(icon/audit.png)',
+		title:'审签'
+	},{
 		id:'plugin',
 		icon:'url(icon/plugin.png)',
 		title:'插件'

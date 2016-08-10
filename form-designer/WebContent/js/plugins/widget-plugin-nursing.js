@@ -4,6 +4,7 @@ function createNursingWidget(config) {
 	$(field).addClass('widget-plugin-nursing');
 	$(field).attr('type', 'nursing');
 	$(field).attr('iterator', config['iterName']);
+	$(field).attr('datetime-field', config['datetimeField']);
 	$(field).css({'display':'none'});
 	$(field).html(config['sql']);
 	registerWidgetMousedownHandler(field);
@@ -25,6 +26,8 @@ function showNursingPluginInitConfigDialog() {
 	            '<table style="width:100%;table-layout:fixed;">',
 	            '<tr><td>关联迭代器名称：</td></tr>',
                 '<tr><td valign="top"><input name="iterName" style="width:100%;"></td></tr>',
+                '<tr><td>日期时间列：</td></tr>',
+                '<tr><td valign="top"><input name="datetimeField" style="width:100%;"></td></tr>',
 	            '<tr><td>计算出入量sql：</td></tr>',
                 '<tr><td valign="top"><textarea name="ioSql" style="width:100%;height:200px;"></textarea></td></tr>',
                 '<tr>',
@@ -41,8 +44,10 @@ function showNursingPluginInitConfigDialog() {
 	mask.appendTo(document.body);
 	mask.find('.ok-btn').unbind('click').bind('click',function(){
 		var iterName = mask.find('input[name=iterName]').val();
+		var datetimeField = mask.find('input[name=datetimeField]').val();
 		var sql = mask.find('textarea[name=ioSql]').val();
 		createNursingWidget({
+			datetimeField : datetimeField,
 			iterName : iterName,
 			sql : sql
 		});

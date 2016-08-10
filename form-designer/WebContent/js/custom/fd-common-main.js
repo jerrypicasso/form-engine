@@ -71,6 +71,9 @@ $(document).ready(function() {
 				else if(type === 'surgery') {
 					showSurgeryPluginInitConfigDialog();
 				}
+				else if(type === 'audit') {
+					showAuditPluginInitConfigDialog();
+				}
 			}
 			else if($('.movable').length > 0 && dropZone != $('.movable')) {
 				if(dropZone.hasClass('widget-container')) {

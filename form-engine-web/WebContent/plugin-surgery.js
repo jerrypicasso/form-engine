@@ -73,6 +73,7 @@
 	    					'surgeryItemName':surgeryItemName,
 	    					'operator':operator
 	    				};
+	        			alert(param);
 	        			$.ajax({
 	        				url:'form/plugin.process?handler=surgery&action=save',
 	        				type:'post',
@@ -122,9 +123,9 @@
 			data:{'surgery':surgery},
 			success: function(data){
 				for(var i = 0; i < data.length; i++) {
-					var item = $('<span class="surgery-item">');
+					var item = $('<span class="surgery-item"></span>');
 					if(direction === 'horizontal') {
-						item.css({'display':'inline-block','padding-right':'5px'});
+						item.css({'display':'inline','padding-right':'5px'});
 					}
 					else {
 						item.css({'display':'block'});
