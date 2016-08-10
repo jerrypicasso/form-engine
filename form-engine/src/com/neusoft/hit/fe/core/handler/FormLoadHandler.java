@@ -83,7 +83,7 @@ public class FormLoadHandler {
 			}
 		} catch (SQLException e) {
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException("Error occurs during getting staged form content from database !", e);
+			throw new FormEngineException("获取暂存表单时发生错误，操作失败 ！", e);
 		} finally {
 			DBUtil.close(conn, stmt, rs);
 		}
@@ -122,7 +122,7 @@ public class FormLoadHandler {
 			}
 		} catch (SQLException e) {
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException("Error occurs during getting form template from database !", e);
+			throw new FormEngineException("获取表单数据时发生错误，操作失败 ！", e);
 		} finally {
 			DBUtil.close(conn, stmt, rs);
 		}
@@ -337,10 +337,10 @@ public class FormLoadHandler {
 				loadDatasetByExecutingQuerySql(children, rootMap);
 			} catch (NumberFormatException e) {
 				LOGGER.error(e.toString(), e);
-				throw new FormEngineException("Error occurs during loading dataset by executing query sql !", e);
+				throw new FormEngineException("读取数据集时发生错误，操作失败 ！", e);
 			} catch (SQLException e) {
 				LOGGER.error(e.toString(), e);
-				throw new FormEngineException("Error occurs during loading dataset by executing query sql !", e);
+				throw new FormEngineException("读取数据集时发生错误，操作失败 ！", e);
 			} finally {
 				DBUtil.close(paginationRs);
 				DBUtil.close(conn, stmt, recordRs);

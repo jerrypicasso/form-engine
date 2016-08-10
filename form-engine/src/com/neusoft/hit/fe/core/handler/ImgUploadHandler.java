@@ -90,7 +90,7 @@ public class ImgUploadHandler {
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException(e.toString());
+			throw new FormEngineException("上传文件时发生错误，操作失败 ！", e);
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class ImgUploadHandler {
 			out.close();
 		} catch (IOException e) {
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException(e.toString());
+			throw new FormEngineException("下载文件时发生错误，操作失败 ！", e);
 		}
 	}
 }

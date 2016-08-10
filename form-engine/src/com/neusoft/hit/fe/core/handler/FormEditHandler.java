@@ -143,7 +143,7 @@ public class FormEditHandler {
 				LOGGER.error(ex.toString(), ex);
 			}
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException("Error occurs during saving data to database !", e);
+			throw new FormEngineException("保存数据时发生错误，操作失败 ！", e);
 		} finally {
 			DBUtil.close(conn, stmt, null);
 		}
@@ -179,7 +179,7 @@ public class FormEditHandler {
 			stmt.executeUpdate(sql.toString());
 		} catch (SQLException e) {
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException("Error occurs during marking record deleted in database !", e);
+			throw new FormEngineException("删除数据时发生错误，操作失败 ！", e);
 		} finally {
 			DBUtil.close(conn, stmt, null);
 		}
@@ -213,7 +213,7 @@ public class FormEditHandler {
 				LOGGER.error(ex.toString(), ex);
 			}
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException("Error occurs during staging form content to database !", e);
+			throw new FormEngineException("暂存数据时发生错误，操作失败！", e);
 		} finally {
 			DBUtil.close(deleteStmt);
 			DBUtil.close(insertStmt);

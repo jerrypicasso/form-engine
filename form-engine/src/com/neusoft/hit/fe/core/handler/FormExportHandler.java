@@ -109,7 +109,7 @@ public class FormExportHandler {
 			out.close();
 		} catch (Exception e) {
 			LOGGER.error(e.toString(), e);
-			throw new FormEngineException("Error occurs during exporting pdf file !", e);
+			throw new FormEngineException("导出pdf文件时发生错误，操作失败 ！", e);
 		}
 	}
 	
