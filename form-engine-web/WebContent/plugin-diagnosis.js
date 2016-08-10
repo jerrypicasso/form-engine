@@ -263,7 +263,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
             } else {
                 diagnosisWidget.find('.diagnosis-list').removeClass('edit');
                 if('20'==diagnosisType){
-                    if(signatureInfo.sync&&signatureInfo.sync =='Y'){
+                    if(signatureInfo&&signatureInfo.sync&&signatureInfo.sync =='Y'){
                         displayField.empty();
                         typeText.hide();
                     }
