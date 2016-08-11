@@ -200,12 +200,12 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>对应主表</td>
                 <td>
                     <input name="table-name" class="config-item" style="width:100%;"/>
                 </td>
-            </tr>
+            </tr> -->
             <tr>
                 <td colspan="3" align="center">
                     <div class="ok-btn"

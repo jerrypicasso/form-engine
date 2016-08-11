@@ -117,7 +117,7 @@ function showPaperInitConfigDialog() {
 	dialog.find('.ok-btn').unbind('click').bind('click',function(){
 		var paperCode = dialog.find('input[name=paper-code]').val();
 		var paperName = dialog.find('input[name=paper-name]').val();
-		var tableName = dialog.find('input[name=table-name]').val();
+		//var tableName = dialog.find('input[name=table-name]').val();
 		var paperType = dialog.find('select[name=paper-type]').val();
 		if($.trim(paperName) == '') {
 			alert('表单名称是必填项！');
@@ -126,7 +126,7 @@ function showPaperInitConfigDialog() {
 		createFormPaper();
 		$('.paper').attr('name', paperName);
 		$('.paper').attr('code', paperCode);
-		$('.paper').attr('table-name', tableName);
+		//$('.paper').attr('table-name', tableName);
 		$('.paper').attr('direction', paperType);
 		if(paperType == 'portrait') {
 			$('.paper').css({'width':'210mm'});//width(794).height(1123);

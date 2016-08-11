@@ -26,11 +26,11 @@ function showAuditPluginInitConfigDialog() {
 	var mask = $('.mask-layer-tpl').clone();
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
 	
-	var html = ['<div class="dialog" style="width:300px;height:180px;">',
+	var html = ['<div class="dialog" style="width:300px;height:260px;">',
 	            '<div class="dialog-title">审签控件配置</div>',
 	            '<form style="padding:15px;">',
 	            '<table style="width:100%;table-layout:fixed;">',
-	            '<col style="width:25%;"><col style="width:75%;">',
+	            '<col style="width:30%;"><col style="width:70%;">',
 	            '<tr><td>记录创建者：</td>',
 	            '<td valign="top"><input name="createId" style="width:100%;"></td></tr>',
 	            '<tr><td>记录修改者：</td>',

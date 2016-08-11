@@ -694,6 +694,16 @@ function prepareRelativePropertiesFields(widget) {
 		var required = widget.attr('required');
 		requiredField.val(required);
 		requiredField.parent().show();
+		
+		var dispField = widget.find('.display-field');
+		var displayValField = propPanel.find('input[name=displayVal]');
+		if(dispField.length > 0) {
+			displayValField.val(dispField.html());
+		}
+		else {
+			displayValField.val(widget.html());
+		}
+		displayValField.parent().show();
 	}
 	if(!widget.hasClass('iterator-wrapper') && !widget.hasClass('widget-field-hidden')) {
 		var widthField = propPanel.find('input[name=width]');
@@ -746,15 +756,6 @@ function prepareRelativePropertiesFields(widget) {
 			|| widget.hasClass('widget-field-date') || widget.hasClass('widget-check')
 			|| widget.hasClass('widget-field-select')) {
 		var dispField = widget.find('.display-field');
-		
-		var displayValField = propPanel.find('input[name=displayVal]');
-		if(dispField.length > 0) {
-			displayValField.val(dispField.html());
-		}
-		else {
-			displayValField.val(widget.html());
-		}
-		displayValField.parent().show();
 		
 		var wordWrapField = propPanel.find('select[name=wordWrap]');
 		var wordWrap = widget.css('word-wrap') || dispField.css('word-wrap');

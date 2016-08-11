@@ -82,6 +82,32 @@
 	        	});
 	        	
 	        }
+	    },
+	    beforeEditRow : function(options) {
+	    	//TODO 行数据修改三级权限判断
+	    	var row = options.row;
+	    	var modifyField = row.find('.row-field[field=MODIFY_ID]');
+	    	var modifyId = modifyField.find('.display-field').html();
+	    	var staffCode = modifyField.find('.value-field').html();
+	    	var flag = true;
+	    	if(modifyId) {
+	    		$.ajax({
+					url: 'form/plugin.process?handler=audit&action=check',
+					type: 'post',
+					async: false,
+					dataType: 'json',
+					data: {'modifyId': modifyId, 'staffCode': staffCode},
+					success: function(data){
+						if(data.authorized === 'true') {
+							flag = true;
+						} 
+						else {
+							flag = false;
+						}
+					}
+				});
+	    	}
+	    	return true;
 	    }
 	});
 
