@@ -71,7 +71,6 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
         success: function (result) {
             var data = result.list,signatureInfo = result.signatureInfo,signature;
             var direct = diagnosisWidget.attr('direct');
-            console.log(signatureInfo);
             var displayField = diagnosisWidget.find('.display-field'), list, typeText = diagnosisWidget.find('.diagnosisType-text');
             if (!displayField || displayField.length <= 0) {
                 $('<div class="display-field"></div>').appendTo(diagnosisWidget);
@@ -263,7 +262,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
             } else {
                 diagnosisWidget.find('.diagnosis-list').removeClass('edit');
                 if('20'==diagnosisType){
-                    if(signatureInfo.sync&&signatureInfo.sync =='Y'){
+                    if(signatureInfo&&signatureInfo.sync&&signatureInfo.sync =='Y'){
                         displayField.empty();
                         typeText.hide();
                     }
@@ -297,12 +296,27 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
         diagnosisModelWrapper = $('<div class="model-wrapper"></div>');
         diagnosisWidget.find('.editor-wrapper').before(diagnosisModelWrapper);
     }
+
+    if(container.find('div.diagnosisMask')){
+        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: absolute;top:0;left: 0;z-index: 999;background-color:black"></div>').appendTo(container);
+    }
+
+
+
     modelTitleBox.append(['<div class="model-tool-bar">',
         '<input type="button" class="addModel" value="添加个人诊断"/>',
         '<input type="button" class="delModel" value="删除"/>',
         '<input type="button" class="upModel" value="上移"/>',
         '<input type="button" class="downModel" value="下移"/>',
         '</div>'].join('')).appendTo(diagnosisModelWrapper);
+
+
+    var list = $('<ul style="padding:0;' +
+        'list-style:none;margin:10px 0 0 10px;width: 260px;height: 250px;overflow: auto; " class="diagnosis-model-list">' +
+        '<div class="list-title"><i class="fa fa-plus grzd"></i>&nbsp;个人模板</div></ul>');
+    diagnosisModelWrapper.append(list);
+
+    var diagnosisModelMask = $('<div class="diagnosisModelMask" style="width: 100%;height:100%;opacity: 0.5;position: absolute;top:0;left: 0;z-index: 1099;background-color:black"></div>').appendTo(list);
     $.ajax({
         url: 'form/plugin.process?action=modelLoad&handler=diagnosis',
         data: opts,
@@ -310,10 +324,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
         success: function (results) {
             var data = results.grzdList;
             var zdList = results.bczdList;
-            var list = $('<ul style="padding:0;' +
-                'list-style:none;margin:10px 0 0 10px;" class="diagnosis-model-list">' +
-                '<div class="list-title"><i class="fa fa-plus grzd"></i>&nbsp;个人模板</div></ul>');
-            diagnosisModelWrapper.append(list);
+
             if (data && data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     var li = $('<li id="' + data[i].id + '" type="main" icd="' + data[i]['icd_10'] +
@@ -399,13 +410,13 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
             diagnosisModelWrapper.find('li.selectable span').unbind('dblclick').bind('dblclick', function () {
                 var diagnosisEditorWrapper = diagnosisWidget.find('.editor-wrapper'), li = $(this).parent('li.selectable'),
                     diagnosisCode = li.attr('icd'), selected = displayField.find('li.selected'),
-                    diagnosisText = $(this).text().trim(),
+                    diagnosisText = $.trim($(this).text()),
                     param, subParams = [],
                     modelType = li.attr('type'),
                     selectedType = selected.attr('type'),
                     diagnosisId;
 
-                if (!diagnosisCode || diagnosisCode.trim() === '') {
+                if (!diagnosisCode || $.trim(diagnosisCode) === '') {
                     toastr['warning']('诊断内容不能为空！');
                     return;
                 }
@@ -481,9 +492,9 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                 if (selected && selected.length > 0) {
 
                     if('main'==selected.attr('type')){
-                        diagnosisText = selected.find('span.main-text').text().trim()
+                        diagnosisText = $.trim(selected.find('span.main-text').text());
                     }else{
-                        diagnosisText = selected.find('span.text').text().trim()
+                        diagnosisText = $.trim(selected.find('span.text').text());
                     }
 
                     param = {
@@ -497,7 +508,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                         selected.find('li[type="sub"]').each(function () {
                             children.push({
                                 diagnosisText: $(this).find('span.text').text(),
-                                diagnosisCode: selected.find('span.icd').text().trim(),
+                                diagnosisCode: $.trim(selected.find('span.icd').text()),
                                 staffCode: opts.staffCode
                             });
                         });
@@ -649,6 +660,8 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                 }
 
             });
+
+            diagnosisModelMask.remove();
         }
 
     });
@@ -674,7 +687,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
             '<div>'].join(''));
 
         dTypeSelectorBox = $('<div class="comboTextBox dTypeSelectorBox"><span class="label-interval">诊断类型：</span></div>').appendTo(diagnosisEditorWrapper);
-        if (!diagnosisInputType || diagnosisInputType.trim().length <= 0) {
+        if (!diagnosisInputType || $.trim(diagnosisInputType).length <= 0) {
             dTypeSelector = $([
                 '<select style="width: 50%">',
                 '<option value=""></option>',
@@ -745,11 +758,11 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 renderInputToSelect2(triggerBox.find('.combo'));
                 xtBox.find('.xtSelect').select2();
                 xtBox.find('.compound').unbind('click').bind('click', function () {
-                    var fq = triggerBox.find('.fq').select2('data').name.trim();
-                    var xtx = triggerBox.find('.xtx').select2('data').name.trim();
-                    var xt1 = triggerBox.find('.xtSelect.xt1').select2('data').text.trim();
-                    var xt2 = triggerBox.find('.xtSelect.xt2').select2('data').text.trim();
-                    var xt3 = triggerBox.find('.xtSelect.xt3').select2('data').text.trim();
+                    var fq = $.trim(triggerBox.find('.fq').select2('data').name);
+                    var xtx = $.trim(triggerBox.find('.xtx').select2('data').name);
+                    var xt1 = $.trim(triggerBox.find('.xtSelect.xt1').select2('data').text);
+                    var xt2 = $.trim(triggerBox.find('.xtSelect.xt2').select2('data').text);
+                    var xt3 = $.trim(triggerBox.find('.xtSelect.xt3').select2('data').text);
                     var text = fq + xt1 + xt2 + xt3 + xtx;
                     diagnosisEditorWrapper.find('.comboText').val(text);
                 });
@@ -778,11 +791,11 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 triggerBox.find('.tfw').select2();
                 triggerBox.find('.sczt').select2();
                 tfwBox.find('.compound').unbind('click').bind('click', function () {
-                    var text = triggerBox.find('.combo').select2('data').name.trim();
-                    var sczt = triggerBox.find('select.sczt').select2('data').text.trim();
-                    var tfw = triggerBox.find('select.tfw').select2('data').text.trim();
-                    var yz = triggerBox.find('input.yz').val().trim();
-                    var yc = triggerBox.find('input.yc').val().trim();
+                    var text = $.trim(triggerBox.find('.combo').select2('data').name);
+                    var sczt = $.trim(triggerBox.find('select.sczt').select2('data').text);
+                    var tfw = $.trim(triggerBox.find('select.tfw').select2('data').text);
+                    var yz = $.trim(triggerBox.find('input.yz').val());
+                    var yc = $.trim(triggerBox.find('input.yc').val());
                     text = text + ' ' + yz + ' ' + yc + ' ' + tfw + ' ' + sczt;
                     diagnosisEditorWrapper.find('.comboText').val(text);
                 });
@@ -865,11 +878,11 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
 
 
         if ('zy' != diagnosisInputType) {
-            if (!diagnosisCode || diagnosisCode.trim() === '') {
+            if (!diagnosisCode || $.trim(diagnosisCode) === '') {
                 toastr['warning']('缺少诊断ICD，请从下拉框中进行选择。');
                 return;
             }
-            if (!diagnosisText || diagnosisText.trim().length <= 0) {
+            if (!diagnosisText || $.trim(diagnosisText).length <= 0) {
                 toastr['warning']('诊断内容不能为空。');
                 return;
             }
@@ -881,19 +894,19 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
             };
 
         } else if ('zy' == diagnosisInputType) {
-            if (!zbCode || zbCode.trim() == '') {
+            if (!zbCode || $.trim(zbCode) == '') {
                 toastr['warning']('缺少主病诊断ICD，请从下拉框中进行选择。');
                 return;
             }
-            if (!zhCode || zhCode.trim() == '') {
+            if (!zhCode || $.trim(zhCode) == '') {
                 toastr['warning']('缺少证候诊断ICD，请从下拉框中进行选择。');
                 return;
             }
-            if (!zbText || zbText.trim().length <= 0) {
+            if (!zbText || $.trim(zbText).length <= 0) {
                 toastr['warning']('主病诊断内容不能为空。');
                 return;
             }
-            if (!zhText || zhText.trim().length <= 0) {
+            if (!zhText || $.trim(zhText).length <= 0) {
                 toastr['warning']('症候诊断内容不能为空。');
                 return;
             }

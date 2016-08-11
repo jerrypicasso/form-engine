@@ -508,6 +508,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
         try {
             conn = DBUtil.getConnection();
             stmt = conn.createStatement();
+            conn.setAutoCommit(false);
             rs = stmt.executeQuery(sql);
             List<Map<String, Object>> cbDiagnosisList = DBUtil.getMultiResults(rs);
             rs.close();
@@ -519,6 +520,10 @@ public class DiagnosisDataHandler implements PluginDataHandler {
                 diagnosis.put("items", subDiagnosisList);
             }
 
+
+            param.put("diagnosisType", 20);
+            sql = FreemarkerUtil.getMixedString(diagnosisSelectSql2, param);
+            rs = stmt.executeQuery(sql);
             List<Map<String, Object>> ryDiagnosisList = DBUtil.getMultiResults(rs);
             rs.close();
             for (Map<String, Object> diagnosis : ryDiagnosisList) {
@@ -528,9 +533,9 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 
             sql = FreemarkerUtil.getMixedString(dropRYdiagnosisSql, param);
             stmt.executeUpdate(sql);
+            stmt.close();
 
 
-            conn.setAutoCommit(false);
             stmt = conn.prepareStatement(sqlTemplate);
             for (Map<String, Object> diagnosis : cbDiagnosisList) {
                 diagnosis.put("guid", CommonUtil.guid());
@@ -541,8 +546,8 @@ public class DiagnosisDataHandler implements PluginDataHandler {
                 sql = FreemarkerUtil.getMixedString(sql, diagnosis);
                 stmt.executeUpdate(sql);
             }
+            stmt.close();
 
-            conn.setAutoCommit(false);
             stmt = conn.prepareStatement(sqlTemplateSub);
             for (Map<String, Object> diagnosis : cbDiagnosisList) {
                 List<Map<String, Object>> children = (List<Map<String, Object>>) diagnosis.get("items");
