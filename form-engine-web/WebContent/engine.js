@@ -292,20 +292,33 @@
 					var mainField = $(this);
 					mainField.removeClass('editable');
 					var editor = mainField.find('.editor');
-					var value = editor.val();
+					var fieldValue = editor.val();
 					var valueField = mainField.find('.value-field');
 					var displayField = mainField.find('.display-field');
-					var text = '';
+					var fieldText = '';
 					if(editor.hasClass('select')) {
-						value = editor.select2('val');
-						text = editor.select2('data').name;
+						fieldValue = editor.select2('val');
+						if($.isArray(fieldValue)) {
+							fieldValue = fieldValue.join(',');
+						}
+						var selectedData = editor.select2('data');
+						if($.isArray(selectedData)) {
+							var arr = [];
+							for(var i = 0; i < selectedData.length; i++) {
+								arr.push(selectedData[i].name);
+							}
+							fieldText = arr.join(',');
+						}
+						else if(selectedData) {
+							fieldText = selectedData.name;
+						}
 						editor.select2('destroy');
 					}
 					else {
-						text = value;
+						fieldText = fieldValue;
 					}
-					valueField.html(value);
-					displayField.html(text);
+					valueField.html(fieldValue);
+					displayField.html(fieldText);
 					editor.remove();
 					displayField.show();
 				});
@@ -582,30 +595,32 @@
 							var txtArr = display.split(',');
 							var valArr = value.split(',');
 							for(var i = 0; i < Math.min(txtArr.length, valArr.length); i++) {
-								data.push({id:valArr[i], text:txtArr[i]});
+								data.push({id:valArr[i], name:txtArr[i]});
+							}
+							if(data.length > 0) {
+								callback(data);
 							}
 						}
 						else {
-							data = {id: value, text: display};
+							data = {id: value, name: display};
+							callback(data);
 						}
-						callback(data);
 					}
 				},
 				escapeMarkup : function(markup) {
 					return markup;
 				},
 				formatResult : function(item) {
-					if(item.loading) {
-						return item.text;
-					} 
 					return item.name;
 				},
 				formatSelection : function(item) {
-					return item.name || item.text;
+					return item.name;
 				}
 			});
 			$(editor).attr('multi', multiple === 'multiple');
 			$(editor).data('display', txt);
+			console.log(txt);
+			console.log(val);
 			$(editor).val(val).trigger('change');
 		}
 		else if(type == 'date') {
