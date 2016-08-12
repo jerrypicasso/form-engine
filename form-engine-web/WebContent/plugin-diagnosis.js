@@ -298,7 +298,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
     }
 
     if(container.find('div.diagnosisMask')){
-        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: absolute;top:0;left: 0;z-index: 999;background-color:black"></div>').appendTo(container);
+        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: fixed;top:0;left: 0;bottom:0;z-index: 2000;background-color:black"></div>').appendTo(container);
     }
 
 
