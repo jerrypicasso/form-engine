@@ -71,7 +71,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
         success: function (result) {
             var data = result.list,signatureInfo = result.signatureInfo,signature;
             var direct = diagnosisWidget.attr('direct');
-            var displayField = diagnosisWidget.find('.display-field'), list, typeText = diagnosisWidget.find('.diagnosisType-text');
+            var displayField = diagnosisWidget.find('.display-field'), list;
             if (!displayField || displayField.length <= 0) {
                 $('<div class="display-field"></div>').appendTo(diagnosisWidget);
             }
@@ -108,17 +108,6 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
 
 
             if (data.length > 0) {
-                if (!typeText || typeText.length <= 0) {
-                    typeText = $('<div class="diagnosisType-text" style="display: inline-block;vertical-align: top;width:100px;margin: 5px;line-height: 20px;"></div>').insertBefore(displayField);
-                }
-                if ('30' == diagnosisType) {
-                    typeText.text('修正诊断：')
-                } else if ('20' == diagnosisType) {
-                    typeText.text('入院诊断：')
-                } else if ('10' == diagnosisType) {
-                    typeText.text('初步诊断：')
-                }
-                typeText.show();
                 // list = $('<ul style="margin:0;padding:0;list-style:none;" class="diagnosis-list"></ul>');
 
                 for (var i = 0; i < data.length; i++) {
@@ -264,7 +253,6 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                 if('20'==diagnosisType){
                     if(signatureInfo&&signatureInfo.sync&&signatureInfo.sync =='Y'){
                         displayField.empty();
-                        typeText.hide();
                     }
                 }
 
