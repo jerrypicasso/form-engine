@@ -29,6 +29,36 @@ public class CommonUtil {
 		return DigestUtils.md5Hex(data);
 	}
 	
+	public static String join(String str, String newSeperator, String defaultVal) {
+		return join(str, ",", newSeperator, "", "", defaultVal);
+	}
+	
+	public static String join(String str, String oldSeperator, String newSeperator, 
+			String begin, String end, String defaultVal) {
+		if(str == null) {
+			return defaultVal;
+		}
+		String[] array = str.split(oldSeperator);
+		StringBuilder builder = new StringBuilder();
+		if(begin != null) {
+			builder.append(begin);
+		}
+		for(int i = 0; i < array.length; i++) {
+			builder.append(array[i]);
+			builder.append(newSeperator);
+		}
+		int index = builder.lastIndexOf(newSeperator);
+		if(index > -1) {
+			builder.setLength(index);
+		}
+		builder.append(end);
+		return builder.toString();
+	}
+	
+	public static String join(List<Map<String, Object>> list, String field) {
+		return join(list, field, ",", "", "", "");
+	}
+	
 	public static String join(List<Map<String, Object>> list, String field, String seperator, 
 			String begin, String end, String defaultVal) {
 		if(list == null || list.isEmpty()) {
@@ -40,10 +70,14 @@ public class CommonUtil {
 		}
 		for(int i = 0; i < list.size(); i++) {
 			Object obj = list.get(i).get(field);
-			builder.append(obj);
-			if(i < list.size() - 1) {
+			if(obj != null) {
+				builder.append(obj);
 				builder.append(seperator);
 			}
+		}
+		int index = builder.lastIndexOf(seperator);
+		if(index > -1) {
+			builder.setLength(index);
 		}
 		builder.append(end);
 		return builder.toString();

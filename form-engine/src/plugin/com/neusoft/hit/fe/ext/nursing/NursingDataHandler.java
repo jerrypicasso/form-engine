@@ -32,7 +32,6 @@ public class NursingDataHandler implements PluginDataHandler {
 			conn = DBUtil.getConnection();
 			try {
 				stmt = conn.createStatement();
-				System.out.println(sql);
 				stmt.executeUpdate(sql);
 			} catch (SQLException e) {
 				LOGGER.error(e.toString(), e);

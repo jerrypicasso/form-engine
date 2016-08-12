@@ -66,7 +66,8 @@
 					$(this).find('.display-field').show();
 				});
 				container.find('.widget-check').removeClass('editable');
-				container.find('.widget-check .check-field').unbind('click').html('');
+				container.find('.widget-check').unbind('click');
+				container.find('.widget-check .check-field').html('');
 			}
 			else {
 				var iteratorWrappers = container.find('.iterator-wrapper');
@@ -77,26 +78,31 @@
 					var insertBtn = $('<input type="button" class="edit-btn" value="新增"/>');
 					insertBtn.unbind('click').bind('click', function(){
 						insertDataRow(iteratorWrapper);
+						return false;
 					});
 					insertBtn.appendTo(editWrapper);
 					var updateBtn = $('<input type="button" class="edit-btn" value="修改"/>');
 					updateBtn.unbind('click').bind('click', function(){
 						updateDataRow(iteratorWrapper);
+						return false;
 					});
 					updateBtn.appendTo(editWrapper);
 					var deleteBtn = $('<input type="button" class="edit-btn" value="删除"/>');
 					deleteBtn.unbind('click').bind('click', function(){
 						deleteDataRow(iteratorWrapper);
+						return false;
 					});
 					deleteBtn.appendTo(editWrapper);
 					var saveRowBtn = $('<input type="button" class="edit-btn" value="保存"/>');
 					saveRowBtn.unbind('click').bind('click', function(){
 						saveDataRow(iteratorWrapper);
+						return false;
 					});
 					saveRowBtn.appendTo(editWrapper);
 					var cancelBtn = $('<input type="button" class="edit-btn" value="取消"/>');
 					cancelBtn.unbind('click').bind('click', function(){
 						cancelEditRow(iteratorWrapper);
+						return false;
 					});
 					cancelBtn.appendTo(editWrapper);
 					//$(this).addClass('editable');
@@ -180,6 +186,7 @@
 								}
 							});
 							hiddenField.find('.editor').val(arr.join(','));
+							hiddenField.find('.editor').change();
 						}
 					});
 				});
@@ -212,6 +219,9 @@
 				var fieldValue = editor.val();
 				if(editor.hasClass('select')) {
 					fieldValue = editor.select2('val');
+					if($.isArray(fieldValue)) {
+						fieldValue = fieldValue.join(',');
+					}
 				}
 				records.push({
 					'tableName' : tableName,
@@ -562,8 +572,24 @@
 					}
 				},
 				initSelection: function(element, callback) {
-					var data = {id: val, text: txt};
-				    callback(data);
+					var data = null;
+					var multi = element.attr('multi');
+					var display = element.data('display');
+					var value = element.val();
+					if(value && display) {
+						if(multi === 'true') {
+							data = [];
+							var txtArr = display.split(',');
+							var valArr = value.split(',');
+							for(var i = 0; i < Math.min(txtArr.length, valArr.length); i++) {
+								data.push({id:valArr[i], text:txtArr[i]});
+							}
+						}
+						else {
+							data = {id: value, text: display};
+						}
+						callback(data);
+					}
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -578,11 +604,14 @@
 					return item.name || item.text;
 				}
 			});
-			$(editor).val(val);
+			$(editor).attr('multi', multiple === 'multiple');
+			$(editor).data('display', txt);
+			$(editor).val(val).trigger('change');
 		}
 		else if(type == 'date') {
 			editor = document.createElement('input');
 			dataField.prepend(editor);
+			//$(editor).addClass('Wdate');
 			$(editor).bind('click', function(){
 				WdatePicker({
 					readOnly:true,
@@ -918,6 +947,9 @@
 				var fieldValue = editor.val();
 				if(editor.hasClass('select')) {
 					fieldValue = editor.select2('val');
+					if($.isArray(fieldValue)) {
+						fieldValue = fieldValue.join(',');
+					}
 				}
 				if(fieldName && tableName) {
 					records.push({
