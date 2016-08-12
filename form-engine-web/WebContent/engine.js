@@ -21,53 +21,10 @@
 	var methods = {
 		'load': function(options) {
 			var container = $(this);
-			var params = {};
-			var lastOptions = container.data('lastOptions');
-			if(lastOptions) {
-				$.extend(params, lastOptions);
-			}
-			var mode = container.data('mode') || 'view';
-			$.extend(params, {'mode': mode});
 			if(options) {
 				container.data('options', options);
-				$.extend(params, options);
-				$.extend(params,{
-					'stageKey': JSON.stringify(options)
-				});
 			}
-			$.ajax({
-				url : 'form/load.process',
-				data : params,
-				type : 'post',
-				dataType : 'json',
-				success : function(data) {
-					//将返回的表单html放在container中
-					container.html(data['content']);
-					container.data('lastOptions', params);
-					container.data('mode', data['mode']);
-					handleEmptyWidgetField(container);
-					createPaginationBars(container);
-					renderCheckboxWidgets(container);
-					createExportForm();
-					container.find('.data-row[row-tpl=true]').hide();
-					var mode = container.data('mode');
-					container.trigger('form-loaded', [{'mode':mode}]);
-					for(var name in plugins) {
-						plugin = plugins[name];
-						if(plugin.afterFormLoaded) {
-							plugin.afterFormLoaded.apply(container, [{
-								'container': container,
-								'mode': mode
-							}])
-						}
-					}
-					if(mode == 'edit') {
-						container.data('mode', 'edit');
-						var func = methods['toggle'];
-						func.apply(container, [{'mode':'edit'}]);
-					}
-				}
-			});
+			loadForm(options, container);
 		},
 		'toggle': function(options) {
 			var container = $(this);
@@ -109,7 +66,8 @@
 					$(this).find('.display-field').show();
 				});
 				container.find('.widget-check').removeClass('editable');
-				container.find('.widget-check .check-field').unbind('click').html('');
+				container.find('.widget-check').unbind('click');
+				container.find('.widget-check .check-field').html('');
 			}
 			else {
 				var iteratorWrappers = container.find('.iterator-wrapper');
@@ -120,26 +78,31 @@
 					var insertBtn = $('<input type="button" class="edit-btn" value="新增"/>');
 					insertBtn.unbind('click').bind('click', function(){
 						insertDataRow(iteratorWrapper);
+						return false;
 					});
 					insertBtn.appendTo(editWrapper);
 					var updateBtn = $('<input type="button" class="edit-btn" value="修改"/>');
 					updateBtn.unbind('click').bind('click', function(){
 						updateDataRow(iteratorWrapper);
+						return false;
 					});
 					updateBtn.appendTo(editWrapper);
 					var deleteBtn = $('<input type="button" class="edit-btn" value="删除"/>');
 					deleteBtn.unbind('click').bind('click', function(){
 						deleteDataRow(iteratorWrapper);
+						return false;
 					});
 					deleteBtn.appendTo(editWrapper);
 					var saveRowBtn = $('<input type="button" class="edit-btn" value="保存"/>');
 					saveRowBtn.unbind('click').bind('click', function(){
 						saveDataRow(iteratorWrapper);
+						return false;
 					});
 					saveRowBtn.appendTo(editWrapper);
 					var cancelBtn = $('<input type="button" class="edit-btn" value="取消"/>');
 					cancelBtn.unbind('click').bind('click', function(){
 						cancelEditRow(iteratorWrapper);
+						return false;
 					});
 					cancelBtn.appendTo(editWrapper);
 					//$(this).addClass('editable');
@@ -223,6 +186,7 @@
 								}
 							});
 							hiddenField.find('.editor').val(arr.join(','));
+							hiddenField.find('.editor').change();
 						}
 					});
 				});
@@ -233,7 +197,7 @@
 					plugin.afterModeChanged.apply(container, [{
 						'container': container,
 						'mode': mode
-					}])
+					}]);
 				}
 			}
 			container.data('mode', mode);
@@ -255,6 +219,9 @@
 				var fieldValue = editor.val();
 				if(editor.hasClass('select')) {
 					fieldValue = editor.select2('val');
+					if($.isArray(fieldValue)) {
+						fieldValue = fieldValue.join(',');
+					}
 				}
 				records.push({
 					'tableName' : tableName,
@@ -298,7 +265,7 @@
 							}
 							else {
 								container.data('mode', 'view');
-								var func = methods['load'];
+								var func = methods['reload'];
 								func.apply(container);
 							}
 						}
@@ -365,7 +332,7 @@
 						plugin.afterModeChanged.apply(container, [{
 							'container': container,
 							'mode': 'view'
-						}])
+						}]);
 					}
 				}
 				
@@ -382,7 +349,7 @@
 					data: param,
 					success:function(data) {
 						toastr['success']('暂存完毕！');
-						var func = methods['load'];
+						var func = methods['reload'];
 						func.apply(container);
 					}
 				});
@@ -460,10 +427,60 @@
 		},
 		'reload':function(options) {
 			var container = $(this);
-			var func = methods['load'];
-			func.apply(container);
+			loadForm(null, container);
 		}
 	};
+	
+	function loadForm(options, container) {
+		var params = {};
+		var lastOptions = container.data('lastOptions');
+		if(lastOptions) {
+			$.extend(params, lastOptions);
+		}
+		if(options) {
+			$.extend(params, options);
+		}
+		var opts = container.data('options');
+		if(opts) {
+			$.extend(params,{'stageKey': JSON.stringify(opts)});
+		}
+		var mode = container.data('mode') || 'view';
+		$.extend(params, {'mode': mode});
+		
+		$.ajax({
+			url : 'form/load.process',
+			data : params,
+			type : 'post',
+			dataType : 'json',
+			success : function(data) {
+				//将返回的表单html放在container中
+				container.html(data['content']);
+				container.data('lastOptions', params);
+				container.data('mode', data['mode']);
+				handleEmptyWidgetField(container);
+				createPaginationBars(container);
+				renderCheckboxWidgets(container);
+				createExportForm();
+				container.find('.data-row[row-tpl=true]').hide();
+				var mode = container.data('mode');
+				container.trigger('form-loaded', [{'mode':mode}]);
+				for(var name in plugins) {
+					plugin = plugins[name];
+					if(plugin.afterFormLoaded) {
+						plugin.afterFormLoaded.apply(container, [{
+							'container': container,
+							'mode': mode
+						}]);
+					}
+				}
+				if(mode == 'edit') {
+					container.data('mode', 'edit');
+					var func = methods['toggle'];
+					func.apply(container, [{'mode':'edit'}]);
+				}
+			}
+		});
+	}
 	
 	function validateField(editor, msg) {
 		editor.each(function(){
@@ -555,8 +572,24 @@
 					}
 				},
 				initSelection: function(element, callback) {
-					var data = {id: val, text: txt};
-				    callback(data);
+					var data = null;
+					var multi = element.attr('multi');
+					var display = element.data('display');
+					var value = element.val();
+					if(value && display) {
+						if(multi === 'true') {
+							data = [];
+							var txtArr = display.split(',');
+							var valArr = value.split(',');
+							for(var i = 0; i < Math.min(txtArr.length, valArr.length); i++) {
+								data.push({id:valArr[i], text:txtArr[i]});
+							}
+						}
+						else {
+							data = {id: value, text: display};
+						}
+						callback(data);
+					}
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -571,11 +604,14 @@
 					return item.name || item.text;
 				}
 			});
-			$(editor).val(val);
+			$(editor).attr('multi', multiple === 'multiple');
+			$(editor).data('display', txt);
+			$(editor).val(val).trigger('change');
 		}
 		else if(type == 'date') {
 			editor = document.createElement('input');
 			dataField.prepend(editor);
+			//$(editor).addClass('Wdate');
 			$(editor).bind('click', function(){
 				WdatePicker({
 					readOnly:true,
@@ -675,13 +711,12 @@
 			if(pages && parseInt(pages) > 0) {
 				var pageWrapper = $('<div class="page-wrapper">');
 				pageWrapper.appendTo(wrapper);
-				var func = methods['load'];
 				var firstPageBtn = $('<input type="button" class="page-btn" value="首页"/>');
 				firstPageBtn.appendTo(pageWrapper);
 				firstPageBtn.click(function(){
 					var param = new Object();
 					param[pageParamName] = 0;
-					func.apply(container, [param]);
+					loadForm(param, container);
 				});
 				var prevPageBtn = $('<input type="button" class="page-btn" value="上一页"/>');
 				prevPageBtn.appendTo(pageWrapper);
@@ -693,7 +728,7 @@
 					}
 					var param = new Object();
 					param[pageParamName] = page;
-					func.apply(container, [param]);
+					loadForm(param, container);
 				});
 				var currentPage = $('<span id="'+ pageParamName +'"></span>');
 				currentPage.appendTo(pageWrapper);
@@ -709,14 +744,14 @@
 					}
 					var param = new Object();
 					param[pageParamName] = page;
-					func.apply(container, [param]);
+					loadForm(param, container);
 				});
 				var lastPageBtn = $('<input type="button" class="page-btn" value="尾页"/>');
 				lastPageBtn.appendTo(pageWrapper);
 				lastPageBtn.click(function(){
 					var param = new Object();
 					param[pageParamName] = pages - 1;
-					func.apply(container, [param]);
+					loadForm(param, container);
 				});
 				var lastOptions = container.data('lastOptions');
 				var currentPage = lastOptions[pageParamName] || 0;
@@ -805,6 +840,21 @@
 	function updateDataRow(iteratorWrapper) {
 		var selected = iteratorWrapper.find('.data-row.selected');
 		if(selected && selected.length > 0) {
+			var flag = true;
+			for(var name in plugins) {
+				plugin = plugins[name];
+				if(plugin.beforeEditRow) {
+					var ret = plugin.beforeEditRow.apply(container, [{
+						'container': container,
+						'wrapper': iteratorWrapper,
+						'row': selected
+					}]);
+					flag = flag && ret;
+				}
+			}
+			if(!flag) {
+				return flag;
+			}
 			if(!selected.hasClass('editing')) {
 				iteratorWrapper.find('.data-row[row-mode=new]').remove();
 				iteratorWrapper.find('.data-row.editing').each(function(){
@@ -856,7 +906,7 @@
 						'dropFlagValue':dropFlagValue
 					},
 					success:function(){
-						var func = methods['load'];
+						var func = methods['reload'];
 						func.apply(container);
 					}
 				});
@@ -897,6 +947,9 @@
 				var fieldValue = editor.val();
 				if(editor.hasClass('select')) {
 					fieldValue = editor.select2('val');
+					if($.isArray(fieldValue)) {
+						fieldValue = fieldValue.join(',');
+					}
 				}
 				if(fieldName && tableName) {
 					records.push({
@@ -917,7 +970,7 @@
 					'record':JSON.stringify(records)
 				},
 				success:function() {
-					var func = methods['load'];
+					var func = methods['reload'];
 					func.apply(container);
 				}
 			});

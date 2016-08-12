@@ -71,7 +71,6 @@ public class FormLoadHandler {
 			if(conn != null) {
 				stmt = conn.prepareStatement(sql);
 				stmt.setObject(1, rootMap.get("stageKey"));
-				System.out.println(stmt.toString());
 				rs = stmt.executeQuery();
 				Map<String, Object> record = DBUtil.getSingleResult(rs);
 				if(record != null) {

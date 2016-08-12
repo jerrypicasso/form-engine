@@ -32,6 +32,12 @@ function createHiddenFieldWidget(config) {
 	$(valueField).html(config['real-value']);
 	$(valueField).appendTo(field);
 	
+	var displayField = document.createElement('span');
+	$(displayField).addClass('display-field');
+	$(displayField).hide();
+	$(displayField).html(config['disp-value']);
+	$(displayField).appendTo(field);
+	
 	var width = $(field).width();
 	$(field).width(width);
 }

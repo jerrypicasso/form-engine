@@ -20,13 +20,13 @@ function showNursingPluginInitConfigDialog() {
 	var mask = $('.mask-layer-tpl').clone();
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
 	
-	var html = ['<div class="dialog" style="width:400px;height:400px;">',
+	var html = ['<div class="dialog" style="width:400px;height:420px;">',
 	            '<div class="dialog-title">护理记录控件配置</div>',
 	            '<form style="padding:15px;">',
 	            '<table style="width:100%;table-layout:fixed;">',
 	            '<tr><td>关联迭代器名称：</td></tr>',
                 '<tr><td valign="top"><input name="iterName" style="width:100%;"></td></tr>',
-                '<tr><td>日期时间列：</td></tr>',
+                '<tr><td>日期时间列名称：</td></tr>',
                 '<tr><td valign="top"><input name="datetimeField" style="width:100%;"></td></tr>',
 	            '<tr><td>计算出入量sql：</td></tr>',
                 '<tr><td valign="top"><textarea name="ioSql" style="width:100%;height:200px;"></textarea></td></tr>',
