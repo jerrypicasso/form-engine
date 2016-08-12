@@ -694,7 +694,8 @@ function prepareRelativePropertiesFields(widget) {
 		var required = widget.attr('required');
 		requiredField.val(required);
 		requiredField.parent().show();
-		
+	}
+	if(!widget.hasClass('iterator-wrapper') && !widget.hasClass('cell')) {
 		var dispField = widget.find('.display-field');
 		var displayValField = propPanel.find('input[name=displayVal]');
 		if(dispField.length > 0) {

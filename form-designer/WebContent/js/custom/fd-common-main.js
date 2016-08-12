@@ -63,7 +63,7 @@ $(document).ready(function() {
 					showPluginInitConfigDialog();
 				}
 				else if(type === 'diagnosis') {
-					createDiagnosisWidget();
+					showDiagnosisPluginInitConfigDialog();
 				}
 				else if(type === 'nursing') {
 					showNursingPluginInitConfigDialog();
