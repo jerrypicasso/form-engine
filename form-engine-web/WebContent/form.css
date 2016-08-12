@@ -243,20 +243,13 @@ input.editor {
     cursor: pointer;
 }
 
-.diagnosisType-text {
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px;
-    line-height: 22px
-}
+
 
 .display-title {
     display: none;
 }
 
-.diagnosis-list li {
-    line-height: 22px;
-}
+
 
 .diagnosis-list > li > b {
     display: inline-block;
@@ -324,12 +317,6 @@ input.editor {
     vertical-align: top;
 }
 
-.widget-custom-diagnosis div.display-field {
-    display: inline-block;
-    margin: 5px;
-    vertical-align: top;
-}
-
 div.model-wrapper {
     margin: 5px;
     border: 1px solid #337FE5;
@@ -386,9 +373,7 @@ div.model-wrapper i.fa {
 }
 
 
-.widget-custom-diagnosis.model-modal .diagnosisType-text{
-    width:70px
-}
+
 .widget-custom-diagnosis.model-modal .display-title {
     display: block;
 }

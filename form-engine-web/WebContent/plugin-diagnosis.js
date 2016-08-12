@@ -10,7 +10,6 @@ $.Engine.plugin('diagnosis', {
             diagnosisWidget.each(function () {
                 $(this).find('.display-field').css({
                     'display': 'inline-block',
-                    'margin': '5px',
                     'vertical-align': 'top'
                 });
                 queryDiagnosis($(this), container.data('options'), options.mode, container);
@@ -86,20 +85,20 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                     signature = $('<div class="signature-box"></div>').insertAfter(list);
 
                     if ('10' == diagnosisType) {
-                        signature.append('<div class="signature-row" style="line-height: 20px"><span class="signature-label" >医师签名:</span>' +
+                        signature.append('<div class="signature-row" ><span class="signature-label" >医师签名:</span>' +
                             '<span class="signature-position">' + signatureInfo.createName + '</span></div>');
                         if(signatureInfo.modifyId&&signatureInfo.createId!==signatureInfo.modifyId){
                             signature.find('.signature-position').text(signatureInfo.modfiyName+' / '+signatureInfo.createName);
                         }
                         if(signatureInfo.sync&&signatureInfo.sync=="Y"){
-                            signature.append('<div class="signature-row" style="line-height: 20px"><span class="signature-label">'+signatureInfo.modifyZcName+':</span>' +
+                            signature.append('<div class="signature-row" ><span class="signature-label">'+signatureInfo.modifyZcName+':</span>' +
                                 '<span class="audit-position">' + signatureInfo.modfiyName + '</span></div>');
                         }
                     }else{
-                        signature.append('<div class="signature-row" style="line-height: 20px"><span class="signature-label" >医师签名:</span>' +
+                        signature.append('<div class="signature-row" ><span class="signature-label" >医师签名:</span>' +
                             '<span class="signature-position">' + signatureInfo.modfiyName + '</span></div>');
                     }
-                    signature.append('<div class="signature-row" style="line-height: 20px"><span class="signature-label"><span class="signature-time">' + signatureInfo.modifyTime + '</span></span></div>')
+                    signature.append('<div class="signature-row"><span class="signature-label"><span class="signature-time">' + signatureInfo.modifyTime + '</span></span></div>')
                 }
             }
 
@@ -111,7 +110,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                 // list = $('<ul style="margin:0;padding:0;list-style:none;" class="diagnosis-list"></ul>');
 
                 for (var i = 0; i < data.length; i++) {
-                    var li = $('<li id="' + data[i].ID + '" type="main" class="selectable" style="line-height: 20px">'), index = i + 1;
+                    var li = $('<li id="' + data[i].ID + '" type="main" class="selectable">'), index = i + 1;
                     if (data.length > 1) {
                         li.append('<span class="index main-index" style="display: inline-block;vertical-align: top;word-wrap: break-word;">' + index + '. </span><span class="text main-text" style="width: 175px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + data[i].NAME + '</span><span class="icd" style="display: none">' + data[i].ICD_10 + '</span>');
                     } else {
@@ -125,10 +124,10 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                         for (var j = 0; j < items.length; j++) {
                             var subIndex = j + 1;
                             if (items.length > 1) {
-                                subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable" style="line-height: 20px"><span class="index sub-index" style="display: inline-block;vertical-align: top;word-wrap: break-word;">(' + subIndex + '). </span><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
+                                subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable"><span class="index sub-index" style="display: inline-block;vertical-align: top;word-wrap: break-word;">(' + subIndex + '). </span><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
                                     + '<span class="icd" style="display: none">' + items[j].ICD_10 + '</span></li>');
                             } else {
-                                subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable" style="line-height: 20px"><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
+                                subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable"><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
                                     + '<span class="icd" style="display: none">' + items[j].ICD_10 + '</span></li>');
                             }
 
@@ -257,8 +256,8 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                 }
 
                 if('horizontal'==direct){
-                    list.find('li').css('display','inline').css('float','left');
-                    list.find('ul').css('display','inline').css('float','left');
+                    list.find('li').css('display','inline');
+                    list.find('ul').css('display','inline');
                     list.find('span:not(.icd)').css('display','inline');
                 }
             }
