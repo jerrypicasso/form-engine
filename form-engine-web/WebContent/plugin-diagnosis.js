@@ -80,7 +80,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
             displayField.append(list);
 
 
-            if(!diagnosisWidget.attr('sign')){
+            if(!diagnosisWidget.attr('sign')||diagnosisWidget.attr('sign')=='true'){
                 if (signatureInfo && signatureInfo.createId && signatureInfo.createId) {
                     signature = $('<div class="signature-box"></div>').insertAfter(list);
 
