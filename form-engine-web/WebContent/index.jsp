@@ -49,7 +49,8 @@
 				'patientCode': '1459047',
 				'staffCode':'1783032',
 				'jzxh':'2009188',
-				'category':tplName
+				'category':tplName,
+				/*'treeId':'111'*/
 			});
 		});
 		$('#changeModeBtn').click(function(){
