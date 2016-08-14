@@ -43,59 +43,11 @@ function showLoadPaperDialog() {
 				$('.sql-node').each(function(){
 					registerSelectedSqlNodeHandler(this);
 				});
-				$('.iterator-wrapper').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-text-static').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-text-dynamic').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-hidden').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-date').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-number').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-dict').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-staff').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-text').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-check').each(function(){
+				$('.selectable').each(function(){
 					registerWidgetMousedownHandler(this);
 				});
 				$('.widget-table').each(function(){
 					registerCellEventHandlers(this);
-				});
-				$('.widget-field-select').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-custom-diagnosis').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-plugin-nursing').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-plugin-surgery').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-plugin-audit').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-plugin').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-condition').each(function(){
-					registerWidgetMousedownHandler(this);
 				});
 				mask.remove();
 			}
@@ -217,6 +169,7 @@ function showPickDatasetFieldDialog(parent) {
 		var valueExpr = '${(' + prefix + '.' + suffix + ')!}';
 		var dispExpr = '${(' + prefix + '.' + suffix + ')!}';
 		if(parent.hasClass('dialog')) {
+			parent.data('dataset', selectedItem.data('sqlName'));
 			parent.find('input[name=real-value]').val(valueExpr);
 			parent.find('textarea[name=disp-value]').val(dispExpr);
 			parent.find('input[name=field-name]').val(suffix);
@@ -312,6 +265,9 @@ function showSelectInitConfigDialog() {
 	dialog.find('textarea[name=text-val]').bind('dblclick', function() {
 		showPickDatasetFieldDialog($(this));
 	});
+	dialog.find('input[name=table-name]').bind('dblclick', function() {
+		showPickTableDialog(dialog);
+	});
 	dialog.find('select[name=is-row-data]').val('0');
 	var dropZone = $('.drop-zone');
 	if(dropZone.hasClass('cell')) {
@@ -356,7 +312,7 @@ function showSelectInitConfigDialog() {
 	dialog.show();
 }
 
-function showPickTableDialog(field) {
+function showPickTableDialog(parent) {
 	var mask = $('.mask-layer-tpl').clone();
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
 	var dialog = ['<div class="dialog" style="width:300px;height:160px;">',
@@ -374,14 +330,35 @@ function showPickTableDialog(field) {
 	mask.find('.dialog-zone').append(dialog);
 	mask.appendTo(document.body);
 	
-	//TODO
-	
+	var datasetName = parent.data('dataset');
+	if(datasetName) {
+		var sqlNode = $('.sql-node[name='+ datasetName +'] .sql');
+		if(sqlNode.length > 0) {
+			var sql = sqlNode.html();
+			var arr = sql.match(/from\s+\w+\s+/g);
+			if(arr.length > 0) {
+				var combo =  mask.find('select[name=table-name]');
+				$.unique(arr);
+				for(var i = 0; i < arr.length; i++) {
+					var tableName = $.trim(arr[i].substring(4).toUpperCase());
+					var option = $('<option></option>').val(tableName).html(tableName);
+					combo.append(option);
+				}
+			}
+		}
+	}
 	mask.find('.ok-btn').unbind('click').bind('click',function(){
-		$('.drop-zone').removeClass('drop-zone');
+		var tableName = mask.find('select[name=table-name]').val();
+		if(tableName) {
+			parent.find('input[name=table-name]').val(tableName);
+		}
+		else {
+			alert('请选择表名！');
+			return;
+		}
 		mask.remove();
 	});
 	mask.find('.cancel-btn').unbind('click').bind('click',function() {
-		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.show();
@@ -409,7 +386,7 @@ function showWidgetInitConfigDialog(tplClass, callback) {
 		showPickDatasetFieldDialog(dialog);
 	});
 	dialog.find('input[name=table-name]').bind('dblclick', function() {
-		showPickTableDialog($(this));
+		showPickTableDialog(dialog);
 	});
 	/*dialog.find('input[name=page-count]').bind('dblclick', function() {
 		showPickDatasetFieldDialog($(this));

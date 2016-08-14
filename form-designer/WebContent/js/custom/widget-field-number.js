@@ -4,6 +4,7 @@ function createNumberFieldWidget(config) {
 	var field = document.createElement('span');
 	$(field).addClass('widget-field-number');
 	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('field', config['field-name']);
 	$(field).attr('table', config['table-name']);
 	$(field).attr('type', 'number');

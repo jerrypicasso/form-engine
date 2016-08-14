@@ -4,6 +4,7 @@ function createStaffFieldWidget(config) {
 	var field = document.createElement('span');
 	$(field).addClass('widget-field-staff');
 	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('field', config['field-name']);
 	$(field).attr('type', 'staff');
 	if(config['is-row-data'] === '1') {

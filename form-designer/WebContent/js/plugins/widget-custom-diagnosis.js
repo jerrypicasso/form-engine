@@ -4,6 +4,7 @@ function createDiagnosisWidget(config) {
 	var field = document.createElement('div');
 	$(field).addClass('widget-custom-diagnosis');
 	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('type', 'diagnosis');
 	$(field).attr('diagnosistype', config['diagnosisType']);
 	$(field).attr('direct', config['direction']);

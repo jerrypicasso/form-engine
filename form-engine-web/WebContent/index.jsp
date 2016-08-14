@@ -40,7 +40,7 @@
 			var tplName = $('#chooseTpl').val();
 			$('#container').form('load', {
 				'patientCode': '1459047',
-				'staffCode':'9527',
+				'staffCode':'1783032',
 				'jzxh':'2009188',
 				'category':tplName
 			});

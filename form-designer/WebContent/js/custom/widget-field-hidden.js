@@ -3,6 +3,7 @@ function createHiddenFieldWidget(config) {
 	var field = document.createElement('span');
 	$(field).addClass('widget-field-hidden');
 	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('field', config['field-name']);
 	$(field).attr('table', config['table-name']);
 	if(config['is-row-data'] === '1') {

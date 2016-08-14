@@ -102,69 +102,6 @@ $(document).ready(function() {
 		//$('#load-tpl-btn-hidden').click();
 		showLoadPaperDialog();
 	});
-	$('#load-tpl-btn-hidden').bind('change', function() {
-		/*if(!window.FormData) {
-			alert('您的浏览器版本太低');
-			return false;
-		}
-		var formData = new FormData($('form')[0]);
-		$.ajax({
-			url:'loadFormTpl.do',
-			type:'post',
-			processData:false,
-			contentType:false,
-			data:formData,
-			success: function(data) {
-				$('.paper-wrapper').html(data);
-				resetAndHideAllPropertiesFields();
-				makeHeaderResizable();
-				makeContentResizable();
-				makeFooterResizable();
-				$('.sql-node').each(function(){
-					registerSelectedSqlNodeHandler(this);
-				});
-				$('.iterator-wrapper').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-text-static').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-text-dynamic').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-hidden').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-date').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-number').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-dict').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-staff').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-field-text').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-check').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-table').each(function(){
-					registerCellEventHandlers(this);
-				});
-				$('.widget-field-select').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-				$('.widget-custom-diagnosis').each(function(){
-					registerWidgetMousedownHandler(this);
-				});
-			}
-		});*/
-	});
 	$('#save-tpl-btn').bind('click', function() {
 		var paperWrapper = $('.paper-wrapper').clone();
 		paperWrapper.find('.header-resizer').remove();

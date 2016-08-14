@@ -4,6 +4,7 @@ function createPluginWidget(config) {
 	$(plugin).addClass('widget-plugin');
 	$(plugin).addClass(config.className);
 	$(plugin).addClass('droppable');
+	$(plugin).addClass('selectable');
 	if(config.styles) {
 		var styles = $.parseJSON(config.styles);
 		$(plugin).css(styles);

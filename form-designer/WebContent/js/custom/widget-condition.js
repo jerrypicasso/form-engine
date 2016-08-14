@@ -4,6 +4,7 @@ function createConditionWidget(config) {
 	
 	var condition = document.createElement('condition');
 	$(condition).addClass('droppable');
+	$(condition).addClass('selectable');
 	$(condition).addClass('widget-condition');
 	$(condition).addClass('widget-container');
 	$(condition).attr('expr', config['expression']);

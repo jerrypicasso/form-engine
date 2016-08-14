@@ -4,6 +4,7 @@ function createDictFieldWidget(config) {
 	var field = document.createElement('span');
 	$(field).addClass('widget-field-dict');
 	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('field', config['field-name']);
 	$(field).attr('table', config['table-name']);
 	$(field).attr('type', 'dict');

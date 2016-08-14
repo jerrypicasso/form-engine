@@ -4,6 +4,7 @@ function createPageCountWidget() {
 	var pager = document.createElement('span');
 	$(pager).addClass('widget-page-count');
 	$(pager).addClass('droppable');
+	$(pager).addClass('selectable');
 	$(pager).css({
 		'line-height': '24px',
 		'display':'inline-block',

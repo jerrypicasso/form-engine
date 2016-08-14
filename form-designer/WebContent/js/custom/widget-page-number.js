@@ -4,6 +4,7 @@ function createPageNumberWidget() {
 	var pager = document.createElement('span');
 	$(pager).addClass('widget-page-number');
 	$(pager).addClass('droppable');
+	$(pager).addClass('selectable');
 	$(pager).css({
 		'line-height': '24px',
 		'display':'inline-block',

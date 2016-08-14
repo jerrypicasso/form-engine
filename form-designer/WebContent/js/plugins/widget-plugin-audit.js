@@ -2,6 +2,8 @@ function createAuditWidget(config) {
 	var dropZone = $('.drop-zone');
 	var field = document.createElement('span');
 	$(field).addClass('widget-plugin-audit');
+	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('type', 'audit');
 	$(field).attr('create-id', config['createId']);
 	$(field).attr('modify-id', config['modifyId']);

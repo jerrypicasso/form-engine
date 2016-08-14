@@ -2,6 +2,8 @@ function createSurgeryWidget(config) {
 	var dropZone = $('.drop-zone');
 	var field = document.createElement('span');
 	$(field).addClass('widget-plugin-surgery');
+	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('type', 'surgery');
 	$(field).attr('surgery', config['surgery']);
 	$(field).attr('direction', config['direction']);

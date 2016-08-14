@@ -2,6 +2,8 @@ function createNursingWidget(config) {
 	var dropZone = $('.drop-zone');
 	var field = document.createElement('span');
 	$(field).addClass('widget-plugin-nursing');
+	$(field).addClass('droppable');
+	$(field).addClass('selectable');
 	$(field).attr('type', 'nursing');
 	$(field).attr('iterator', config['iterName']);
 	$(field).attr('datetime-field', config['datetimeField']);

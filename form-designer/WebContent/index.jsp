@@ -1,13 +1,6 @@
-<%@page import="com.neusoft.hit.emr.fd.util.DBUtil" %>
-<%@page import="java.util.List" %>
-<%@page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    List<Map<String, Object>> list = DBUtil.getMultiResults("SELECT * FROM COMBO_WIDGET_CONFIG WHERE 'DEL_FLAG' != '1'");
-    request.setAttribute("combos", list);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -175,7 +168,7 @@
     </form>
 </div>
 <!-- 创建表单模版初始化设置 -->
-<div class="paper-init-config-dialog-tpl" style="width:320px;height:210px;display:none;">
+<div class="paper-init-config-dialog-tpl" style="width:320px;height:200px;display:none;">
     <div class="dialog-title">初始化配置</div>
     <form style="padding:15px;">
         <table style="width:100%;">
@@ -335,15 +328,15 @@
                 </td>
             </tr>
             <tr>
-                <td>表字段</td>
-                <td colspan="3">
-                    <input name="field-name" class="config-item" type="text" style="width:100%;" required="true"/>
-                </td>
-            </tr>
-            <tr>
                 <td>数据表</td>
                 <td colspan="3">
                     <input name="table-name" class="config-item" type="text" style="width:100%;" required="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>表字段</td>
+                <td colspan="3">
+                    <input name="field-name" class="config-item" type="text" style="width:100%;" required="true"/>
                 </td>
             </tr>
             <tr>
@@ -418,9 +411,9 @@
                 <td>类别</td>
                 <td>
                     <select name="category" class="config-item" style="width:100%;" required="true">
-                        <c:forEach items="${combos}" var="combo">
+                        <%-- <c:forEach items="${combos}" var="combo">
                             <option value='${combo["CODE"]}'>${combo["NAME"]}</option>
-                        </c:forEach>
+                        </c:forEach> --%>
                     </select>
                 </td>
                 <td>过滤参数</td>

@@ -3,6 +3,7 @@ function createDynamicTextWidget(config) {
 	var text = document.createElement('span');
 	$(text).addClass('widget-text-dynamic');
 	$(text).addClass('droppable');
+	$(text).addClass('selectable');
 	$(text).css({
 		'display':'inline-block',
 		'vertical-align':'middle',

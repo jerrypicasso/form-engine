@@ -3,6 +3,7 @@ function createStaticTextWidget(config) {
 	var text = document.createElement('span');
 	$(text).addClass('widget-text-static');
 	$(text).addClass('droppable');
+	$(text).addClass('selectable');
 	$(text).css({
 		'display':'inline-block',
 		'vertical-align':'middle',

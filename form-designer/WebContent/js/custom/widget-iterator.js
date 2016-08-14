@@ -4,6 +4,7 @@ function createIteratorWidget(config) {
 	var iterWrapper = document.createElement('div');
 	$(iterWrapper).attr('id', Math.uuidFast().toLowerCase());
 	$(iterWrapper).addClass('iterator-wrapper');
+	$(iterWrapper).addClass('selectable');
 	//$(iterWrapper).attr('total-row', config['row-count']);
 	//$(iterWrapper).attr('total-page', config['page-count']);
 	$(iterWrapper).attr('table-name', config['table-name']);

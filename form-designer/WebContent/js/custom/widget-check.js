@@ -1,18 +1,19 @@
 /*创建复选框控件*/
 function createCheckWidget(config) {
 	var dropZone = $('.drop-zone');
-	var field = document.createElement('span');
-	$(field).addClass('widget-check');
-	$(field).addClass('droppable');
-	$(field).attr('field', config['field-name']);
-	$(field).attr('type', 'check');
+	var check = document.createElement('span');
+	$(check).addClass('widget-check');
+	$(check).addClass('droppable');
+	$(check).addClass('selectable');
+	$(check).attr('field', config['field-name']);
+	$(check).attr('type', 'check');
 	/*if(config['is-row-data'] === '1') {
-		$(field).addClass('row-field');
+		$(check).addClass('row-field');
 	} 
 	else {
-		$(field).addClass('main-field');
+		$(check).addClass('main-field');
 	}*/
-	$(field).css({
+	$(check).css({
 		'display':'inline-block',
 		'border': '1px solid rgb(0, 0, 0)',
 	    'height': '16px',
@@ -23,26 +24,26 @@ function createCheckWidget(config) {
 	    'vertical-align': 'middle',
 	    'width': '16px'
 	});
-	registerWidgetMousedownHandler(field);
+	registerWidgetMousedownHandler(check);
 	if(dropZone.hasClass('widget-container')) {
-		$(field).appendTo(dropZone);
+		$(check).appendTo(dropZone);
 	}
 	else {
-		dropZone.before(field);
+		dropZone.before(check);
 	}
 	
 	var valueField = document.createElement('span');
 	$(valueField).addClass('value-field');
 	$(valueField).hide();
 	$(valueField).html(config['real-value']);
-	$(valueField).appendTo(field);
+	$(valueField).appendTo(check);
 	
 	var displayField = document.createElement('span');
 	$(displayField).css({'display':'block','line-height':'16px','height':'100%'});
 	$(displayField).html(config['disp-value']);
 	$(displayField).addClass('check-field');
-	$(displayField).appendTo(field);
+	$(displayField).appendTo(check);
 	
-	var width = $(field).width();
-	$(field).width(width);
+	var width = $(check).width();
+	$(check).width(width);
 }
