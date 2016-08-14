@@ -36,6 +36,13 @@
 <script type="text/javascript" src="plugin-surgery.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$('#container').bind('form-loaded', function(){
+			var ret = $('#container').form('lookup', {
+				field:'MODIFY_ID'
+			});
+			console.log(ret);
+		});
+		
 		$('#queryBtn').click(function(){
 			var tplName = $('#chooseTpl').val();
 			$('#container').form('load', {

@@ -86,29 +86,17 @@
     height: auto !important;
 }
 
-.main-field.editable .editor {
-    box-shadow: 0 0 2px 2px rgb(34, 139, 34);
-}
+/* .main-field.editable .editor {
+    border: 1px solid rgb(34, 139, 34);
+} */
 
-.main-field.editable .select2 {
-    box-shadow: 0 0 2px 2px rgb(34, 139, 34);
-}
+/* .main-field.editable .select2 {
+    border: 1px solid rgb(34, 139, 34);
+} */
 
-.widget-check.editable .check-field {
-    box-shadow: 0 0 2px 2px rgb(34, 139, 34);
+.widget-check.editable {
+    border: 1px solid rgb(34, 139, 34) !important;
 }
-
-/* .editable td {
-		background-color:rgb(255, 228, 225) !important;
-	}
-	
-	.editable .row-field {
-		background-color: transparent !important;
-	}
-	
-	.editable .main-field {
-		box-shadow: 0 0 5px 5px rgb(139,0,0);
-	} */
 
 .main-field, .row-field {
     display: inline-block;
@@ -181,12 +169,18 @@ li.selected {
 }
 
 input.editor {
-    border: 1px solid #aaa;
+    border: 1px solid rgb(34, 139, 34);
     min-height: 28px;
     min-width: 36px;
     -moz-appearance: textfield;
     -webkit-appearance: none;
     margin: 0;
+    padding: 0;
+	-moz-box-sizing: border-box;  
+	-webkit-box-sizing: border-box; 
+	-o-box-sizing: border-box; 
+	-ms-box-sizing: border-box; 
+	box-sizing: border-box;
 }
 
 .select2-container {
@@ -449,16 +443,30 @@ div.model-wrapper i.fa {
 /*diagnosis插件用css*/
 
 .widget-plugin-surgery.editable {
-    box-shadow: 0 0 2px 2px rgb(34, 139, 34);
+    border: 1px solid rgb(34, 139, 34);
     position: relative;
+    -moz-box-sizing: border-box;  
+	-webkit-box-sizing: border-box; 
+	-o-box-sizing: border-box; 
+	-ms-box-sizing: border-box; 
+	box-sizing: border-box;
+}
+
+.widget-plugin-surgery.editable .display-field {
+	padding: 2px 0 0 2px;
 }
 
 .widget-plugin-surgery.editable .display-field .surgery-item {
-	box-shadow: 0 0 2px 2px rgb(255,215,0);
+	border: 1px solid rgb(255,215,0);
 	cursor: pointer;
 	padding: 5px !important;
-	margin: 5px !important;
+	margin: 0 2px 2px 0 !important;
 	display: inline-block !important;
+	-moz-box-sizing: border-box;  
+	-webkit-box-sizing: border-box; 
+	-o-box-sizing: border-box; 
+	-ms-box-sizing: border-box; 
+	box-sizing: border-box;
 }
 
 .widget-plugin-surgery.editable .display-field .surgery-item.selected {
