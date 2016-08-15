@@ -176,10 +176,10 @@ input.editor {
     -webkit-appearance: none;
     margin: 0;
     padding: 0;
-	-moz-box-sizing: border-box;  
-	-webkit-box-sizing: border-box; 
-	-o-box-sizing: border-box; 
-	-ms-box-sizing: border-box; 
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -333,15 +333,17 @@ div.model-wrapper i.fa {
 
 .widget-custom-diagnosis.model-modal {
     position: fixed;
-    z-index: 3000;
-    background-color: white;
+    z-index: 4000;
+    background-color: #F0F0F0;
     box-shadow: 0px 0px 3px 3px gray;
     -moz-box-shadow: 0px 0px 3px 3px gray;
     -webkit-box-shadow: 0px 0px 3px 3px gray;
     -o-box-shadow: 0px 0px 3px 3px gray;
-    padding-top: 20px;
     overflow-y: auto;
-    height:600px !important;
+    height:500px !important;
+    border-radius: 8px 8px 8px 8px;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    -o-border-radius: 8px 8px 8px 8px;
 }
 
 .widget-custom-diagnosis.model-modal > .display-field {
@@ -355,18 +357,12 @@ div.model-wrapper i.fa {
 }
 
 .widget-custom-diagnosis.model-modal > .display-field>ul{
-    height:260px;
+    height:200px;
     overflow: auto;
 }
 .widget-custom-diagnosis.model-modal >.display-field>.signature-box{
     display: none;
 }
-.widget-custom-diagnosis.model-modal > .model-wrapper>ul{
-    width:260px;
-    height:250px;
-    overflow: auto;
-}
-
 
 
 .widget-custom-diagnosis.model-modal .display-title {
@@ -382,14 +378,14 @@ div.model-wrapper i.fa {
 
 .widget-custom-diagnosis .editor-wrapper{
     width:90%;
-    line-height: 40px;
+    line-height: 35px;
     margin:20px auto;
 
 }
 
 .widget-custom-diagnosis .editor-wrapper .editor-toolbar{
     text-align: center;
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 .widget-custom-diagnosis .editor-wrapper .editor-toolbar .button{
