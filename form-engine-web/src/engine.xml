@@ -2,13 +2,17 @@
 <form-engine>
     <data-source>
         <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
-        <url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
-        <user-name>system</user-name>
-        <password>simlink</password>
-
         <!--<url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
         <user-name>system</user-name>
         <password>simlink</password>-->
+
+  <!--      <url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
+        <user-name>qyemr</user-name>
+        <password>simlink</password>-->
+
+        <url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
+        <user-name>emr</user-name>
+        <password>simlink</password>
 
         <initial-size>10</initial-size>
         <max-active>20</max-active>
@@ -53,8 +57,8 @@
             <sql-template>
                 <![CDATA[
 				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE ICD_TYPE = '${param.filter}'
-				<#if param.fuzzy??> 
-					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%') 
+				<#if param.fuzzy??>
+					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%')
 				</#if>
 				]]>
             </sql-template>
@@ -68,13 +72,21 @@
             <property name="diagnosisSelectSql">
                 <![CDATA[
 					SELECT ID,ICD_10,LR AS NAME FROM ZDINFO
-					WHERE BRID = ${patientCode} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
+					WHERE BRID = ${patientCode} AND LX = ${diagnosisType}
+					<#if treeId??>
+					    AND SSTREEID = '${treeId}'
+				    </#if>
+					ORDER BY DIAGNOSTIC_ORDER1
 				]]>
             </property>
             <property name="diagnosisSelectSql2">
                 <![CDATA[
 					SELECT * FROM ZDINFO
-					WHERE BRID = ${patientCode} AND LX = ${diagnosisType} ORDER BY DIAGNOSTIC_ORDER1
+					WHERE BRID = ${patientCode} AND LX = ${diagnosisType}
+					<#if treeId??>
+					    AND SSTREEID = '${treeId}'
+				    </#if>
+					ORDER BY DIAGNOSTIC_ORDER1
 				]]>
             </property>
             <property name="hasDiagnosisSql">
@@ -100,16 +112,25 @@
                     WHERE
                         ZD.BRID = '${patientCode}'
                         AND ZD.LX = '${diagnosisType}'
+                        <#if treeId??>
+					        AND SSTREEID = '${treeId}'
+				        </#if>
                         AND rownum<=1
 				]]>
             </property>
             <property name="diagnosisInsertSql">
                 <![CDATA[
 					<#assign now=.now?string("yyyy-MM-dd HH:mm:ss")/>
-					INSERT INTO ZDINFO(ID,BRID,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME)
+					INSERT INTO ZDINFO(ID,BRID,LX,ICD_10,LR,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME
+					<#if treeId??>
+					    ,SSTREEID
+				    </#if>)
 					VALUES('${guid}','${patientCode}','${diagnosisType}','${diagnosisCode}',
 					'${diagnosisText}','${createId}',to_date('${now}','yyyy-mm-dd hh24:mi:ss'),'${staffCode}',
-					to_date('${now}','yyyy-mm-dd hh24:mi:ss'))
+					to_date('${now}','yyyy-mm-dd hh24:mi:ss')
+					<#if treeId??>
+					    ,'${treeId}'
+				    </#if>)
 				]]>
             </property>
             <property name="diagnosisSyncSql">
@@ -188,11 +209,6 @@
             <property name="dropSubRYdiagnosisSql">
                 <![CDATA[
 					DELETE FROM SUB_ZD_INFO WHERE ZD_ID = '${ID}'
-				]]>
-            </property>
-            <property name="syncdiagnosisSql">
-                <![CDATA[
-					DELETE FROM ZDINFO WHERE BRID = ${patientCode} AND LX = '20'
 				]]>
             </property>
             <property name="subDiagnosisDeleteSql">

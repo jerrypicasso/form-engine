@@ -42,7 +42,6 @@ public class DiagnosisDataHandler implements PluginDataHandler {
     private String modelSortSql;
     private String hasDiagnosisSql;
     private String dropRYdiagnosisSql;
-    private String syncdiagnosisSql;
     private String dropSubRYdiagnosisSql;
     private String diagnosisSyncSql;
     private String subDiagnosisSyncSql;
@@ -724,14 +723,6 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 
     public void setDropRYdiagnosisSql(String dropRYdiagnosisSql) {
         this.dropRYdiagnosisSql = dropRYdiagnosisSql;
-    }
-
-    public String getSyncdiagnosisSql() {
-        return syncdiagnosisSql;
-    }
-
-    public void setSyncdiagnosisSql(String syncdiagnosisSql) {
-        this.syncdiagnosisSql = syncdiagnosisSql;
     }
 
     public String getDiagnosisSelectSql2() {

@@ -312,10 +312,10 @@ input.editor {
 }
 
 div.model-wrapper {
-    margin: 5px;
     border: 1px solid #337FE5;
     display: inline-block;
     vertical-align: top;
+    margin-left: 50px;
     border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     -o-border-radius: 5px 5px 5px 5px;
@@ -335,18 +335,19 @@ div.model-wrapper i.fa {
     position: fixed;
     z-index: 3000;
     background-color: white;
-   /* width: 773px;*/
     box-shadow: 0px 0px 3px 3px gray;
     -moz-box-shadow: 0px 0px 3px 3px gray;
     -webkit-box-shadow: 0px 0px 3px 3px gray;
     -o-box-shadow: 0px 0px 3px 3px gray;
     padding-top: 20px;
     overflow-y: auto;
+    height:600px !important;
 }
 
 .widget-custom-diagnosis.model-modal > .display-field {
-    width:300px;
+    width:300px !important;
     overflow: auto;
+    margin-left: 50px;
     border: 1px solid #337FE5;
     border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
@@ -440,35 +441,22 @@ div.model-wrapper i.fa {
 .signature-box span.tool{
     margin-left: 10px;
 }
-/*diagnosis插件用css*/
+
 
 .widget-plugin-surgery.editable {
-    border: 1px solid rgb(34, 139, 34);
+    box-shadow: 0 0 2px 2px rgb(34, 139, 34);
     position: relative;
-    -moz-box-sizing: border-box;  
-	-webkit-box-sizing: border-box; 
-	-o-box-sizing: border-box; 
-	-ms-box-sizing: border-box; 
-	box-sizing: border-box;
-}
-
-.widget-plugin-surgery.editable .display-field {
-	padding: 2px 0 0 2px;
 }
 
 .widget-plugin-surgery.editable .display-field .surgery-item {
-	border: 1px solid rgb(255,215,0);
-	cursor: pointer;
-	padding: 5px !important;
-	margin: 0 2px 2px 0 !important;
-	display: inline-block !important;
-	-moz-box-sizing: border-box;  
-	-webkit-box-sizing: border-box; 
-	-o-box-sizing: border-box; 
-	-ms-box-sizing: border-box; 
-	box-sizing: border-box;
+    box-shadow: 0 0 2px 2px rgb(255,215,0);
+    cursor: pointer;
+    padding: 5px !important;
+    margin: 5px !important;
+    display: inline-block !important;
 }
 
 .widget-plugin-surgery.editable .display-field .surgery-item.selected {
-	background: rgb(255,215,0);
+    background: rgb(255,215,0);
 }
+/*diagnosis插件用css*/
