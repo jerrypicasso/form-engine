@@ -2,6 +2,7 @@ package com.neusoft.hit.fe.core.utility;
 
 import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -228,6 +229,34 @@ public class DBUtil {
         }
         return "-1";
     }
+    
+    public static boolean checkTableExists(String tableName) {
+    	String dbType = getDataBaseType();
+    	String sql = null;
+    	if("Oracle".equalsIgnoreCase(dbType)) {
+    		sql = "SELECT COUNT(*) FROM USER_TABLES WHERE TABLE_NAME = '"+ StringUtils.upperCase(tableName) +"'";
+    	}
+    	else if("Postgresql".equalsIgnoreCase(dbType)) {
+    		//TODO
+    	}
+    	Connection conn = null;
+    	Statement stmt = null;
+    	ResultSet rs = null;
+    	boolean ret = false;
+    	try {
+			conn = getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				ret = rs.getInt(1) > 0 ? true : false;
+			}
+		} catch (SQLException e) {
+			LOGGER.error(e.toString(), e);
+		} finally {
+			close(conn, stmt, rs);
+		}
+    	return ret;
+    }
 
 
     /**
@@ -252,7 +281,6 @@ public class DBUtil {
                 list.add(obj);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error(e.toString(), e);
         } finally {
             close(con, ps, rs);

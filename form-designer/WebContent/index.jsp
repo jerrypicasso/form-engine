@@ -410,11 +410,7 @@
             <tr>
                 <td>类别</td>
                 <td>
-                    <select name="category" class="config-item" style="width:100%;" required="true">
-                        <%-- <c:forEach items="${combos}" var="combo">
-                            <option value='${combo["CODE"]}'>${combo["NAME"]}</option>
-                        </c:forEach> --%>
-                    </select>
+                    <input name="category" class="config-item" style="width:100%;" required="true"/>
                 </td>
                 <td>过滤参数</td>
                 <td>

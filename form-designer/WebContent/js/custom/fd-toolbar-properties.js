@@ -24,15 +24,6 @@ function createPropertiesControls() {
 		createPropertiesControl(arr[i]);
 	}
 	
-	var options = [];
-	$('.config-item[name=category] option').each(function(){
-		var opt = $(this);
-		options.push({
-			key: opt.val(),
-			value: opt.html()
-		});
-	});
-	
 	arr = [{
 		name:'widgetType',
 		label:'元素类型',
@@ -92,7 +83,7 @@ function createPropertiesControls() {
 	},{
 		name:'category',
 		label:'控件类别',
-		options:options,
+		type:'text',
 		parent:'widget-settings'
 	},{
 		name:'isRich',
@@ -286,7 +277,7 @@ function resetAndHideAllPropertiesFields() {
 	var minNumField = propPanel.find('input[name=minNum]');
 	minNumField.val('');
 	minNumField.parent().hide();
-	var categoryField = propPanel.find('select[name=category]');
+	var categoryField = propPanel.find('input[name=category]');
 	categoryField.val('');
 	categoryField.parent().hide();
 	var widthField = propPanel.find('input[name=width]');
@@ -450,7 +441,7 @@ function registerWidgetPropertiesHandlers() {
 		var val = $(this).prev().val();
 		$('.selected-widget').attr('min-num', val);
 	});
-	propPanel.find('select[name=category]').next().bind('click',function(){
+	propPanel.find('input[name=category]').next().bind('click',function(){
 		var val = $(this).prev().val();
 		$('.selected-widget').attr('category', val);
 	});
@@ -652,7 +643,7 @@ function prepareRelativePropertiesFields(widget) {
 	}
 	if(widget.hasClass('widget-field-dict') || widget.hasClass('widget-field-staff')
 			|| widget.hasClass('widget-field-select')) {
-		var categoryField = propPanel.find('select[name=category]');
+		var categoryField = propPanel.find('input[name=category]');
 		var category = widget.attr('category');
 		categoryField.val(category);
 		categoryField.parent().show();

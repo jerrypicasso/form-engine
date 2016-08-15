@@ -130,7 +130,19 @@ public class FormEditHandler {
 					saveSql.append(" WHERE ").append(pkName).append("='").append(pkValue).append('\'');
 				}
 				stmt.executeUpdate(saveSql.toString());
+				
+				String historyTableName = tableName + "_HISTORY";
+				//保存痕迹到历史表
+				if(DBUtil.checkTableExists(historyTableName)) {
+					StringBuilder historySql = new StringBuilder();
+					historySql.append("INSERT INTO ").append(historyTableName);
+					historySql.append(" SELECT * FROM ").append(tableName);
+					historySql.append(" WHERE ").append(pkName).append("='");
+					historySql.append(pkValue).append("'");
+					stmt.executeUpdate(historySql.toString());
+				}
 			}
+			
 			StringBuilder delStageSql = new StringBuilder();
 			delStageSql.append("DELETE FROM STAGE_FORM_STORAGE ");
 			delStageSql.append("WHERE KEY = '").append(params.get("stageKey")).append('\'');
