@@ -43,9 +43,8 @@ function showDiagnosisPluginInitConfigDialog() {
                 '<tr><td style="width:25%;">是否签名：</td>',
                 '<td style="width:75%;" valign="top"><select name="sign" style="width:100%;"><option value="true" selected>是</option><option value="false">否</option></select></td></tr>',
                 '<tr><td align="center" colspan="2">',
-                '<div class="ok-btn" style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">确定</div>',
-                '<div style="width:30px;display:inline-block;"></div>',
-                '<div class="cancel-btn" style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">取消</div>',
+                '<div class="ok-btn">确定</div>',
+                '<div class="cancel-btn">取消</div>',
                 '</td></tr>',
                 '</table>',
                 '</form>',
@@ -61,9 +60,11 @@ function showDiagnosisPluginInitConfigDialog() {
 			'direction':direction,
 			'sign':sign
 		});
+		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.find('.cancel-btn').unbind('click').bind('click', function(){
+		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.show();

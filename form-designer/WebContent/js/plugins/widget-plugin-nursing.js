@@ -34,9 +34,8 @@ function showNursingPluginInitConfigDialog() {
                 '<tr><td valign="top"><textarea name="ioSql" style="width:100%;height:200px;"></textarea></td></tr>',
                 '<tr>',
                 '<td align="center">',
-                '<div class="ok-btn" style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">确定</div>',
-                '<div style="width:30px;display:inline-block;"></div>',
-                '<div class="cancel-btn" style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">取消</div>',
+                '<div class="ok-btn">确定</div>',
+                '<div class="cancel-btn">取消</div>',
                 '</td>',
                 '</tr>',
                 '</table>',
@@ -53,9 +52,11 @@ function showNursingPluginInitConfigDialog() {
 			iterName : iterName,
 			sql : sql
 		});
+		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.find('.cancel-btn').unbind('click').bind('click', function(){
+		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.show();

@@ -46,9 +46,8 @@ function showAuditPluginInitConfigDialog() {
                 '<tr><td>所属库表名：</td>',
                 '<td valign="top"><input name="tableName" style="width:100%;"></td></tr>',
                 '<tr><td align="center" colspan="2">',
-                '<div class="ok-btn" style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">确定</div>',
-                '<div style="width:30px;display:inline-block;"></div>',
-                '<div class="cancel-btn" style="cursor:pointer;background:rgb(67, 142, 185);width:80px;height:30px;line-height:30px;color:#fff;display:inline-block;">取消</div>',
+                '<div class="ok-btn">确定</div>',
+                '<div class="cancel-btn">取消</div>',
                 '</td></tr>',
                 '</table>',
                 '</form>',
@@ -70,9 +69,11 @@ function showAuditPluginInitConfigDialog() {
 			pkName : pkName,
 			tableName : tableName
 		});
+		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.find('.cancel-btn').unbind('click').bind('click', function(){
+		$('.drop-zone').removeClass('drop-zone');
 		mask.remove();
 	});
 	mask.show();
