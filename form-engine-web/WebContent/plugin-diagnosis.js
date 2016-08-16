@@ -230,10 +230,10 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                         if(!diagnosisWidget.attr('readonly')){
                             signature.find('.signature-position').after('<span class="sync tool"><i class="fa fa-refresh"></i></span><span class="audit tool"><i class="fa fa-pencil"></i></span>');
                             var sync = signature.find('span.sync').unbind('click').on('click',function(){
-                                openDialog(container,{title:'申请同步',url:'form/plugin.process?action=sync&handler=diagnosis',param:opts});
+                                openDialog(container,{title:'申请同步',url:'form/plugin.process?action=sync&handler=diagnosis',param:opts,modifyid:signatureInfo.modifyId});
                             });
                             var audit = signature.find('span.audit').unbind('click').on('click',function(){
-                                openDialog(container,{title:'申请审核',url:'form/plugin.process?action=audit&handler=diagnosis',param:opts});
+                                openDialog(container,{title:'申请审核',url:'form/plugin.process?action=audit&handler=diagnosis',param:opts,modifyid:signatureInfo.modifyId});
                             });
                         }
                     }
@@ -1202,17 +1202,22 @@ function openDialog(container,options) {
         yes: function (index, self) {
             var username = self.find('input[name="username"]').val();
             var password = self.find('input[name="password"]').val();
+
             if (username && password) {
                 var params = {
                     'username': username,
-                    'password': password
+                    'password': password,
+                    'modifyid':options.modifyid
                 };
+                console.log(window.location.pathname);
                 $.ajax({
-                    url: 'form/plugin.process?action=load&handler=diagnosis',
+                    url: ctx+'/jsp/checkDoctor.action',
                     type: 'post',
                     dataType: 'json',
-                    data: params,
+                    data: JSON.stringify(params),
                     success: function (data) {
+                        console.log('三级权限：');
+                        console.log(data);
                         result = true;
                         if(result){
                             $.ajax({
