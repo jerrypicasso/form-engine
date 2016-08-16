@@ -45,7 +45,7 @@ $(document).ready(function() {
 					showSelectInitConfigDialog();
 				}
 				else if(type === 'check') {
-					showWidgetInitConfigDialog('field-init-config-dialog-tpl',createCheckWidget);
+					showCheckInitConfigDialog();
 				}
 				else if(type === 'iterator') {
 					showWidgetInitConfigDialog('iterator-init-config-dialog-tpl',createIteratorWidget);

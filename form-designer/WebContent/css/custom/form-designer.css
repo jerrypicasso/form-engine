@@ -370,6 +370,7 @@ ul.fields-wrapper li {
 	line-height:30px;
 	color:#fff;
 	display:inline-block;
+	margin:0 20px;
 }
 
 .dialog .cancel-btn {
@@ -380,4 +381,5 @@ ul.fields-wrapper li {
 	line-height:30px;
 	color:#fff;
 	display:inline-block;
+	margin:0 20px;
 }

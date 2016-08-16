@@ -671,7 +671,7 @@ function prepareRelativePropertiesFields(widget) {
 	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
 			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')
 			|| widget.hasClass('widget-field-staff') || widget.hasClass('widget-field-hidden')
-			|| widget.hasClass('widget-check') || widget.hasClass('widget-field-select')) {
+			|| widget.hasClass('widget-field-select')) {
 		var actualValField = propPanel.find('input[name=actualVal]');
 		actualValField.val(widget.find('.value-field').html());
 		actualValField.parent().show();
@@ -686,7 +686,18 @@ function prepareRelativePropertiesFields(widget) {
 		requiredField.val(required);
 		requiredField.parent().show();
 	}
-	if(!widget.hasClass('iterator-wrapper') && !widget.hasClass('cell')) {
+	if(widget.hasClass('widget-check')) {
+		var actualValField = propPanel.find('input[name=actualVal]');
+		actualValField.val(widget.find('.value-field').html());
+		actualValField.parent().show();
+		
+		var fieldNameField = propPanel.find('input[name=fieldName]');
+		var fieldName = widget.attr('field');
+		fieldNameField.val(fieldName);
+		fieldNameField.parent().show();
+	}
+	if(!widget.hasClass('iterator-wrapper') && !widget.hasClass('cell')
+			&& !widget.hasClass('widget-check')) {
 		var dispField = widget.find('.display-field');
 		var displayValField = propPanel.find('input[name=displayVal]');
 		if(dispField.length > 0) {
@@ -787,7 +798,7 @@ function prepareRelativePropertiesFields(widget) {
 	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
 			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')
 			|| widget.hasClass('widget-field-staff') || widget.hasClass('widget-field-hidden')
-			|| widget.hasClass('widget-check') || widget.hasClass('widget-field-select')
+			/*|| widget.hasClass('widget-check')*/ || widget.hasClass('widget-field-select')
 			|| widget.hasClass('iterator-wrapper')) {
 		var tableNameField = propPanel.find('input[name=tableName]');
 		tableNameField.val(widget.attr('table'));
