@@ -193,13 +193,13 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                             diagnosisWidget.data('widgetHeight', originHeight);
 
                             diagnosisWidget.addClass('model-modal').css({
-                                'top': '40px',
+                                'top': '10px',
                                 'left': left + 'px',
                                 'width': width
                             });
                             createDiagnosisEditor(diagnosisWidget, opts, container);
                             //添加诊断模板区域
-                            diagnosisWidget.find('.editor-wrapper').before('<div class="model-wrapper"></div>');
+                            displayField.after('<div class="model-wrapper"></div>');
                             createDiagnosisModel(diagnosisWidget, opts, container);//创建诊断模板控件
                             container.find('.editTrigger').val('编辑');
                             $(this).val('X');
@@ -287,11 +287,11 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
 
     if (!diagnosisModelWrapper || diagnosisModelWrapper.length <= 0) {
         diagnosisModelWrapper = $('<div class="model-wrapper"></div>');
-        diagnosisWidget.find('.editor-wrapper').before(diagnosisModelWrapper);
+        diagnosisWidget.find('.display-field').after(diagnosisModelWrapper);
     }
 
     if(!container.find('div.diagnosisMask')||container.find('div.diagnosisMask').length<=0){
-        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: fixed;top:0;left: 0;bottom:0;z-index: 2000;background-color:black"></div>').appendTo(container);
+        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: fixed;top:0;left: 0;bottom:0;z-index: 3100;background-color:black"></div>').appendTo(container);
     }
 
 
@@ -305,7 +305,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
 
 
     var list = $('<ul style="padding:0;' +
-        'list-style:none;margin:10px 0 0 10px;width: 260px;height: 250px;overflow: auto; " class="diagnosis-model-list">' +
+        'list-style:none;margin:10px 0 0 10px;width:260px;height: 190px;overflow: auto; " class="diagnosis-model-list">' +
         '<div class="list-title"><i class="fa fa-plus grzd"></i>&nbsp;个人模板</div></ul>');
     diagnosisModelWrapper.append(list);
 
@@ -823,7 +823,8 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
             '<input class="comboText" type="text" style="width:50%;display: inline-block" maxlength="64"/>',
             '<input class="clear button" type="button" value="清空"/>',
             '</div>'].join(''));
-        diagnosisWidget.append(diagnosisEditorWrapper);
+
+        displayField.before(diagnosisEditorWrapper);
 
         diagnosisEditorWrapper.find('.resultsView .clear').unbind('click').bind('click', function () {
             diagnosisEditorWrapper.find('.comboText').val('');
