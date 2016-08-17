@@ -33,7 +33,7 @@
 				SELECT A.PROJECT_DETAIL_CODE,A.FORMAL_NAME FROM PROJECT_DETAILS A 
 				LEFT JOIN PROJECT B ON A.PROJECT_ID = B.PROJECT_ID WHERE PROJECT_CODE = '${param.filter}' 
 				<#if param.fuzzy??> 
-					AND (A.PROJECT_DETAIL_CODE LIKE '%${param.fuzzy}%' OR A.PROJECT_NAME LIKE '%${param.fuzzy}%')
+					AND (A.PROJECT_DETAIL_CODE LIKE '%${param.fuzzy}%' OR A.FORMAL_NAME LIKE '%${param.fuzzy}%')
 				</#if>
 				]]>
             </sql-template>
