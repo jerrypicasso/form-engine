@@ -28,6 +28,10 @@
 	box-shadow: 0 0 3px 3px rgba(209,91,71,0.5);
 }
 
+.cell.movable {
+	cursor: move;
+}
+
 .cell.drop-zone {
 	background: rgb(187,255,255) !important;
 }

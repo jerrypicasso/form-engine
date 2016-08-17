@@ -76,11 +76,28 @@ $(document).ready(function() {
 				}
 			}
 			else if($('.movable').length > 0 && dropZone != $('.movable')) {
+				var movableWidget = $('.movable');
+				if(movableWidget.hasClass('cell')) {
+					var tableId = movableWidget.attr('grid');
+					movableWidget = $('.widget-table[id='+ tableId +']');
+				}
 				if(dropZone.hasClass('widget-container')) {
-					dropZone.append($('.movable'));
+					if(dropZone.hasClass('cell')) {
+						if(confirm("是否置前？")) {
+							var gridId = dropZone.attr('grid')
+							dropZone = $('.widget-table[id='+ gridId +']');
+							dropZone.before(movableWidget);
+						}
+						else {
+							dropZone.append(movableWidget);
+						}
+					}
+					else {
+						dropZone.append(movableWidget);
+					}
 				}
 				else {
-					dropZone.before($('.movable'));
+					dropZone.before(movableWidget);
 				}
 				$('.drop-zone').removeClass('drop-zone');
 			}

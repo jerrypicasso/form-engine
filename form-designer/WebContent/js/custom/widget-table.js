@@ -5,6 +5,7 @@ function createTableWidget(config) {
 	var table = document.createElement('table');
 	$(table).attr('id', Math.uuidFast().toLowerCase());
 	$(table).addClass('widget-table');
+	$(table).addClass('droppable');
 	if(config['is-data-row'] === '1') {
 		$(table).addClass('data-row');
 	}
@@ -416,6 +417,20 @@ function beforeMousemoveAction(e) {
 			$(document.body).unbind('mouseup', endSelectCells);
 			$(document.body).bind('mouseup', endSelectCells);
 		}
+	}
+	else if(e.which === 3) {
+		cell.addClass('movable');
+		$('.droppable').unbind('mouseover');
+		var tableId = cell.attr('grid');
+		$('.droppable[grid!='+ tableId +']').bind('mouseover',function(e) {
+			if($('.movable').length > 0) {
+				$('.drop-zone').removeClass('drop-zone');
+				if(!$(this).hasClass('movable')) {
+					$(this).addClass('drop-zone');
+				}
+			}
+			e.stopPropagation();
+		});
 	}
 	e.stopPropagation();
 }
