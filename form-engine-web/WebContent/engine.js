@@ -62,6 +62,9 @@
 				saveForm(container);
 			}
 		},
+		'delete': function(options) {
+			var container = $(this);
+		},
 		'stage': function(options) {
 			var container = $(this);
 			var mode = container.data('mode');
@@ -511,6 +514,10 @@
 			dataType : 'json',
 			success : function(data) {
 				//将返回的表单html放在container中
+				if(data['success'] == false) {
+					toastr['error'](data['message']);
+					return;
+				}
 				container.html(data['content']);
 				container.data('lastOptions', params);
 				container.data('mode', data['mode']);
@@ -663,8 +670,6 @@
 			});
 			$(editor).attr('multi', multiple === 'multiple');
 			$(editor).data('display', txt);
-			console.log(txt);
-			console.log(val);
 			$(editor).val(val).trigger('change');
 		}
 		else if(type == 'date') {

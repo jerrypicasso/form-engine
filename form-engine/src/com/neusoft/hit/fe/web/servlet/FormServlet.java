@@ -141,7 +141,11 @@ public class FormServlet extends HttpServlet {
 				resp.getWriter().write(result);
 			}
 		} catch (FormEngineException e) {
-			resp.getWriter().write(ResultInfo.getFailureResult(e.getMessage()));
+			StringBuilder message = new StringBuilder(e.getMessage());
+			message.append("caused by:");
+			message.append(e.getCause().getMessage());
+			//resp.getWriter().write(ResultInfo.getFailureResult(e.getMessage()));
+			resp.getWriter().write(ResultInfo.getFailureResult(message.toString().replaceAll("(\n|\r)", "")));
 		}
 	}
 	

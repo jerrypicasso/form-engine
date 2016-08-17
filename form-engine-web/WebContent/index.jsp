@@ -48,7 +48,7 @@
 			$('#container').form('load', {
 				'patientCode': '1459047',
 				'staffCode':'1783032',
-				'jzxh':'2009188',
+				'medicalNum':'2009188',
 				'category':tplName,
 				/*'treeId':'111'*/
 			});

@@ -48,7 +48,7 @@ public class SurgeryDataHandler implements PluginDataHandler {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql.toString());
 			records = DBUtil.getMultiResults(rs);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.toString(), e);
 		} finally {
 			DBUtil.close(conn, stmt, rs);

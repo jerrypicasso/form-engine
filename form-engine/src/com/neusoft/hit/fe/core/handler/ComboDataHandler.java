@@ -2,7 +2,6 @@ package com.neusoft.hit.fe.core.handler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +59,7 @@ public class ComboDataHandler {
 				combo.setTxt(display);
 				combos.add(combo);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.toString(), e);
 		} finally {
 			DBUtil.close(conn, stmt, rs);

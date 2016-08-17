@@ -3,7 +3,6 @@ package com.neusoft.hit.fe.core.handler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +79,7 @@ public class FormLoadHandler {
 					}
 				}
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.toString(), e);
 			throw new FormEngineException("获取暂存表单时发生错误，操作失败 ！", e);
 		} finally {
@@ -119,7 +118,7 @@ public class FormLoadHandler {
 					}
 				}
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.toString(), e);
 			throw new FormEngineException("获取表单数据时发生错误，操作失败 ！", e);
 		} finally {
@@ -334,10 +333,7 @@ public class FormLoadHandler {
 				}
 				List<SqlTplInfo> children = sqlTpl.getChildren();
 				loadDatasetByExecutingQuerySql(children, rootMap);
-			} catch (NumberFormatException e) {
-				LOGGER.error(e.toString(), e);
-				throw new FormEngineException("读取数据集时发生错误，操作失败 ！", e);
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				LOGGER.error(e.toString(), e);
 				throw new FormEngineException("读取数据集时发生错误，操作失败 ！", e);
 			} finally {

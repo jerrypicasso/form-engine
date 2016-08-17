@@ -103,16 +103,12 @@ public class DBUtil {
      * @param rs
      * @return
      */
-    public static Map<String, Object> getSingleResult(ResultSet rs) {
+    public static Map<String, Object> getSingleResult(ResultSet rs) throws Exception {
         Map<String, Object> record = null;
-        try {
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnNum = meta.getColumnCount();
-            if (rs.next()) {
-                record = convertResultSetToMap(rs, meta, columnNum);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ResultSetMetaData meta = rs.getMetaData();
+        int columnNum = meta.getColumnCount();
+        if (rs.next()) {
+            record = convertResultSetToMap(rs, meta, columnNum);
         }
         return record;
     }
@@ -123,22 +119,18 @@ public class DBUtil {
      * @param rs
      * @return
      */
-    public static List<Map<String, Object>> getMultiResults(ResultSet rs) {
+    public static List<Map<String, Object>> getMultiResults(ResultSet rs) throws Exception {
         List<Map<String, Object>> records = new ArrayList<Map<String, Object>>();
-        try {
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnNum = meta.getColumnCount();
-            while (rs.next()) {
-                Map<String, Object> record = convertResultSetToMap(rs, meta, columnNum);
-                records.add(record);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ResultSetMetaData meta = rs.getMetaData();
+        int columnNum = meta.getColumnCount();
+        while (rs.next()) {
+            Map<String, Object> record = convertResultSetToMap(rs, meta, columnNum);
+            records.add(record);
         }
         return records;
     }
 
-    private static Map<String, Object> convertResultSetToMap(ResultSet rs, ResultSetMetaData meta, int columnNum) throws SQLException {
+    private static Map<String, Object> convertResultSetToMap(ResultSet rs, ResultSetMetaData meta, int columnNum) throws Exception {
         Map<String, Object> record = new LinkedHashMap<String, Object>();
         for (int i = 0; i < columnNum; i++) {
             String columnName = meta.getColumnLabel(i + 1);
@@ -148,7 +140,9 @@ public class DBUtil {
                 value = rs.getTimestamp(columnName);
             } else if ("CLOB".equals(columnType)) {
                 Clob clob = rs.getClob(columnName);
-                value = clob.getSubString(1, (int) clob.length());
+                if(clob != null) {
+                	value = clob.getSubString(1, (int) clob.length());
+                }
             } else {
                 value = rs.getObject(columnName);
             }

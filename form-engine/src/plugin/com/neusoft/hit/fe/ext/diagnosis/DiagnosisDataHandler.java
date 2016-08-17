@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.neusoft.hit.fe.core.utility.CommonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import com.neusoft.hit.fe.core.api.PluginDataHandler;
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.ResultInfo;
+import com.neusoft.hit.fe.core.utility.CommonUtil;
 import com.neusoft.hit.fe.core.utility.DBUtil;
 import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 
@@ -88,7 +91,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
 
 
             result = JSONObject.fromObject(resultMap).toString();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString(), e);
         } finally {
             DBUtil.close(conn, stmt, rs);
@@ -117,7 +120,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
             } else {
                 param.put("createId", hasDiagnosis.get("createId"));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString(), e);
         } finally {
             DBUtil.close(conn, stmt, null);
@@ -308,7 +311,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
                 diagnosis.put("items", subDiagnosisList);
             }
             results.put("bczdList", diagnosisList);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString(), e);
         } finally {
             DBUtil.close(conn, stmt, rs);
@@ -563,7 +566,7 @@ public class DiagnosisDataHandler implements PluginDataHandler {
             }
             conn.commit();
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString(), e);
         } finally {
             DBUtil.close(conn, stmt, rs);
