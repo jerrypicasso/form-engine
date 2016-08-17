@@ -6,13 +6,13 @@
         <user-name>system</user-name>
         <password>simlink</password>-->
 
-  <!--      <url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
+  		<!-- <url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
         <user-name>qyemr</user-name>
-        <password>simlink</password>-->
+        <password>simlink</password> -->
 
-        <url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
-        <user-name>emr</user-name>
-        <password>simlink</password>
+        <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
+        <user-name>system</user-name>
+        <password>neusoft</password>
 
         <initial-size>10</initial-size>
         <max-active>20</max-active>
@@ -30,14 +30,15 @@
         <combo-config code="dict" name="字典">
             <sql-template>
                 <![CDATA[
-				SELECT VAL,TXT FROM DICT WHERE CATEGORY = ${param.category} 
-				<#if param.master??> 
-					AND PID = ${param.master} 
-				</#if> 
+				SELECT A.PROJECT_DETAIL_CODE,A.FORMAL_NAME FROM PROJECT_DETAILS A 
+				LEFT JOIN PROJECT B ON A.PROJECT_ID = B.PROJECT_ID WHERE PROJECT_CODE = '${param.filter}' 
+				<#if param.fuzzy??> 
+					AND (A.PROJECT_DETAIL_CODE LIKE '%${param.fuzzy}%' OR A.PROJECT_NAME LIKE '%${param.fuzzy}%')
+				</#if>
 				]]>
             </sql-template>
-            <display-template><![CDATA[ <div style="color:#333;">${result.txt}</div> ]]></display-template>
-            <value-template>${result.val}</value-template>
+            <display-template>${result.FORMAL_NAME}</display-template>
+            <value-template>${result.PROJECT_DETAIL_CODE}</value-template>
         </combo-config>
 
         <combo-config code="staff" name="人员">
