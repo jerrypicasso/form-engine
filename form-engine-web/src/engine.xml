@@ -6,13 +6,13 @@
         <user-name>system</user-name>
         <password>simlink</password>-->
 
-  		<!-- <url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
+  		<url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
         <user-name>qyemr</user-name>
-        <password>simlink</password> -->
+        <password>simlink</password>
 
-        <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
+        <!-- <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
         <user-name>system</user-name>
-        <password>neusoft</password>
+        <password>neusoft</password> -->
 
         <initial-size>10</initial-size>
         <max-active>20</max-active>
@@ -44,13 +44,16 @@
         <combo-config code="staff" name="人员">
             <sql-template>
                 <![CDATA[
-				SELECT DISTINCT YGBH,XM FROM VIEW_YGJBXX WHERE ZC_TYPE = ${param.filter} 
+				SELECT DISTINCT YGBH,XM FROM VIEW_YGJBXX WHERE 1 = 1 
+				<#if param.filter?? && param.filter != ''> 
+					AND ZC_TYPE = '${param.filter}' 
+				</#if>
 				<#if param.fuzzy??> 
 					AND XM LIKE '%${param.fuzzy}%' 
 				</#if>
 				]]>
             </sql-template>
-            <display-template><![CDATA[ <div style="color:#333;">${result.XM}</div> ]]></display-template>
+            <display-template>${result.XM}</display-template>
             <value-template>${result.YGBH}</value-template>
         </combo-config>
 
