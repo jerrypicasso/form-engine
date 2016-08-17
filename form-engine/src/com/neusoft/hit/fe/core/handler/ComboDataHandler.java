@@ -32,20 +32,21 @@ public class ComboDataHandler {
 	}
 	
 	public String load(ComboParam param) throws FormEngineException {
-		ComboCfgInfo dropdown = dropdowns.get(param.getCategory());
-		String sql = dropdown.getSqlText();
-		String displayExpr = dropdown.getDisplayExpr();
-		String valueExpr = dropdown.getValueExpr();
-		
-		List<ComboInfo> combos = new ArrayList<ComboInfo>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		Map<String, Object> arguments = new HashMap<String, Object>();
-		arguments.put("param", param);
-		sql = FreemarkerUtil.getMixedString(sql, arguments);
-		arguments.clear();
+		List<ComboInfo> combos = new ArrayList<ComboInfo>();
 		try {
+			ComboCfgInfo dropdown = dropdowns.get(param.getCategory());
+			String sql = dropdown.getSqlText();
+			String displayExpr = dropdown.getDisplayExpr();
+			String valueExpr = dropdown.getValueExpr();
+			
+			Map<String, Object> arguments = new HashMap<String, Object>();
+			arguments.put("param", param);
+			sql = FreemarkerUtil.getMixedString(sql, arguments);
+			arguments.clear();
+			
 			conn = DBUtil.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
