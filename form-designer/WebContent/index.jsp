@@ -75,14 +75,6 @@
                         <input name="tplFile" id="load-tpl-btn-hidden" type="file"/>
                     </form>
                 </td>
-                <td style="width:100px;">
-                    <div class="widgets-panel">
-                        <div class="widgets-panel-title">
-                            <div style="height:100%;">元素列表</div>
-                        </div>
-                        <div class="widgets"></div>
-                    </div>
-                </td>
                 <td style="width:60px;">
                     <div class="dataset-panel">
                         <div class="dataset-panel-title">
@@ -91,7 +83,15 @@
                         <div class="datasets"></div>
                     </div>
                 </td>
-                <td style="width:100px;">
+                <td style="width:142px;">
+                    <div class="widgets-panel">
+                        <div class="widgets-panel-title">
+                            <div style="height:100%;">元素列表</div>
+                        </div>
+                        <div class="widgets"></div>
+                    </div>
+                </td>
+                <td style="width:142px;">
                     <div class="operate-panel">
                         <div class="operate-panel-title">
                             <div style="height:100%;">元素操作</div>
