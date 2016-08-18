@@ -120,6 +120,11 @@ function createPropertiesControls() {
 		label:'迭代变量',
 		type:'text',
 		parent:'widget-settings'
+	},{
+		name:'editable',
+		label:'是否编辑',
+		options:[{key:'true',value:'是',defaultValue:true},{key:'false',value:'否'}],
+		parent:'widget-settings'
 	}/*,{
 		name:'totalPage',
 		label:'分页总数',
@@ -130,7 +135,7 @@ function createPropertiesControls() {
 		label:'记录总数',
 		type:'text',
 		parent:'widget-settings'
-	}*/,{
+	},{
 		name:'primaryKeyName',
 		label:'主键名称',
 		type:'text',
@@ -140,7 +145,7 @@ function createPropertiesControls() {
 		label:'删除键名',
 		type:'text',
 		parent:'widget-settings'
-	}];
+	}*/];
 	for(var i = 0; i < arr.length; i++) {
 		createPropertiesControl(arr[i]);
 	}
@@ -356,6 +361,9 @@ function resetAndHideAllPropertiesFields() {
 	var isRichField = propPanel.find('select[name=isRich]');
 	isRichField.val('');
 	isRichField.parent().hide();
+	var editableField = propPanel.find('select[name=editable]');
+	editableField.val('true');
+	editableField.parent().hide();
 	
 	if($('.paper').length > 0) {
 		var paddingTopField = propPanel.find('input[name=paddingTop]');
@@ -560,6 +568,14 @@ function registerWidgetPropertiesHandlers() {
 			$('.selected-widget').attr('rich', 'true');
 		} else {
 			$('.selected-widget').removeAttr('rich');
+		}
+	});
+	propPanel.find('select[name=editable]').next().bind('click', function(){
+		var val = $(this).prev().val();
+		if('true' === val) {
+			$('.selected-widget').attr('editable', 'true');
+		} else {
+			$('.selected-widget').removeAttr('editable');
 		}
 	});
 }
@@ -779,13 +795,17 @@ function prepareRelativePropertiesFields(widget) {
 		itemNameField.val(widget.find('list').attr('var'));
 		itemNameField.parent().show();
 		
+		var editableField = propPanel.find('select[name=editable]');
+		editableField.val(widget.attr('editable') || 'false');
+		editableField.parent().show();
+		
 		/*var totalPageField = propPanel.find('input[name=totalPage]');
 		totalPageField.val(widget.attr('total-page'));
 		totalPageField.parent().show();
 		
 		var totalRowField = propPanel.find('input[name=totalRow]');
 		totalRowField.val(widget.attr('total-row'));
-		totalRowField.parent().show();*/
+		totalRowField.parent().show();
 		
 		var primaryKeyNameField = propPanel.find('input[name=primaryKeyName]');
 		primaryKeyNameField.val(widget.attr('primary-key'));
@@ -793,13 +813,13 @@ function prepareRelativePropertiesFields(widget) {
 		
 		var dropKeyNameField = propPanel.find('input[name=dropKeyName]');
 		dropKeyNameField.val(widget.attr('drop-key'));
-		dropKeyNameField.parent().show();
+		dropKeyNameField.parent().show();*/
 	}
 	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
 			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')
 			|| widget.hasClass('widget-field-staff') || widget.hasClass('widget-field-hidden')
 			/*|| widget.hasClass('widget-check')*/ || widget.hasClass('widget-field-select')
-			|| widget.hasClass('iterator-wrapper')) {
+			/*|| widget.hasClass('iterator-wrapper')*/) {
 		var tableNameField = propPanel.find('input[name=tableName]');
 		tableNameField.val(widget.attr('table'));
 		tableNameField.parent().show();

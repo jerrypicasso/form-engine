@@ -388,31 +388,31 @@
 			var editWrapper = $('<div class="edit-wrapper"></div>');
 			var insertBtn = $('<input type="button" class="edit-btn" value="新增"/>');
 			insertBtn.unbind('click').bind('click', function(){
-				insertDataRow(iteratorWrapper);
+				insertDataRow.call(container, iteratorWrapper);
 				return false;
 			});
 			insertBtn.appendTo(editWrapper);
 			var updateBtn = $('<input type="button" class="edit-btn" value="修改"/>');
 			updateBtn.unbind('click').bind('click', function(){
-				updateDataRow(iteratorWrapper);
+				updateDataRow.call(container, iteratorWrapper);
 				return false;
 			});
 			updateBtn.appendTo(editWrapper);
 			var deleteBtn = $('<input type="button" class="edit-btn" value="删除"/>');
 			deleteBtn.unbind('click').bind('click', function(){
-				deleteDataRow(iteratorWrapper);
+				deleteDataRow.call(container, iteratorWrapper);
 				return false;
 			});
 			deleteBtn.appendTo(editWrapper);
 			var saveRowBtn = $('<input type="button" class="edit-btn" value="保存"/>');
 			saveRowBtn.unbind('click').bind('click', function(){
-				saveDataRow(iteratorWrapper);
+				saveDataRow.call(container, iteratorWrapper);
 				return false;
 			});
 			saveRowBtn.appendTo(editWrapper);
 			var cancelBtn = $('<input type="button" class="edit-btn" value="取消"/>');
 			cancelBtn.unbind('click').bind('click', function(){
-				cancelEditRow(iteratorWrapper);
+				cancelEditRow.call(container, iteratorWrapper);
 				return false;
 			});
 			cancelBtn.appendTo(editWrapper);
@@ -420,23 +420,23 @@
 			$(this).append(editWrapper);
 		});
 		//点击后高亮，表示行被选中
-		container.find('.data-row').click(function(){
+		iteratorWrappers.find('.data-row').click(function(){
 			container.find('.data-row').removeClass('selected');
 			$(this).addClass('selected');
 			return false;
 		});
 		//鼠标移入后，边框高亮，表示可选
-		container.find('.data-row').mouseenter(function() {
+		iteratorWrappers.find('.data-row').mouseenter(function() {
 			if(!$(this).hasClass('editing')) {
 				$(this).addClass('editable');
 			}
 		});
 		//鼠标移出后，取消边框高亮
-		container.find('.data-row').mouseleave(function() {
+		iteratorWrappers.find('.data-row').mouseleave(function() {
 			$(this).removeClass('editable');
 		});
 		//双击可编辑
-		container.find('.data-row').bind('dblclick', function() {
+		iteratorWrappers.find('.data-row').bind('dblclick', function() {
 			var iteratorWrapper = $(this).parents('.iterator-wrapper:first');
 			if(iteratorWrapper.attr('editable') === 'true' && !$(this).hasClass('editing')) {
 				$(this).addClass('selected');
@@ -949,35 +949,40 @@
 	}
 
 	function deleteDataRow(iteratorWrapper) {
+		var container = $(this);
 		var selected = iteratorWrapper.find('.data-row.selected');
 		if(selected && selected.length > 0) {
-			var tableName = iteratorWrapper.attr('table-name');
-			var primaryKeyName = iteratorWrapper.attr('primary-key') || 'GUID';
-			var primaryKeyValue = null;
-			var primaryKey = selected.find('.row-field[field='+ primaryKeyName +']:first');
+			var primaryKey = selected.find('.row-field[primary-key=true]:first');
 			if(primaryKey && primaryKey.length > 0) {
-				primaryKeyValue = primaryKey.find('.value-field').html();
-			}
-			var dropFlagName = iteratorWrapper.attr('drop-key') || 'DEL_FLAG';
-			var dropFlagValue = iteratorWrapper.attr('drop-value') || '1';
-			if(primaryKeyValue) {
-				$.ajax({
-					url:'form/drop.process',
-					data:{
-						'tableName':tableName,
-						'primaryKeyName':primaryKeyName,
-						'primaryKeyValue':primaryKeyValue,
-						'dropFlagName':dropFlagName,
-						'dropFlagValue':dropFlagValue
-					},
-					success:function(){
-						var func = methods['reload'];
-						func.apply(container);
-					}
-				});
+				var tableName = primaryKey.attr('table');
+				var primaryKeyValue = primaryKey.find('.value-field').html();
+				var primaryKeyName = primaryKey.attr('field') || 'GUID';
+				var dropFlagName = 'DEL_FLAG';
+				var dropFlagValue = '1';
+				if(primaryKeyValue && tableName) {
+					$.ajax({
+						url:'form/drop.process',
+						data:{
+							'tableName':tableName,
+							'primaryKeyName':primaryKeyName,
+							'primaryKeyValue':primaryKeyValue,
+							'dropFlagName':dropFlagName,
+							'dropFlagValue':dropFlagValue
+						},
+						success:function(){
+							var pageParamName = iteratorWrapper.attr('page-param-name');
+							var param = new Object();
+							param[pageParamName] = 0;
+							loadForm(param, container);
+						}
+					});
+				}
+				else {
+					toastr['warning']('此行主键为空值，无法删除！');
+				}
 			}
 			else {
-				toastr['warning']('此行主键为空值，无法删除！');
+				toastr['warning']('没有设定主键，无法删除！');
 			}
 		}
 		else {

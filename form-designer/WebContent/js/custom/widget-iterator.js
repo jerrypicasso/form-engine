@@ -35,7 +35,7 @@ function showIteratorInitConfigDialog() {
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
 	
 	var html = [
-	    '<div class="dialog" style="width:320px;height:150px;"><div class="dialog-title">初始化配置</div>',
+	    '<div class="dialog" style="width:320px;height:180px;"><div class="dialog-title">初始化配置</div>',
 	    '<div style="padding:15px;"><table style="width:100%;table-layout:fixed;">',
 	    '<col style="width:25%;"/><col style="width:75%;"/>',
 	    '<tr><td>迭代集合</td><td><input name="dataset-name" class="config-item" type="text" style="width:100%;" required="true"/></td>',
