@@ -22,7 +22,8 @@ public class FreemarkerUtil {
 	
 	private static final Log LOGGER = LogFactory.getLog(FreemarkerUtil.class);
 	private static Configuration configuration;
-	private static TemplateHashModel statics;
+	private static TemplateHashModel commonUtilModel;
+	private static TemplateHashModel engineUtilModel;
 	
 	static {
 		configuration = new Configuration(Configuration.VERSION_2_3_25);
@@ -33,7 +34,8 @@ public class FreemarkerUtil {
 		BeansWrapper wrapper =  new BeansWrapper(Configuration.VERSION_2_3_25);
 		TemplateHashModel staticModels = wrapper.getStaticModels();
 		try {
-			statics = (TemplateHashModel) staticModels.get("com.neusoft.hit.fe.core.utility.CommonUtil");
+			commonUtilModel = (TemplateHashModel) staticModels.get("com.neusoft.hit.fe.core.utility.CommonUtil");
+			engineUtilModel = (TemplateHashModel) staticModels.get("com.neusoft.hit.fe.core.utility.EngineUtil");
 		} catch (TemplateModelException e) {
 			LOGGER.error(e.toString(), e);
 		}
@@ -56,7 +58,8 @@ public class FreemarkerUtil {
 			Template sqlTemplate = configuration.getTemplate(key);
 			os = new ByteArrayOutputStream();
 			out = new OutputStreamWriter(os, "UTF-8");
-			rootMap.put("CommonUtil", statics);
+			rootMap.put("CommonUtil", commonUtilModel);
+			rootMap.put("EngineUtil", engineUtilModel);
 			sqlTemplate.process(rootMap, out);
 			mixed = new String(os.toByteArray(), "UTF-8");
 		} catch (Exception e) {

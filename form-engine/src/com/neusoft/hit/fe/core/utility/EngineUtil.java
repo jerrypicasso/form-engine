@@ -2,7 +2,6 @@ package com.neusoft.hit.fe.core.utility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,22 +37,17 @@ public class EngineUtil {
 
 	public static String format(String dateStr, String pattern) {
 		String[] patterns = new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd", "yyyy/MM/dd", "yyyyMMdd" };
-		String ret = null;
-		try {
-			Date date = DateUtils.parseDate(dateStr, patterns);
-			ret = format(date, pattern);
-		} catch (ParseException e) {
-			LOGGER.error(e.toString(), e);
+		String newDateStr = null;
+		if(dateStr != null && dateStr.trim().length() > 0 
+				&& pattern != null && pattern.trim().length() > 0) {
+			try {
+				Date date = DateUtils.parseDate(dateStr, patterns);
+				newDateStr = DateFormatUtils.format(date, pattern);
+			} catch (Exception e) {
+				LOGGER.error(e.toString(), e);
+			}
 		}
-		return ret;
-	}
-
-	public static String format(Date date, String pattern) {
-		String dateStr = null;
-		if (date != null) {
-			dateStr = DateFormatUtils.format(date, pattern);
-		}
-		return dateStr;
+		return newDateStr;
 	}
 
 	public static String join(String str, String newSeperator, String defaultVal) {
