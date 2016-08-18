@@ -452,7 +452,18 @@
 			}
 		});
 		//chechbox可编辑状态
-		container.find('.widget-check').each(function(){
+		container.find('.widget-table[check-group-type]').each(function(){
+			var checkGroup = $(this);
+			var hiddenField = checkGroup.find('.main-field .widget-field-hidden');
+			if(hiddenField.length > 0) {
+				var fieldName = hiddenField.attr('field');
+				makeCheckboxCheckable(checkGroup.find('.widget-check[field='+ fieldName +']'));
+			}
+		});
+	}
+	
+	function makeCheckboxCheckable(checkboxes) {
+		checkboxes.each(function(){
 			var widgetCheck = $(this);
 			widgetCheck.addClass('editable');
 			widgetCheck.unbind('click').bind('click', function(){
@@ -871,6 +882,15 @@
 			});
 			row.removeClass('editable');
 			row.addClass('editing');
+			
+			row.find('.widget-table[check-group-type]').each(function(){
+				var checkGroup = $(this);
+				var hiddenField = checkGroup.find('.row-field.widget-field-hidden');
+				if(hiddenField.length > 0) {
+					var fieldName = hiddenField.attr('field');
+					makeCheckboxCheckable(checkGroup.find('.widget-check[field='+ fieldName +']'));
+				}
+			});
 		}
 	}
 
@@ -1005,7 +1025,7 @@
 		//var tableName = rowDataWrapper.attr('table-name');
 		var primaryKeyField = row.find('.row-field[primary-key=true]');
 		if(primaryKeyField.length <= 0) {
-			primaryKeyField = row.find('.row-field[field=id]');
+			primaryKeyField = row.find('.row-field[field=GUID]');
 		}
 		if(primaryKeyField.length > 0) {
 			var primaryKeyName = primaryKeyField.attr('field');
