@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
@@ -15,36 +17,24 @@ import com.neusoft.hit.fe.core.model.ComboCfgInfo;
 import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
 import com.neusoft.hit.fe.core.model.PluginCfgInfo;
 import com.neusoft.hit.fe.core.model.UploadCfgInfo;
+import com.neusoft.hit.fe.core.model.UtilityCfgInfo;
 
-public class Configuration {
+public class ConfigUtil {
 	
-	private static final Configuration CONFIG = new Configuration();
-	//private Properties properties;
-	private Document document;
+	private static final Log LOGGER = LogFactory.getLog(ConfigUtil.class);
+	private static Document document;
 	
-	
-	private Configuration() {
-		/*this.properties = new Properties();
-		InputStream is = Configuration.class.getResourceAsStream("/engine.properties");
+	static {
 		try {
-			properties.load(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		try {
-			InputStream in = Configuration.class.getResourceAsStream("/engine.xml");
+			InputStream in = ConfigUtil.class.getResourceAsStream("/engine.xml");
 			SAXReader reader = new SAXReader();
 			document = reader.read(in);
 		} catch (DocumentException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 	
-	public static final Configuration getInstance() {
-		return CONFIG;
-	}
-	
-	public JdbcCfgInfo getJdbcCfg() {
+	public static JdbcCfgInfo getJdbcCfg() {
 		JdbcCfgInfo jdbc = new JdbcCfgInfo();
 		Node node = document.selectSingleNode("/form-engine/data-source/driver-class");
 		if(node != null) {
@@ -85,7 +75,7 @@ public class Configuration {
 		return jdbc;
 	}
 	
-	public Map<String, ComboCfgInfo> getComboCfgs() {
+	public static Map<String, ComboCfgInfo> getComboCfgs() {
 		Map<String, ComboCfgInfo> combos = new HashMap<String, ComboCfgInfo>();
 		List<?> nodes = document.selectNodes("/form-engine/combo-configs/combo-config");
 		for(int i = 0; i < nodes.size(); i++) {
@@ -116,7 +106,7 @@ public class Configuration {
 		return combos;
 	}
 	
-	public UploadCfgInfo getUploadCfg() {
+	public static UploadCfgInfo getUploadCfg() {
 		UploadCfgInfo upload = new UploadCfgInfo();
 		Node node = document.selectSingleNode("/form-engine/image-upload/save-path");
 		if(node != null) {
@@ -134,7 +124,7 @@ public class Configuration {
 		return upload;
 	}
 	
-	public Map<String, PluginCfgInfo> getPluginCfg() {
+	public static Map<String, PluginCfgInfo> getPluginCfg() {
 		Map<String, PluginCfgInfo> plugins = new HashMap<String, PluginCfgInfo>();
 		List<?> nodes = document.selectNodes("/form-engine/plugins/plugin");
 		for(int i = 0; i < nodes.size(); i++) {
@@ -159,29 +149,22 @@ public class Configuration {
 		return plugins;
 	}
 	
-	/*public int getInt(String key) {
-		return getInt(key, 0);
+	public static Map<String, UtilityCfgInfo> getUtilityCfg() {
+		Map<String, UtilityCfgInfo> plugins = new HashMap<String, UtilityCfgInfo>();
+		List<?> nodes = document.selectNodes("/form-engine/utilities/utility");
+		for(int i = 0; i < nodes.size(); i++) {
+			UtilityCfgInfo plugin = new UtilityCfgInfo();
+			Node node = (Node)nodes.get(i);
+			Node nameNode = node.selectSingleNode("@name");
+			if(nameNode != null) {
+				plugin.setUtilityName(nameNode.getText().trim());
+			}
+			Node classNode = node.selectSingleNode("@class");
+			if(classNode != null) {
+				plugin.setUtilityStaticClass(classNode.getText().trim());
+			}
+			plugins.put(plugin.getUtilityName(), plugin);
+		}
+		return plugins;
 	}
-	
-	public int getInt(String key, int def) {
-		String str = properties.getProperty(key);
-		return NumberUtils.toInt(str, def);
-	}
-	
-	public long getLong(String key) {
-		return getLong(key, 0);
-	}
-	
-	public long getLong(String key, long def) {
-		String str = properties.getProperty(key);
-		return NumberUtils.toLong(str, def);
-	}
-	
-	public String getString(String key) {
-		return properties.getProperty(key);
-	}
-	
-	public String getString(String key, String def) {
-		return properties.getProperty(key, def);
-	}*/
 }

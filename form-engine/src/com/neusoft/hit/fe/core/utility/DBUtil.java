@@ -1,18 +1,26 @@
 package com.neusoft.hit.fe.core.utility;
 
-import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
+import java.lang.reflect.Field;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.sql.DataSource;
-import java.lang.reflect.Field;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
 
 /**
  * 数据库工具类
@@ -60,8 +68,7 @@ public class DBUtil {
     private static DataSource dataSource;
 
     static {
-        Configuration configuration = Configuration.getInstance();
-        JdbcCfgInfo jdbc = configuration.getJdbcCfg();
+        JdbcCfgInfo jdbc = ConfigUtil.getJdbcCfg();
         driverClass = jdbc.getDriverClass();//configuration.getString("jdbc.driverClass");
         url = jdbc.getUrl();//configuration.getString("jdbc.url");
         username = jdbc.getUsername();//configuration.getString("jdbc.username");

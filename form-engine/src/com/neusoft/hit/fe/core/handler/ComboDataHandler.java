@@ -15,7 +15,7 @@ import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.ComboCfgInfo;
 import com.neusoft.hit.fe.core.model.ComboInfo;
 import com.neusoft.hit.fe.core.model.ComboParam;
-import com.neusoft.hit.fe.core.utility.Configuration;
+import com.neusoft.hit.fe.core.utility.ConfigUtil;
 import com.neusoft.hit.fe.core.utility.DBUtil;
 import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 
@@ -27,8 +27,7 @@ public class ComboDataHandler {
 	private Map<String, ComboCfgInfo> dropdowns;
 	
 	public ComboDataHandler() {
-		Configuration configuration = Configuration.getInstance();
-		this.dropdowns = configuration.getComboCfgs();
+		this.dropdowns = ConfigUtil.getComboCfgs();
 	}
 	
 	public String load(ComboParam param) throws FormEngineException {

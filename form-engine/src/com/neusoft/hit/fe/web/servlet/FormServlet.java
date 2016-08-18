@@ -24,7 +24,7 @@ import com.neusoft.hit.fe.core.model.ExportParam;
 import com.neusoft.hit.fe.core.model.PluginCfgInfo;
 import com.neusoft.hit.fe.core.model.ResultInfo;
 import com.neusoft.hit.fe.core.model.StageParam;
-import com.neusoft.hit.fe.core.utility.Configuration;
+import com.neusoft.hit.fe.core.utility.ConfigUtil;
 import com.neusoft.hit.fe.core.utility.EngineUtil;
 
 public class FormServlet extends HttpServlet {
@@ -126,8 +126,7 @@ public class FormServlet extends HttpServlet {
 				String result = ResultInfo.getResult();
 				String handlerName = req.getParameter("handler");
 				if(handlerName != null && handlerName.trim().length() > 0) {
-					Configuration config = Configuration.getInstance();
-					PluginCfgInfo pluginCfg = config.getPluginCfg().get(handlerName);
+					PluginCfgInfo pluginCfg = ConfigUtil.getPluginCfg().get(handlerName);
 					String handlerClassName = pluginCfg.getHandlerClassName();
 					try {
 						Class<?> clazz = Class.forName(handlerClassName);

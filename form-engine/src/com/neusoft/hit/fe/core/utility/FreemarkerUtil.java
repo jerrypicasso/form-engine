@@ -4,12 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.neusoft.hit.fe.core.exception.FormEngineException;
+import com.neusoft.hit.fe.core.model.UtilityCfgInfo;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
@@ -24,8 +26,11 @@ public class FreemarkerUtil {
 	private static Configuration configuration;
 	private static TemplateHashModel commonUtilModel;
 	private static TemplateHashModel engineUtilModel;
+	private static Map<String, TemplateHashModel> customUtilModels;
 	
 	static {
+		customUtilModels = new HashMap<String, TemplateHashModel>();
+		
 		configuration = new Configuration(Configuration.VERSION_2_3_25);
 		configuration.setNumberFormat("#");
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
@@ -36,6 +41,15 @@ public class FreemarkerUtil {
 		try {
 			commonUtilModel = (TemplateHashModel) staticModels.get("com.neusoft.hit.fe.core.utility.CommonUtil");
 			engineUtilModel = (TemplateHashModel) staticModels.get("com.neusoft.hit.fe.core.utility.EngineUtil");
+			
+			Map<String, UtilityCfgInfo> utilityCfgs = ConfigUtil.getUtilityCfg();
+			for(Map.Entry<String, UtilityCfgInfo> entry : utilityCfgs.entrySet()) {
+				String name = entry.getKey();
+				UtilityCfgInfo utilityCfg = entry.getValue();
+				String utilityClass = utilityCfg.getUtilityStaticClass();
+				TemplateHashModel customUtilModel = (TemplateHashModel) staticModels.get(utilityClass);
+				customUtilModels.put(name, customUtilModel);
+			}
 		} catch (TemplateModelException e) {
 			LOGGER.error(e.toString(), e);
 		}
@@ -60,6 +74,11 @@ public class FreemarkerUtil {
 			out = new OutputStreamWriter(os, "UTF-8");
 			rootMap.put("CommonUtil", commonUtilModel);
 			rootMap.put("EngineUtil", engineUtilModel);
+			
+			for(Map.Entry<String, TemplateHashModel> entry : customUtilModels.entrySet()) {
+				rootMap.put(entry.getKey(), entry.getValue());
+			}
+			
 			sqlTemplate.process(rootMap, out);
 			mixed = new String(os.toByteArray(), "UTF-8");
 		} catch (Exception e) {

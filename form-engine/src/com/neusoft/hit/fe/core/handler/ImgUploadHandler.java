@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.ResultInfo;
 import com.neusoft.hit.fe.core.model.UploadCfgInfo;
-import com.neusoft.hit.fe.core.utility.Configuration;
+import com.neusoft.hit.fe.core.utility.ConfigUtil;
 
 import net.sf.json.JSONObject;
 
@@ -37,8 +37,7 @@ public class ImgUploadHandler {
 	private String fileType;
 	
 	public ImgUploadHandler() {
-		Configuration config = Configuration.getInstance();
-		UploadCfgInfo upload = config.getUploadCfg();
+		UploadCfgInfo upload = ConfigUtil.getUploadCfg();
 		this.maxSize = upload.getMaxSize();//config.getLong("upload.maxSize", 1000000);
 		this.savePath = upload.getSavePath();//config.getString("upload.path", "\\upload");
 		this.fileType = upload.getFileType();//config.getString("upload.fileType", "gif,jpg,jpeg,png,bmp");

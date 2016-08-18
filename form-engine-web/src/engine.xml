@@ -251,8 +251,12 @@
             </property>
         </plugin>
         
-        <plugin name="nursing" class="com.neusoft.hit.fe.ext.nursing.NursingDataHandler"></plugin>
-	    <plugin name="surgery" class="com.neusoft.hit.fe.ext.surgery.SurgeryDataHandler"></plugin>
-	    <plugin name="audit" class="com.neusoft.hit.fe.ext.audit.AuditDataHandler"></plugin>
+        <plugin name="nursing" class="com.neusoft.hit.fe.ext.nursing.NursingDataHandler"/>
+	    <plugin name="surgery" class="com.neusoft.hit.fe.ext.surgery.SurgeryDataHandler"/>
+	    <plugin name="audit" class="com.neusoft.hit.fe.ext.audit.AuditDataHandler"/>
     </plugins>
+    
+    <utilities>
+    	<utility name="EmrUtil" class="com.neusoft.hit.fe.ext.utility.EmrUtil"/>
+    </utilities>
 </form-engine>
