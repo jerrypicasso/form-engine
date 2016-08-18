@@ -3,9 +3,11 @@ package com.neusoft.hit.fe.ext.utility;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -90,5 +92,105 @@ public class EmrUtil {
 		}
 		return text;
 	}
-	
+
+	/**
+	 * 读取诊断表中的类型，然后返回内容
+	 * @return
+     */
+	public static String diagnosis(String brId,String diagnosisType){
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ID,LR AS NR FROM ZDINFO");
+		sql.append(" WHERE BRID = ").append(brId).append(" AND LX =").append(diagnosisType).append(" ORDER BY DIAGNOSTIC_ORDER1,MODIFY_TIME desc");
+		try{
+			conn = DBUtil.getConnection();
+			stmt = conn.createStatement();
+			rs  =stmt.executeQuery(sql.toString());
+			List<Map<String, Object>> diagnosisList = DBUtil.getMultiResults(rs);
+			rs.close();
+			for (Map<String, Object> diagnosis : diagnosisList) {
+				sql.delete(0,sql.length());
+				sql.append("SELECT ZD_NR AS NR FROM SUB_ZD_INFO WHERE ZD_ID = '").append(diagnosis.get("ID")).append("' ORDER BY DIAGNOSTIC_ORDER1,MODIFY_TIME desc");
+				rs = stmt.executeQuery(sql.toString());
+				List<Map<String, Object>> subDiagnosisList = DBUtil.getMultiResults(rs);
+				rs.close();
+				diagnosis.put("items", subDiagnosisList);
+			}
+			result = combineDiagnosis(diagnosisList);
+		}catch (Exception e){
+			LOGGER.error(e.toString(), e);
+		}finally{
+			DBUtil.close(conn,stmt,rs);
+		}
+		return result;
+	}
+
+	/**
+	 * 组合诊断为String
+	 * @param diagnosisList
+	 * @return
+     */
+	private static String combineDiagnosis(List<Map<String, Object>> diagnosisList) {
+
+		StringBuilder sb = new StringBuilder();
+		for(int x = 0;x<diagnosisList.size();x++){
+			if(diagnosisList.size()>1){
+				sb.append(x+1).append(".");
+			}
+			sb.append(diagnosisList.get(x).get("NR"));
+			List<Map<String, Object>> subDiagnosisList = (List<Map<String, Object>>) diagnosisList.get(x).get("items");
+			if(subDiagnosisList!=null&&subDiagnosisList.size()>0){
+				for(int y = 0;y<subDiagnosisList.size();y++){
+					if(subDiagnosisList.size()>1){
+						sb.append("(").append(y+1).append(")").append(".");
+					}
+					sb.append(subDiagnosisList.get(y).get("NR"));
+				}
+			}
+		}
+
+		return sb.toString();
+	}
+
+
+	/**
+	 * 读取诊断表中的类型，手术专用类
+	 * @return
+	 */
+	public static String diagnosis(String brId,String diagnosisType,String treeId){
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ID,LR AS NR FROM ZDINFO");
+		sql.append("WHERE BRID = ").append(brId).append(" AND LX =").append(diagnosisType).
+				append(" AND SSTREEID ='").append(treeId).append("' ORDER BY DIAGNOSTIC_ORDER1,MODIFY_TIME desc");
+		try{
+			conn = DBUtil.getConnection();
+			stmt = conn.createStatement();
+			rs  =stmt.executeQuery(sql.toString());
+			List<Map<String, Object>> diagnosisList = DBUtil.getMultiResults(rs);
+			rs.close();
+			for (Map<String, Object> diagnosis : diagnosisList) {
+				sql.delete(0,sql.length());
+				sql.append("SELECT ZD_NR AS NR FROM SUB_ZD_INFO WHERE ZD_ID = '").append(diagnosis.get("ID")).append("' ORDER BY DIAGNOSTIC_ORDER1,MODIFY_TIME desc");
+				rs = stmt.executeQuery(sql.toString());
+				List<Map<String, Object>> subDiagnosisList = DBUtil.getMultiResults(rs);
+				rs.close();
+				diagnosis.put("items", subDiagnosisList);
+			}
+			result = combineDiagnosis(diagnosisList);
+		}catch (Exception e){
+			LOGGER.error(e.toString(), e);
+		}finally{
+			DBUtil.close(conn,stmt,rs);
+		}
+		return result;
+
+	}
+
 }

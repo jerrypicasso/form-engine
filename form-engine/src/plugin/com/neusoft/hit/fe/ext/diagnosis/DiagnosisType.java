@@ -262,4 +262,9 @@ public class DiagnosisType {
      * 医疗不良事件诊断
      */
     public final static Integer ZD_480 = 480;
+
+    /**
+     * 最后诊断
+     */
+    public final static Integer ZD_490 = 490;
 }

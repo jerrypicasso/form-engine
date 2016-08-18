@@ -2,11 +2,15 @@ $.Engine.plugin('diagnosis', {
     //实现afterFormLoaded方法
 
     afterFormLoaded: function (options) {
+
         var container = options.container;
         var diagnosisWidget = container.find('.widget-custom-diagnosis').css({'min-height': '20px'});
+        if(diagnosisWidget.is(":hidden")){
+            diagnosisWidget.hide();
+            return;
+        }
+
         if (diagnosisWidget.length > 0) {
-
-
             diagnosisWidget.each(function () {
                 $(this).find('.display-field').css({
                     'display': 'inline-block',
@@ -20,6 +24,11 @@ $.Engine.plugin('diagnosis', {
     //实现afterModeChanged方法
     afterModeChanged: function (options) {
         var container = options.container;
+        var diagnosisWidget = container.find('.widget-custom-diagnosis');
+        if(diagnosisWidget.is(":hidden")){
+            diagnosisWidget.hide();
+            return;
+        }
         if (options.mode === 'view') {
             container.find('.widget-custom-diagnosis').removeClass('editable').removeClass('model-modal').css({
                 'top': '0px',
@@ -50,7 +59,7 @@ $.Engine.plugin('diagnosis', {
             container.find('.widget-custom-diagnosis').each(function () {
                 var diagnosis = $(this);
                 diagnosis.addClass('editable');
-                if(!diagnosis.attr('readonly')){
+                if(diagnosis.attr('editable')==='true'){
                     var editTrigger = $('<input type="button" value="编辑" class="editTrigger" style="position: absolute;right:0;top:0"/>')
                         .appendTo(diagnosis);
                 }
@@ -156,7 +165,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
 
 
             if ('edit' === mode) {
-                if(!diagnosisWidget.attr('readonly')){
+                if(diagnosisWidget.attr('editable')==='true'){
                     diagnosisWidget.find('.editTrigger').off('click').on('click', function () {
                         if ('X' != $(this).val()) {
                             var displayTitle = displayField.find('.display-title');
@@ -227,7 +236,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
 
                 if(signature&&signature.length>0){
                     if('10'==diagnosisType){
-                        if(!diagnosisWidget.attr('readonly')){
+                        if(diagnosisWidget.attr('editable')==='true'){
                             signature.find('.signature-position').after('<span class="sync tool"><i class="fa fa-refresh"></i></span><span class="audit tool"><i class="fa fa-pencil"></i></span>');
                             var sync = signature.find('span.sync').unbind('click').on('click',function(){
                                 openDialog(container,{title:'申请同步',url:'form/plugin.process?action=sync&handler=diagnosis',param:opts,modifyid:signatureInfo.modifyId});
@@ -919,6 +928,9 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
 
         }
 
+        if(diagnosisWidget.attr('relative_id')){
+            param.relativeId = diagnosisWidget.attr('relative_id');
+        }
 
         $.extend(param, opts);
         $.ajax({
@@ -979,6 +991,10 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 'diagnosisCode': diagnosisCode,
                 'diagnosisParent': diagnosisId
             };
+
+            if(diagnosisWidget.attr('relative_id')){
+                param.relativeId = diagnosisWidget.attr('relative_id');
+            }
             $.extend(param, opts);
             $.ajax({
                 url: 'form/plugin.process?action=save&handler=diagnosis',
@@ -1003,6 +1019,9 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
         if (selected && selected.length > 0) {
             var id = selected.attr('id');
             var param = {id: id,diagnosisType:diagnosisType};
+            if(diagnosisWidget.attr('relative_id')){
+                param.relativeId = diagnosisWidget.attr('relative_id');
+            }
             $.extend(param, opts);
             $.ajax({
                 url: 'form/plugin.process?action=drop&handler=diagnosis',
