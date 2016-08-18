@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	$(document.body).bind('contextmenu', function() { 
 		return false; 
-	}); 
-	
+	});
+	toastr.options = {positionClass: 'toast-top-center'};
 	createWidgetControls();
 	createSqlOperateControls();
 	createOperateControls();
@@ -137,7 +137,7 @@ $(document).ready(function() {
 			type: 'post',
 			data: {'tpl':html,'name':name,'code':code},
 			success: function() {
-				alert('保存完毕');
+				toastr['success']('保存完毕');
 			}
 		});
 	});
