@@ -5,13 +5,16 @@ $.Engine.plugin('diagnosis', {
 
         var container = options.container;
         var diagnosisWidget = container.find('.widget-custom-diagnosis').css({'min-height': '20px'});
-        if(diagnosisWidget.is(":hidden")){
-            diagnosisWidget.hide();
-            return;
-        }
+
 
         if (diagnosisWidget.length > 0) {
             diagnosisWidget.each(function () {
+                if($(this).is(":hidden")){
+                    $(this).hide();
+                    return;
+                }
+
+
                 $(this).find('.display-field').css({
                     'display': 'inline-block',
                     'vertical-align': 'top',
@@ -25,10 +28,7 @@ $.Engine.plugin('diagnosis', {
     afterModeChanged: function (options) {
         var container = options.container;
         var diagnosisWidget = container.find('.widget-custom-diagnosis');
-        if(diagnosisWidget.is(":hidden")){
-            diagnosisWidget.hide();
-            return;
-        }
+
         if (options.mode === 'view') {
             container.find('.widget-custom-diagnosis').removeClass('editable').removeClass('model-modal').css({
                 'top': '0px',
@@ -49,6 +49,11 @@ $.Engine.plugin('diagnosis', {
             container.find('.widget-custom-diagnosis .diagnosis-list').removeClass('edit');
 
             container.find('.widget-custom-diagnosis').each(function () {
+
+                if($(this).is(":hidden")){
+                    $(this).hide();
+                    return;
+                }
                 queryDiagnosis($(this), container.data('options'), container);
 
             });
@@ -58,6 +63,10 @@ $.Engine.plugin('diagnosis', {
             container.find('.widget-custom-diagnosis .diagnosis-list').addClass('edit');
             container.find('.widget-custom-diagnosis').each(function () {
                 var diagnosis = $(this);
+                if($(this).is(":hidden")){
+                    $(this).hide();
+                    return;
+                }
                 diagnosis.addClass('editable');
                 if(diagnosis.attr('editable')==='true'){
                     var editTrigger = $('<input type="button" value="编辑" class="editTrigger" style="position: absolute;right:0;top:0"/>')
@@ -168,6 +177,17 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                 if(diagnosisWidget.attr('editable')==='true'){
                     diagnosisWidget.find('.editTrigger').off('click').on('click', function () {
                         if ('X' != $(this).val()) {
+
+                            var relativeId = diagnosisWidget.attr('relative_id');
+                            if(typeof relativeId!='undefined'){
+                                if(relativeId){
+                                    param.relativeId = diagnosisWidget.attr('relative_id');
+                                }else{
+                                    toastr['warning']('请先填写主表单，并点击保存后再编辑诊断内容。');
+                                    return;
+                                }
+                            }
+
                             var displayTitle = displayField.find('.display-title');
                             container.find('.widget-custom-diagnosis').removeClass('model-modal').css({
                                 'top': '0px',
@@ -300,7 +320,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
     }
 
     if(!container.find('div.diagnosisMask')||container.find('div.diagnosisMask').length<=0){
-        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: fixed;top:0;left: 0;bottom:0;z-index: 3100;background-color:black"></div>').appendTo(container);
+        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: fixed;top:0;left: 0;bottom:0;z-index: 200;background-color:black"></div>').appendTo(container);
     }
 
 
@@ -318,7 +338,6 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
         '<div class="list-title"><i class="fa fa-plus grzd"></i>&nbsp;个人模板</div></ul>');
     diagnosisModelWrapper.append(list);
 
-    var diagnosisModelMask = $('<div class="diagnosisModelMask" style="width: 100%;height:100%;opacity: 0.5;position: absolute;top:0;left: 0;z-index: 1099;background-color:black"></div>').appendTo(list);
     $.ajax({
         url: 'form/plugin.process?action=modelLoad&handler=diagnosis',
         data: opts,
@@ -663,7 +682,6 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
 
             });
 
-            diagnosisModelMask.remove();
         }
 
     });
@@ -928,9 +946,16 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
 
         }
 
-        if(diagnosisWidget.attr('relative_id')){
-            param.relativeId = diagnosisWidget.attr('relative_id');
+        var relativeId = diagnosisWidget.attr('relative_id');
+        if(typeof relativeId!='undefined'){
+            if(relativeId){
+                param.relativeId = diagnosisWidget.attr('relative_id');
+            }else{
+                toastr['warning']('请先填写主表单，并点击保存后再编辑诊断内容。');
+                return;
+            }
         }
+
 
         $.extend(param, opts);
         $.ajax({
