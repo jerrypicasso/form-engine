@@ -6,13 +6,13 @@
         <user-name>system</user-name>
         <password>simlink</password>-->
 
-  		<url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
+  		<!-- <url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
         <user-name>qyemr</user-name>
-        <password>simlink</password>
+        <password>simlink</password> -->
 
-        <!-- <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
+        <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
         <user-name>system</user-name>
-        <password>neusoft</password> -->
+        <password>neusoft</password>
 
         <initial-size>10</initial-size>
         <max-active>20</max-active>
@@ -30,14 +30,14 @@
         <combo-config code="dict" name="字典">
             <sql-template>
                 <![CDATA[
-				SELECT A.PROJECT_DETAIL_CODE,A.FORMAL_NAME FROM PROJECT_DETAILS A 
-				LEFT JOIN PROJECT B ON A.PROJECT_ID = B.PROJECT_ID WHERE PROJECT_CODE = '${param.filter}' 
-				<#if param.fuzzy??> 
-					AND (A.PROJECT_DETAIL_CODE LIKE '%${param.fuzzy}%' OR A.FORMAL_NAME LIKE '%${param.fuzzy}%')
+				SELECT A.PROJECT_DETAIL_CODE,A.SHORT_NAME FROM C_PROJECT_DETAILS A 
+				LEFT JOIN C_PROJECT B ON A.PROJECT_ID = B.PROJECT_ID WHERE PROJECT_CODE = '${param.filter}' 
+				<#if param.fuzzy?? && param.fuzzy != ''> 
+					AND (A.PROJECT_DETAIL_CODE LIKE '%${param.fuzzy}%' OR A.SHORT_NAME LIKE '%${param.fuzzy}%')
 				</#if>
 				]]>
             </sql-template>
-            <display-template>${result.FORMAL_NAME}</display-template>
+            <display-template>${result.SHORT_NAME}</display-template>
             <value-template>${result.PROJECT_DETAIL_CODE}</value-template>
         </combo-config>
 
@@ -48,7 +48,7 @@
 				<#if param.filter?? && param.filter != ''> 
 					AND ZC_TYPE = '${param.filter}' 
 				</#if>
-				<#if param.fuzzy??> 
+				<#if param.fuzzy?? && param.fuzzy != ''> 
 					AND XM LIKE '%${param.fuzzy}%' 
 				</#if>
 				]]>
@@ -61,7 +61,7 @@
             <sql-template>
                 <![CDATA[
 				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE ICD_TYPE = '${param.filter}'
-				<#if param.fuzzy??>
+				<#if param.fuzzy?? && param.fuzzy != ''>
 					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%')
 				</#if>
 				]]>

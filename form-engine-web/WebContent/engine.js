@@ -895,6 +895,7 @@
 	function insertDataRow(iteratorWrapper) {
 		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
 		newRow.attr('row-mode','new');
+		iteratorWrapper.children('.data-row').remove();
 		iteratorWrapper.prepend(newRow);
 		var iteratorId = iteratorWrapper.attr('id');
 		createEditableRow(iteratorId, newRow);
@@ -985,6 +986,7 @@
 	}
 
 	function saveDataRow(iteratorWrapper) {
+		KindEditor.sync('textarea');
 		var row = iteratorWrapper.children('.data-row.editing');
 		var editors = row.find('.editor');
 		var msg = [];
@@ -1046,17 +1048,8 @@
 	}
 
 	function cancelEditRow(iteratorWrapper) {
-		iteratorWrapper.children('.data-row[row-mode=new]').remove();
-		iteratorWrapper.children('.data-row.editing').each(function(){
-			$(this).removeClass('editing');
-			$(this).find('.editor').each(function(){
-				if($(this).hasClass('select')) {
-					$(this).select2('destroy');
-				}
-			});
-			$(this).find('.editor').remove();
-			$(this).find('.display-field').show();
-		});
+		var func = methods['reload'];
+		func.apply(container);
 	}
 	
 })(jQuery);
