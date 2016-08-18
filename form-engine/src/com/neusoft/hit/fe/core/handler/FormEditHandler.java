@@ -14,8 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.SaveParam;
 import com.neusoft.hit.fe.core.model.StageParam;
-import com.neusoft.hit.fe.core.utility.CommonUtil;
 import com.neusoft.hit.fe.core.utility.DBUtil;
+import com.neusoft.hit.fe.core.utility.EngineUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -75,8 +75,8 @@ public class FormEditHandler {
 				if(pkValue == null || "".equals(pkValue)) {
 					StringBuilder columnNames = new StringBuilder(" (");
 					StringBuilder columnValues = new StringBuilder(" (");
-					columns.put(pkName, CommonUtil.guid());
-					String now = CommonUtil.now();
+					columns.put(pkName, EngineUtil.guid());
+					String now = EngineUtil.now();
 					columns.put("CREATE_TIME", now);
 					columns.put("MODIFY_TIME", now);
 					Iterator<?> it = columns.keySet().iterator();
@@ -106,7 +106,7 @@ public class FormEditHandler {
 				else {
 					StringBuilder update = new StringBuilder();
 					columns.remove("CREATE_ID");
-					String now = CommonUtil.now();
+					String now = EngineUtil.now();
 					columns.put("MODIFY_TIME", now);
 					Iterator<?> it = columns.keySet().iterator();
 					while (it.hasNext()) {
@@ -212,7 +212,7 @@ public class FormEditHandler {
 			deleteStmt.setString(1, key);
 			deleteStmt.executeUpdate();
 			insertStmt = conn.prepareStatement(insertSql);
-			insertStmt.setString(1, CommonUtil.guid());
+			insertStmt.setString(1, EngineUtil.guid());
 			insertStmt.setString(2, key);
 			insertStmt.setString(3, content);
 			insertStmt.executeUpdate();
