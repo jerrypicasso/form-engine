@@ -7,6 +7,8 @@ function createDiagnosisWidget(config) {
 	$(field).addClass('selectable');
 	$(field).attr('type', 'diagnosis');
 	$(field).attr('diagnosistype', config['diagnosisType']);
+	$(field).attr('relative-id', config['relativeId']);
+	$(field).attr('editable', config['editable']);
 	$(field).attr('direct', config['direction']);
 	$(field).attr('sign', config['sign']);
 	$(field).css({
@@ -32,16 +34,20 @@ function showDiagnosisPluginInitConfigDialog() {
 	var mask = $('.mask-layer-tpl').clone();
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
 	
-	var html = ['<div class="dialog" style="width:300px;height:180px;">',
+	var html = ['<div class="dialog" style="width:300px;height:240px;">',
 	            '<div class="dialog-title">诊断控件配置</div>',
 	            '<form style="padding:15px;">',
 	            '<table style="width:100%;table-layout:fixed;">',
 	            '<tr><td style="width:25%;">诊断类型：</td>',
                 '<td style="width:75%;" valign="top"><input name="diagnosis-type" style="width:100%;"></td></tr>',
+                '<tr><td style="width:25%;">关联id：</td>',
+                '<td style="width:75%;" valign="top"><input name="relative-id" style="width:100%;"></td></tr>',
                 '<tr><td style="width:25%;">显示方向：</td>',
                 '<td style="width:75%;" valign="top"><select name="direction" style="width:100%"><option value="horizontal">横向</option><option value="vertical" selected>垂直</option></select></td></tr>',
                 '<tr><td style="width:25%;">是否签名：</td>',
                 '<td style="width:75%;" valign="top"><select name="sign" style="width:100%;"><option value="true" selected>是</option><option value="false">否</option></select></td></tr>',
+                '<tr><td style="width:25%;">可编辑：</td>',
+                '<td style="width:75%;" valign="top"><select name="editable" style="width:100%;"><option value="true" selected>是</option><option value="false">否</option></select></td></tr>',
                 '<tr><td align="center" colspan="2">',
                 '<div class="ok-btn">确定</div>',
                 '<div class="cancel-btn">取消</div>',
@@ -55,9 +61,13 @@ function showDiagnosisPluginInitConfigDialog() {
 		var diagnosisType = mask.find('input[name=diagnosis-type]').val();
 		var direction = mask.find('select[name=direction]').val();
 		var sign = mask.find('select[name=sign]').val();
+		var relativeId = mask.find('input[name=relative-id]').val();
+		var editable = mask.find('select[name=editable]').val();
 		createDiagnosisWidget({
 			'diagnosisType':diagnosisType,
 			'direction':direction,
+			'relativeId':relativeId,
+			'editable':editable,
 			'sign':sign
 		});
 		$('.drop-zone').removeClass('drop-zone');

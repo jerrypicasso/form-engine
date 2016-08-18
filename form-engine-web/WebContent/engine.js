@@ -381,7 +381,7 @@
 	}
 	
 	function editForm(container) {
-		var iteratorWrappers = container.find('.iterator-wrapper');
+		var iteratorWrappers = container.find('.iterator-wrapper[editable=true]');
 		iteratorWrappers.find('.edit-wrapper').remove();
 		iteratorWrappers.each(function(){
 			var iteratorWrapper = $(this);
@@ -437,9 +437,9 @@
 		});
 		//双击可编辑
 		container.find('.data-row').bind('dblclick', function() {
-			if(!$(this).hasClass('editing')) {
+			var iteratorWrapper = $(this).parents('.iterator-wrapper:first');
+			if(iteratorWrapper.attr('editable') === 'true' && !$(this).hasClass('editing')) {
 				$(this).addClass('selected');
-				var iteratorWrapper = $(this).parents('.iterator-wrapper:first');
 				updateDataRow(iteratorWrapper);
 			}
 		});
