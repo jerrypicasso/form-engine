@@ -247,6 +247,7 @@ function splitCells() {
 					$(unit).addClass(tag + '-border-invisible');
 					$(unit).attr('coordinate', j + '-' + i);
 					$(unit).attr('grid', tableId);
+					$(unit).addClass('widget-container');
 					$(unit).addClass('droppable');
 					$(unit).addClass('cell');
 					//如果前格存在则插在其后面
