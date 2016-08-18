@@ -17,7 +17,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+@Deprecated
 public class CommonUtil {
 	
 	public static final Log LOGGER = LogFactory.getLog(CommonUtil.class);
