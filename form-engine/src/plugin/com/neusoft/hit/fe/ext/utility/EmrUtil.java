@@ -73,7 +73,7 @@ public class EmrUtil {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT SHORT_NAME FROM C_PROJECT_DETAILS ");
 			sql.append("WHERE PROJECT_DETAIL_CODE = '").append(code).append("' AND ");
-			sql.append("PROJECT_ID = (SELECT PROJECT_ID WHERE PROJECT_CODE = '").append(category).append("')");
+			sql.append("PROJECT_ID = (SELECT PROJECT_ID FROM WHERE PROJECT_CODE = '").append(category).append("')");
 			Connection conn = null;
 			Statement stmt = null;
 			ResultSet rs = null;

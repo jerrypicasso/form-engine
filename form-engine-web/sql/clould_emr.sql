@@ -738,6 +738,8 @@ CREATE TABLE CLOUD_EMR_FKRYJL
 	SFSJ char(1),
 	-- 嗜酒量（两/天）
 	SJL char(4),
+	-- 治游史
+	SFZYS char(1),
 	-- 吸毒史
 	SFXDS char(1),
 	-- 初潮年龄
