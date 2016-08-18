@@ -50,7 +50,7 @@
 				'staffCode':'1783032',
 				'medicalNum':'2009188',
 				'category':tplName,
-				/*'treeId':'111'*/
+				'treeId':'111'
 			});
 		});
 		$('#changeModeBtn').click(function(){
