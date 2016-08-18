@@ -1782,6 +1782,7 @@ CREATE TABLE CLOUD_EMR_SSJL
 (
 	-- 主键
 	GUID varchar2(32) NOT NULL,
+	TREE_ID VARCHAR2(32), --树节点id
 	BRBH varchar2(32),--病人编号
 	-- 就诊序号
 	JZXH varchar2(32),
