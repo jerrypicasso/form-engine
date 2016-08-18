@@ -50,7 +50,7 @@ public class FreemarkerUtil {
 		ByteArrayOutputStream os = null;
 		Writer out = null;
 		try {
-			String key = CommonUtil.guid();
+			String key = EngineUtil.guid();
 			StringTemplateLoader stringLoader = (StringTemplateLoader) configuration.getTemplateLoader();
 			stringLoader.putTemplate(key, template);
 			Template sqlTemplate = configuration.getTemplate(key);
