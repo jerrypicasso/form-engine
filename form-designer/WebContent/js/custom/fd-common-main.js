@@ -48,7 +48,7 @@ $(document).ready(function() {
 					showCheckInitConfigDialog();
 				}
 				else if(type === 'iterator') {
-					showWidgetInitConfigDialog('iterator-init-config-dialog-tpl',createIteratorWidget);
+					showIteratorInitConfigDialog();
 				}
 				else if(type === 'page-number') {
 					createPageNumberWidget();

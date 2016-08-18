@@ -53,7 +53,7 @@ function showCheckInitConfigDialog() {
 	    //'<tr><td>数据库表</td><td colspan="3"><input name="table-name" class="config-item" type="text" style="width:100%;" required="true"/></td></tr>',
 	    '<tr><td>库表字段</td><td><input name="field-name" class="config-item" type="text" style="width:100%;" required="true"/></td></tr>',
 	    '<tr><td colspan="4" align="center"><div class="ok-btn">确定</div><div class="cancel-btn">取消</div></td></tr>',
-	    '</table></div></div>',].join('');
+	    '</table></div></div>'].join('');
 	
 	mask.find('.dialog-zone').append(html);
 	mask.appendTo(document.body);
