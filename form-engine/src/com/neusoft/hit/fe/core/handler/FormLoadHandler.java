@@ -226,6 +226,7 @@ public class FormLoadHandler {
 		if(sqlNode != null) {
 			String sql = sqlNode.innerHtml();
 			sql = sql.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
+			sql = sql.replaceAll("&amp;", "&");
 			sqlTpl.setSql(sql);
 		}
 		List<HtmlElement> children = htmlElement.children("sql-node");
