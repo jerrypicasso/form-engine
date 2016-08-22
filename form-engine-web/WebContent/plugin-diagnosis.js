@@ -711,7 +711,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
             dTypeSelector = $([
                 '<select style="width: 50%">',
                 '<option value=""></option>',
-                '<option value="pt">普通诊断</option>',
+                '<option value="pt" selected>西医诊断</option>',
                 '<option value="zl">肿瘤分期诊断</option>',
                 '<option value="ck">产科诊断</option>',
                 '<option value="zy">中医诊断</option>',
@@ -734,7 +734,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 triggerBox.empty();
                 diagnosisEditorWrapper.find('.comboText').val('');
                 diagnosisEditorWrapper.find('.resultsView').show();
-                triggerBox.append('<div class="comboTextBox"><span class="label-interval">选择ICD：' +
+                triggerBox.append('<div class="comboTextBox"><span class="label-interval">诊断录入：' +
                     '</span></label><input class="combo" style="width:50%;"/></div>');
                 renderInputToSelect2(triggerBox.find('.combo'));
 
@@ -846,7 +846,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
 
 
         diagnosisEditorWrapper.append(['<div class="comboTextBox resultsView">',
-            '<span class="label-interval">诊断内容：</span>',
+            '<span class="label-interval">诊断自定义：</span>',
             '<input class="comboText" type="text" style="width:50%;display: inline-block" maxlength="64"/>',
             '<input class="clear button" type="button" value="清空"/>',
             '</div>'].join(''));
@@ -893,14 +893,14 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 var zhText = diagnosisEditorWrapper.find('.zhzdnr').val();
             }
         } catch (e) {
-            toastr['warning']('ICD未选择。');
+            toastr['warning']('诊断录入未选择。');
             return;
         }
 
 
         if ('zy' != diagnosisInputType) {
             if (!diagnosisCode || $.trim(diagnosisCode) === '') {
-                toastr['warning']('缺少诊断ICD，请从下拉框中进行选择。');
+                toastr['warning']('缺少诊断录入，请从下拉框中进行选择。');
                 return;
             }
             if (!diagnosisText || $.trim(diagnosisText).length <= 0) {
@@ -916,11 +916,11 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
 
         } else if ('zy' == diagnosisInputType) {
             if (!zbCode || $.trim(zbCode) == '') {
-                toastr['warning']('缺少主病诊断ICD，请从下拉框中进行选择。');
+                toastr['warning']('缺少主病诊断录入，请从下拉框中进行选择。');
                 return;
             }
             if (!zhCode || $.trim(zhCode) == '') {
-                toastr['warning']('缺少证候诊断ICD，请从下拉框中进行选择。');
+                toastr['warning']('缺少证候诊断录入，请从下拉框中进行选择。');
                 return;
             }
             if (!zbText || $.trim(zbText).length <= 0) {
@@ -1004,7 +1004,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                     diagnosisText = diagnosisEditorWrapper.find('.comboTextBox .comboText').val();
                 }
             } catch (e) {
-                toastr['warning']('ICD未选择。');
+                toastr['warning']('诊断录入未选择。');
                 return;
             }
 
