@@ -330,13 +330,13 @@
             <tr>
                 <td>数据表</td>
                 <td colspan="3">
-                    <input name="table-name" class="config-item" type="text" style="width:100%;" required="true"/>
+                    <input name="table-name" class="config-item" type="text" style="width:100%;"/>
                 </td>
             </tr>
             <tr>
                 <td>表字段</td>
                 <td colspan="3">
-                    <input name="field-name" class="config-item" type="text" style="width:100%;" required="true"/>
+                    <input name="field-name" class="config-item" type="text" style="width:100%;"/>
                 </td>
             </tr>
             <tr>
