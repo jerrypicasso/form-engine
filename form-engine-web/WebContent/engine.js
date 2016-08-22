@@ -270,7 +270,8 @@
 		var msg = [];
 		var records = [];
 		KindEditor.sync('textarea');
-		container.find('.main-field').each(function() {
+		container.find('.main-field[table!=""]').each(function() {
+			debugger;
 			var dataField = $(this);
 			var editor = dataField.find('.editor');
 			validateField(editor, msg);

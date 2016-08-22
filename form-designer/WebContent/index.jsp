@@ -336,7 +336,7 @@
             <tr>
                 <td>表字段</td>
                 <td colspan="3">
-                    <input name="field-name" class="config-item" type="text" style="width:100%;"/>
+                    <input name="field-name" class="config-item" type="text" style="width:100%;" required="true"/>
                 </td>
             </tr>
             <tr>
