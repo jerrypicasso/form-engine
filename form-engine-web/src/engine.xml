@@ -6,13 +6,13 @@
         <user-name>system</user-name>
         <password>simlink</password>-->
 
-  		<!-- <url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
+  		<url>jdbc:oracle:thin:@10.20.17.99:1521:orcl</url>
         <user-name>qyemr</user-name>
-        <password>simlink</password> -->
+        <password>simlink</password>
 
-        <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
+        <!-- <url>jdbc:oracle:thin:@127.0.0.1:1521:test</url>
         <user-name>system</user-name>
-        <password>neusoft</password>
+        <password>neusoft</password> -->
 
         <initial-size>10</initial-size>
         <max-active>20</max-active>

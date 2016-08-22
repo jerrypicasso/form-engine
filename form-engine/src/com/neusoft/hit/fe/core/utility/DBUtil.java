@@ -1,5 +1,6 @@
 package com.neusoft.hit.fe.core.utility;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -12,15 +13,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.neusoft.hit.fe.core.model.JdbcCfgInfo;
 
 /**
  * 数据库工具类
@@ -31,6 +32,9 @@ public class DBUtil {
 
 
     private static final Log LOGGER = LogFactory.getLog(DBUtil.class);
+    
+    private static ThreadLocal<Connection> THREAD_LOCAL = new ThreadLocal<Connection>();
+    
     /**
      * 数据库驱动类名
      */
@@ -68,25 +72,30 @@ public class DBUtil {
     private static DataSource dataSource;
 
     static {
-        JdbcCfgInfo jdbc = ConfigUtil.getJdbcCfg();
-        driverClass = jdbc.getDriverClass();//configuration.getString("jdbc.driverClass");
-        url = jdbc.getUrl();//configuration.getString("jdbc.url");
-        username = jdbc.getUsername();//configuration.getString("jdbc.username");
-        password = jdbc.getPassword();//configuration.getString("jdbc.password");
-        initialSize = jdbc.getInitialSize();//configuration.getInt("jdbc.initialSize");
-        maxActive = jdbc.getMaxActive();//configuration.getInt("jdbc.maxActive");
-        maxIdle = jdbc.getMaxWait();//configuration.getInt("jdbc.maxIdle");
-        maxWait = jdbc.getMaxWait();//configuration.getInt("jdbc.maxWait");
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName(driverClass);
-        ds.setUsername(username);
-        ds.setPassword(password);
-        ds.setUrl(url);
-        ds.setInitialSize(initialSize);
-        ds.setMaxActive(maxActive);
-        ds.setMaxIdle(maxIdle);
-        ds.setMaxWait(maxWait);
-        dataSource = ds;
+    	try {
+			Properties prop = new Properties();
+			prop.load(DBUtil.class.getResourceAsStream("/jdbc.properties"));
+			driverClass = prop.getProperty("driver");
+			url = prop.getProperty("url");
+			username = prop.getProperty("username");
+			password = prop.getProperty("password");
+			initialSize = NumberUtils.toInt(prop.getProperty("initialSize"));
+			maxActive = NumberUtils.toInt(prop.getProperty("maxActive"));
+			maxIdle = NumberUtils.toInt(prop.getProperty("maxIdle"));
+			maxWait = NumberUtils.toInt(prop.getProperty("maxWait"));
+			BasicDataSource ds = new BasicDataSource();
+			ds.setDriverClassName(driverClass);
+			ds.setUsername(username);
+			ds.setPassword(password);
+			ds.setUrl(url);
+			ds.setInitialSize(initialSize);
+			ds.setMaxActive(maxActive);
+			ds.setMaxIdle(maxIdle);
+			ds.setMaxWait(maxWait);
+			dataSource = ds;
+		} catch (IOException e) {
+			LOGGER.error(e.toString(), e);
+		}
     }
 
     /**
@@ -97,9 +106,13 @@ public class DBUtil {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            conn = dataSource.getConnection();
+        	conn = THREAD_LOCAL.get();
+        	if(conn == null || conn.isClosed()) {
+        		conn = dataSource.getConnection();
+        		THREAD_LOCAL.set(conn);
+        	}
         } catch (SQLException e) {
-            e.printStackTrace();
+        	LOGGER.error(e.toString(), e);
         }
         return conn;
     }
@@ -164,12 +177,13 @@ public class DBUtil {
      * @param conn
      */
     public static void close(Connection conn) {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+        	if (conn != null && conn.getAutoCommit()) {
+        		conn.close();
+        		THREAD_LOCAL.set(null);
+        	}
+        } catch (SQLException e) {
+        	LOGGER.error(e.toString(), e);
         }
     }
 
@@ -179,12 +193,12 @@ public class DBUtil {
      * @param stmt
      */
     public static void close(Statement stmt) {
-        if (stmt != null) {
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+        	if (stmt != null) {
+        		stmt.close();
+        	}
+        } catch (SQLException e) {
+        	LOGGER.error(e.toString(), e);
         }
     }
 
@@ -194,12 +208,12 @@ public class DBUtil {
      * @param rs
      */
     public static void close(ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+        	if (rs != null) {
+        		rs.close();
+        	}
+        } catch (SQLException e) {
+        	LOGGER.error(e.toString(), e);
         }
     }
 

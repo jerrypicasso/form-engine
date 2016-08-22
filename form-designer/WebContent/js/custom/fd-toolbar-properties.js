@@ -455,10 +455,36 @@ function registerWidgetPropertiesHandlers() {
 	});
 	propPanel.find('input[name=width]').next().bind('click',function(){
 		var width = $(this).prev().val();
-		$('.selected-widget').width(width);
+		var selectedWidget = $('.selected-widget');
+		if(selectedWidget.hasClass('cell')) {
+			var tableId = selectedWidget.attr('grid');
+			var index = selectedWidget.attr('coordinate').charAt(0);
+			var col = $('colgroup[grid='+ tableId +'] col').eq(index);
+			if(width) {
+				col.css('width', width + 'px');
+			}
+			else {
+				col.css('width', 'auto');
+			}
+		} 
+		else {
+			$('.selected-widget').width(width);
+		}
 	});
 	propPanel.find('input[name=height]').next().bind('click',function(){
-		$('.selected-widget').height($(this).prev().val());
+		var selectedWidget = $('.selected-widget');
+		var val = $(this).prev().val();
+		if(selectedWidget.hasClass('.cell')) {
+			if($.trim(val)) {
+				selectedWidget.parent().height(val);
+			}
+			else {
+				selectedWidget.parent().removeAttr('style');
+			}
+		}
+		else {
+			selectedWidget.height($(this).prev().val());
+		}
 	});
 	propPanel.find('input[name=bgColor]').next().bind('click',function(){
 		$('.selected-widget').css({'background-color': $(this).prev().val()});

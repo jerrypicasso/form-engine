@@ -312,6 +312,7 @@
 					//'primaryKeyName':primaryKeyName,
 					//'primaryKeyValue':primaryKeyValue,
 					'record':JSON.stringify(records),
+					'plugins':{},
 					'stageKey':JSON.stringify(container.data('options'))
 				};
 				$.extend(data, container.data('lastOptions'));
@@ -388,7 +389,9 @@
 			var editWrapper = $('<div class="edit-wrapper"></div>');
 			var insertBtn = $('<input type="button" class="edit-btn" value="新增"/>');
 			insertBtn.unbind('click').bind('click', function(){
-				insertDataRow.call(container, iteratorWrapper);
+				if(iteratorWrapper.children('.data-row[row-mode=new]').length <= 0) {
+					insertDataRow.call(container, iteratorWrapper);
+				}
 				return false;
 			});
 			insertBtn.appendTo(editWrapper);
@@ -454,7 +457,7 @@
 		//chechbox可编辑状态
 		container.find('.widget-table[check-group-type]').each(function(){
 			var checkGroup = $(this);
-			var hiddenField = checkGroup.find('.main-field .widget-field-hidden');
+			var hiddenField = checkGroup.find('.main-field.widget-field-hidden');
 			if(hiddenField.length > 0) {
 				var fieldName = hiddenField.attr('field');
 				makeCheckboxCheckable(checkGroup.find('.widget-check[field='+ fieldName +']'));
@@ -862,7 +865,7 @@
 					}
 					else if(checkGroupType === 'multi') {
 						var arr = hiddenVal.split(',');
-						if(arr.indexOf(checkVal) > -1) {
+						if($.inArray(checkVal) > -1) {
 							$(this).find('.check-field').html('√');
 						}
 					}
@@ -915,6 +918,7 @@
 	function insertDataRow(iteratorWrapper) {
 		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
 		newRow.attr('row-mode','new');
+		newRow.removeAttr('row-tpl');
 		iteratorWrapper.children('.data-row').remove();
 		iteratorWrapper.prepend(newRow);
 		var iteratorId = iteratorWrapper.attr('id');
