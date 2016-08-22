@@ -123,6 +123,7 @@ public class FormDesignerServlet extends HttpServlet {
 		else if("/loadFields.do".equals(servletPath)) {
 			String sql = req.getParameter("sql");
 			String fakeSql = sql.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("\\$\\{[^}]+\\}", "-1");
+			fakeSql = fakeSql.replaceAll("<#if.*>[^</#if>]*</#if>", "");
 			List<String> fieldNames = DBUtil.getFieldNames(fakeSql);
 			if(fieldNames.isEmpty()) {
 				fakeSql = sql.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("\\$\\{[^}]+\\}", "'-1'");
