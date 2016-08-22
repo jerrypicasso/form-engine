@@ -9,8 +9,8 @@ function createSelectFieldWidget(config) {
 	$(field).attr('table', config['table-name']);
 	$(field).attr('category', config['category']);
 	$(field).attr('filter', config['filter']);
-	$(field).attr('trigger-hide-val', config['hide-val']);
-	$(field).attr('to-hide-widgets', config['hide-ids']);
+	$(field).attr('trigger-show-val', config['show-val']);
+	$(field).attr('to-show-widgets', config['show-ids']);
 	$(field).attr('type', 'select');
 	if(config['filter']) {
 		$(field).attr('filter', config['filter']);
@@ -80,8 +80,8 @@ function showSelectInitConfigDialog() {
         	'<td>是否多选</td><td><select name="multiple" class="config-item" style="width:100%;"><option value="" selected>否</option><option value="multiple">是</option></select></td></tr>',
         '<tr><td>行数据</td><td><select name="is-row-data" class="config-item" style="width:100%;"><option selected value="0">否</option><option value="1">是</option></select></td>',
         	'<td>是否主键</td><td><select name="primary-key" class="config-item" style="width:100%;"><option selected value="0">否</option><option value="1">是</option></select></td></tr>',
-        '<tr><td>触发隐藏值</td><td colspan="3"><input name="hide-val" class="config-item" type="text" style="width:100%;"/></td></tr>',	
-        '<tr><td>隐藏控件id</td><td colspan="3"><input name="hide-ids" class="config-item" type="text" style="width:100%;"/></td></tr>',	
+        '<tr><td>触发显示</td><td colspan="3"><input name="show-val" class="config-item" type="text" style="width:100%;"/></td></tr>',	
+        '<tr><td>受控控件</td><td colspan="3"><input name="show-ids" class="config-item" type="text" style="width:100%;"/></td></tr>',	
         '<tr><td colspan="4" align="center"><div class="ok-btn">确定</div><div class="cancel-btn">取消</div></td></tr>',
         '</table></div></div>',].join('');
 	

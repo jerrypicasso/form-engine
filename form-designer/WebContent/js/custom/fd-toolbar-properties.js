@@ -126,13 +126,13 @@ function createPropertiesControls() {
 		options:[{key:'true',value:'是',defaultValue:true},{key:'false',value:'否'}],
 		parent:'widget-settings'
 	},{
-		name:'hideVal',
-		label:'触发隐藏值',
+		name:'visibleVal',
+		label:'触发显示',
 		type:'text',
 		parent:'widget-settings'
 	},{
-		name:'hideIds',
-		label:'隐藏控件id',
+		name:'visibleIds',
+		label:'受控控件',
 		type:'text',
 		parent:'widget-settings'
 	}/*,{
@@ -374,12 +374,12 @@ function resetAndHideAllPropertiesFields() {
 	var editableField = propPanel.find('select[name=editable]');
 	editableField.val('true');
 	editableField.parent().hide();
-	var hideValField = propPanel.find('input[name=hideVal]');
-	hideValField.val('');
-	hideValField.parent().hide();
-	var hideIdsField = propPanel.find('input[name=hideIds]');
-	hideIdsField.val('');
-	hideIdsField.parent().hide();
+	var visibleValField = propPanel.find('input[name=visibleVal]');
+	visibleValField.val('');
+	visibleValField.parent().hide();
+	var visibleIdsField = propPanel.find('input[name=visibleIds]');
+	visibleIdsField.val('');
+	visibleIdsField.parent().hide();
 	
 	if($('.paper').length > 0) {
 		var paddingTopField = propPanel.find('input[name=paddingTop]');
@@ -620,13 +620,13 @@ function registerWidgetPropertiesHandlers() {
 			$('.selected-widget').removeAttr('editable');
 		}
 	});
-	propPanel.find('input[name=hideVal]').next().bind('click', function(){
+	propPanel.find('input[name=visibleVal]').next().bind('click', function(){
 		var val = $(this).prev().val();
-		$('.selected-widget').attr({'trigger-hide-val':val});
+		$('.selected-widget').attr({'trigger-show-val':val});
 	});
-	propPanel.find('input[name=hideIds]').next().bind('click', function(){
+	propPanel.find('input[name=visibleIds]').next().bind('click', function(){
 		var val = $(this).prev().val();
-		$('.selected-widget').attr({'to-hide-widgets':val});
+		$('.selected-widget').attr({'to-show-widgets':val});
 	});
 }
 
@@ -734,15 +734,15 @@ function prepareRelativePropertiesFields(widget) {
 		masterField.val(master);
 		masterField.parent().show();
 		
-		var hideValField = propPanel.find('input[name=hideVal]');
-		var triggerHideVal = widget.attr('trigger-hide-val');
-		hideValField.val(triggerHideVal);
-		hideValField.parent().show();
+		var visibleValField = propPanel.find('input[name=visibleVal]');
+		var triggerShowVal = widget.attr('trigger-show-val');
+		visibleValField.val(triggerShowVal);
+		visibleValField.parent().show();
 		
-		var hideIdsField = propPanel.find('input[name=hideIds]');
-		var toHideWidgets = widget.attr('to-hide-widgets');
-		hideIdsField.val(toHideWidgets);
-		hideIdsField.parent().show();
+		var visibleIdsField = propPanel.find('input[name=visibleIds]');
+		var toShowWidgets = widget.attr('to-show-widgets');
+		visibleIdsField.val(toShowWidgets);
+		visibleIdsField.parent().show();
 	}
 	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
 			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')
