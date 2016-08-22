@@ -9,6 +9,8 @@ function createSelectFieldWidget(config) {
 	$(field).attr('table', config['table-name']);
 	$(field).attr('category', config['category']);
 	$(field).attr('filter', config['filter']);
+	$(field).attr('trigger-hide-val', config['hide-val']);
+	$(field).attr('to-hide-widgets', config['hide-ids']);
 	$(field).attr('type', 'select');
 	if(config['filter']) {
 		$(field).attr('filter', config['filter']);
@@ -64,7 +66,7 @@ function showSelectInitConfigDialog() {
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
 	
 	var html = [
-        '<div class="dialog" style="width:330px;height:330px;"><div class="dialog-title">初始化配置</div>',
+        '<div class="dialog" style="width:360px;height:380px;"><div class="dialog-title">初始化配置</div>',
         '<div style="padding:15px;"><table style="width:100%;table-layout:fixed;">',
         '<col style="width:24%;"/><col style="width:26%;"/><col style="width:24%;"/><col style="width:26%;"/>',
         '<tr><td>实际值</td><td colspan="3"><input name="real-value" class="config-item" type="text" style="width:100%;" required="true"></td></tr>',
@@ -78,6 +80,8 @@ function showSelectInitConfigDialog() {
         	'<td>是否多选</td><td><select name="multiple" class="config-item" style="width:100%;"><option value="" selected>否</option><option value="multiple">是</option></select></td></tr>',
         '<tr><td>行数据</td><td><select name="is-row-data" class="config-item" style="width:100%;"><option selected value="0">否</option><option value="1">是</option></select></td>',
         	'<td>是否主键</td><td><select name="primary-key" class="config-item" style="width:100%;"><option selected value="0">否</option><option value="1">是</option></select></td></tr>',
+        '<tr><td>触发隐藏值</td><td colspan="3"><input name="hide-val" class="config-item" type="text" style="width:100%;"/></td></tr>',	
+        '<tr><td>隐藏控件id</td><td colspan="3"><input name="hide-ids" class="config-item" type="text" style="width:100%;"/></td></tr>',	
         '<tr><td colspan="4" align="center"><div class="ok-btn">确定</div><div class="cancel-btn">取消</div></td></tr>',
         '</table></div></div>',].join('');
 	

@@ -3,11 +3,9 @@ package com.neusoft.hit.fe.ext.utility;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -73,7 +71,8 @@ public class EmrUtil {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT SHORT_NAME FROM C_PROJECT_DETAILS ");
 			sql.append("WHERE PROJECT_DETAIL_CODE = '").append(code).append("' AND ");
-			sql.append("PROJECT_ID = (SELECT PROJECT_ID FROM WHERE PROJECT_CODE = '").append(category).append("')");
+			sql.append("PROJECT_ID = (SELECT PROJECT_ID FROM C_PROJECT WHERE PROJECT_CODE = '");
+			sql.append(category).append("')");
 			Connection conn = null;
 			Statement stmt = null;
 			ResultSet rs = null;
@@ -133,6 +132,7 @@ public class EmrUtil {
 	 * @param diagnosisList
 	 * @return
      */
+	@SuppressWarnings("unchecked")
 	private static String combineDiagnosis(List<Map<String, Object>> diagnosisList) {
 
 		StringBuilder sb = new StringBuilder();

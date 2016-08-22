@@ -125,6 +125,16 @@ function createPropertiesControls() {
 		label:'是否编辑',
 		options:[{key:'true',value:'是',defaultValue:true},{key:'false',value:'否'}],
 		parent:'widget-settings'
+	},{
+		name:'hideVal',
+		label:'触发隐藏值',
+		type:'text',
+		parent:'widget-settings'
+	},{
+		name:'hideIds',
+		label:'隐藏控件id',
+		type:'text',
+		parent:'widget-settings'
 	}/*,{
 		name:'totalPage',
 		label:'分页总数',
@@ -364,6 +374,12 @@ function resetAndHideAllPropertiesFields() {
 	var editableField = propPanel.find('select[name=editable]');
 	editableField.val('true');
 	editableField.parent().hide();
+	var hideValField = propPanel.find('input[name=hideVal]');
+	hideValField.val('');
+	hideValField.parent().hide();
+	var hideIdsField = propPanel.find('input[name=hideIds]');
+	hideIdsField.val('');
+	hideIdsField.parent().hide();
 	
 	if($('.paper').length > 0) {
 		var paddingTopField = propPanel.find('input[name=paddingTop]');
@@ -604,6 +620,14 @@ function registerWidgetPropertiesHandlers() {
 			$('.selected-widget').removeAttr('editable');
 		}
 	});
+	propPanel.find('input[name=hideVal]').next().bind('click', function(){
+		var val = $(this).prev().val();
+		$('.selected-widget').attr({'trigger-hide-val':val});
+	});
+	propPanel.find('input[name=hideIds]').next().bind('click', function(){
+		var val = $(this).prev().val();
+		$('.selected-widget').attr({'to-hide-widgets':val});
+	});
 }
 
 /*为特定的控件准备相关的属性面板内容*/
@@ -709,6 +733,16 @@ function prepareRelativePropertiesFields(widget) {
 		var master = widget.attr('master');
 		masterField.val(master);
 		masterField.parent().show();
+		
+		var hideValField = propPanel.find('input[name=hideVal]');
+		var triggerHideVal = widget.attr('trigger-hide-val');
+		hideValField.val(triggerHideVal);
+		hideValField.parent().show();
+		
+		var hideIdsField = propPanel.find('input[name=hideIds]');
+		var toHideWidgets = widget.attr('to-hide-widgets');
+		hideIdsField.val(toHideWidgets);
+		hideIdsField.parent().show();
 	}
 	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
 			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')

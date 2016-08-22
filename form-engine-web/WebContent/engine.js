@@ -37,7 +37,8 @@
 				mode = options['mode'];
 			}
 			if(mode == 'view') {
-				viewForm(container);
+				container.data('mode', 'view');
+				loadForm(null, container);
 			}
 			else {
 				editForm(container);
@@ -271,7 +272,6 @@
 		var records = [];
 		KindEditor.sync('textarea');
 		container.find('.main-field[table!=""]').each(function() {
-			debugger;
 			var dataField = $(this);
 			var editor = dataField.find('.editor');
 			validateField(editor, msg);
@@ -344,16 +344,18 @@
 		}
 	}
 	
-	function viewForm(container) {
+	/*function viewForm(container) {
+		container.data('mode', 'view');
+		loadForm(null, container);
 		KindEditor.remove('textarea');
 		container.find('.edit-wrapper').remove();
 		//删除编辑器
 		//$('.main-field .ok-cancel-wrapper').remove();
-		/*$('.main-field .editor').each(function(){
+		$('.main-field .editor').each(function(){
 			if($(this).hasClass('select')) {
 				$(this).select2('destroy');
 			}
-		});*/
+		});
 		container.find('.main-field .editor').remove();
 		//清除注册的事件
 		container.find('.main-field .display-field').unbind();
@@ -368,19 +370,19 @@
 		container.find('.data-row[row-mode=new]').remove();
 		container.find('.data-row.editing').each(function(){
 			$(this).removeClass('editing');
-			/*$(this).find('.editor').each(function(){
+			$(this).find('.editor').each(function(){
 				if($(this).parent().hasClass('widget-field-staff')
 						|| $(this).parent().hasClass('widget-field-dict')) {
 					$(this).select2('destroy');
 				}
-			});*/
+			});
 			$(this).find('.editor').remove();
 			$(this).find('.display-field').show();
 		});
 		container.find('.widget-check').removeClass('editable');
 		container.find('.widget-check').unbind('click');
 		container.find('.widget-check .check-field').html('');
-	}
+	}*/
 	
 	function editForm(container) {
 		var iteratorWrappers = container.find('.iterator-wrapper[editable=true]');
@@ -539,6 +541,7 @@
 				handleEmptyWidgetField(container);
 				createPaginationBars(container);
 				renderCheckboxWidgets(container);
+				hideWidgetsByCondition(container);
 				createExportForm();
 				container.find('.data-row[row-tpl=true]').hide();
 				var mode = container.data('mode');
@@ -601,6 +604,8 @@
 			var multiple = dataField.attr('multi-select');
 			var master = dataField.attr('master');
 			var autocomplete = dataField.attr('trigger');
+			var triggerHideVal = dataField.attr('trigger-hide-val');
+			var toHideWidgets = dataField.attr('to-hide-widgets');
 			var closeOnSelect = true;
 			if(multiple === 'multiple') {
 				closeOnSelect = false;
@@ -686,6 +691,18 @@
 			$(editor).attr('multi', multiple === 'multiple');
 			$(editor).data('display', txt);
 			$(editor).val(val).trigger('change');
+			$(editor).on('change', function(e){
+				if(toHideWidgets) {
+					var arr = toHideWidgets.split(',');
+					var widgets = $('#' + arr.join(',#'));
+					if(triggerHideVal == e.val) {
+						widgets.hide();
+					}
+					else {
+						widgets.show();
+					}
+				}
+			});
 		}
 		else if(type == 'date') {
 			editor = document.createElement('input');
@@ -870,6 +887,25 @@
 							$(this).find('.check-field').html('√');
 						}
 					}
+				}
+			}
+		});
+	}
+	
+	function hideWidgetsByCondition(container) {
+		container.find('.widget-field-select').each(function(){
+			var selectWidget = $(this);
+			var currentVal = selectWidget.find('.value-field').html();
+			var triggerHideVal = selectWidget.attr('trigger-hide-val');
+			var toHideWidgets = selectWidget.attr('to-hide-widgets');
+			if(toHideWidgets) {
+				var arr = toHideWidgets.split(',');
+				var widgets = $('#' + arr.join(',#'));
+				if(triggerHideVal == currentVal) {
+					widgets.hide();
+				}
+				else {
+					widgets.show();
 				}
 			}
 		});
