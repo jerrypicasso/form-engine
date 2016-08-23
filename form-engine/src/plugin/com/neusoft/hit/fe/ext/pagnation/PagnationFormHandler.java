@@ -7,6 +7,7 @@ import com.neusoft.hit.fe.core.utility.DBUtil;
 import com.neusoft.hit.fe.core.utility.EngineUtil;
 import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +72,7 @@ public class PagnationFormHandler implements PluginDataHandler {
         String pageId = EngineUtil.guid();
         params.put("guid",pageId);
         String sql = FreemarkerUtil.getMixedString(INSERTPAGESQL, params);
+        Map<String, Object> results = new HashMap<String, Object>();
         Connection conn = null;
         Statement stmt = null;
         String result = null;
@@ -77,14 +80,14 @@ public class PagnationFormHandler implements PluginDataHandler {
             conn = DBUtil.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
-            result = "{pageId:"+pageId+"}";
+            results.put("pageId",pageId);
         } catch (SQLException e) {
             LOGGER.error(e.toString(), e);
         }finally {
             DBUtil.close(conn,stmt,null);
         }
-
-        return StringUtils.isBlank(result)?ResultInfo.getResult():result;
+        result = JSONObject.fromObject(results).toString();
+        return result;
     }
 
     private String delete(Map<String, Object> params) throws FormEngineException{
@@ -92,16 +95,18 @@ public class PagnationFormHandler implements PluginDataHandler {
         Statement stmt = null;
         String sql = FreemarkerUtil.getMixedString(DELETEPAGESQL,params);
         String result = null;
+        Map<String, Object> results = new HashMap<String, Object>();
         try {
             conn = DBUtil.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
-            result = "{pageId:"+params.get("pageId")+"}";
+            results.put("pageId",params.get("pageId"));
         } catch (SQLException e) {
             LOGGER.error(e.toString(), e);
         }finally {
             DBUtil.close(conn,stmt,null);
         }
+        result = JSONObject.fromObject(results).toString();
         return result;
     }
 
