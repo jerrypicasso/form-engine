@@ -33,8 +33,6 @@ public class DBUtil {
 
     private static final Log LOGGER = LogFactory.getLog(DBUtil.class);
     
-    private static ThreadLocal<Connection> THREAD_LOCAL = new ThreadLocal<Connection>();
-    
     /**
      * 数据库驱动类名
      */
@@ -79,10 +77,10 @@ public class DBUtil {
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");
-			initialSize = NumberUtils.toInt(prop.getProperty("initialSize"));
-			maxActive = NumberUtils.toInt(prop.getProperty("maxActive"));
-			maxIdle = NumberUtils.toInt(prop.getProperty("maxIdle"));
-			maxWait = NumberUtils.toInt(prop.getProperty("maxWait"));
+			initialSize = NumberUtils.toInt(prop.getProperty("initialSize"), 10);
+			maxActive = NumberUtils.toInt(prop.getProperty("maxActive"), 1000);
+			maxIdle = NumberUtils.toInt(prop.getProperty("maxIdle"), 100);
+			maxWait = NumberUtils.toInt(prop.getProperty("maxWait"), 100);
 			BasicDataSource ds = new BasicDataSource();
 			ds.setDriverClassName(driverClass);
 			ds.setUsername(username);
@@ -106,11 +104,7 @@ public class DBUtil {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-        	conn = THREAD_LOCAL.get();
-        	if(conn == null || conn.isClosed()) {
-        		conn = dataSource.getConnection();
-        		THREAD_LOCAL.set(conn);
-        	}
+    		conn = dataSource.getConnection();
         } catch (SQLException e) {
         	LOGGER.error(e.toString(), e);
         }
@@ -178,9 +172,8 @@ public class DBUtil {
      */
     public static void close(Connection conn) {
         try {
-        	if (conn != null && conn.getAutoCommit()) {
+        	if (conn != null) {
         		conn.close();
-        		THREAD_LOCAL.set(null);
         	}
         } catch (SQLException e) {
         	LOGGER.error(e.toString(), e);

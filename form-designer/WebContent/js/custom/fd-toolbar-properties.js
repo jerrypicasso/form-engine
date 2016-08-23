@@ -135,6 +135,11 @@ function createPropertiesControls() {
 		label:'受控控件',
 		type:'text',
 		parent:'widget-settings'
+	},{
+		name:'expression',
+		label:'条件控制',
+		type:'text',
+		parent:'widget-settings'
 	}/*,{
 		name:'totalPage',
 		label:'分页总数',
@@ -380,6 +385,9 @@ function resetAndHideAllPropertiesFields() {
 	var visibleIdsField = propPanel.find('input[name=visibleIds]');
 	visibleIdsField.val('');
 	visibleIdsField.parent().hide();
+	var expressionField = propPanel.find('input[name=expression]');
+	expressionField.val('');
+	expressionField.parent().hide();
 	
 	if($('.paper').length > 0) {
 		var paddingTopField = propPanel.find('input[name=paddingTop]');
@@ -628,6 +636,10 @@ function registerWidgetPropertiesHandlers() {
 		var val = $(this).prev().val();
 		$('.selected-widget').attr({'to-show-widgets':val});
 	});
+	propPanel.find('input[name=expression]').next().bind('click', function(){
+		var val = $(this).prev().val();
+		$('.selected-widget').attr({'expr':val});
+	});
 }
 
 /*为特定的控件准备相关的属性面板内容*/
@@ -773,8 +785,13 @@ function prepareRelativePropertiesFields(widget) {
 		fieldNameField.val(fieldName);
 		fieldNameField.parent().show();
 	}
+	if(widget.hasClass('widget-condition')) {
+		var expressionField = propPanel.find('input[name=expression]');
+		expressionField.val(widget.attr('expr'));
+		expressionField.parent().show();
+	}
 	if(!widget.hasClass('iterator-wrapper') && !widget.hasClass('cell')
-			&& !widget.hasClass('widget-check')) {
+			&& !widget.hasClass('widget-check') && !widget.hasClass('widget-condition')) {
 		var dispField = widget.find('.display-field');
 		var displayValField = propPanel.find('input[name=displayVal]');
 		if(dispField.length > 0) {
