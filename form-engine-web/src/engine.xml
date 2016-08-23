@@ -15,6 +15,7 @@
 				<#if param.fuzzy?? && param.fuzzy != ''> 
 					AND (A.PROJECT_DETAIL_CODE LIKE '%${param.fuzzy}%' OR A.SHORT_NAME LIKE '%${param.fuzzy}%')
 				</#if>
+				ORDER BY A.ITEM_SEQUENCE
 				]]>
             </sql-template>
             <display-template>${result.SHORT_NAME}</display-template>
@@ -48,6 +49,19 @@
             </sql-template>
             <display-template>${result.ICD_NAME}</display-template>
             <value-template>${result.ICD_CODE}</value-template>
+        </combo-config>
+        
+        <combo-config code="surgery" name="手术">
+        	<sql-template>
+                <![CDATA[
+				SELECT ITEMID,ITEMNAME FROM OPT_ITEM_INFO WHERE 1=1
+				<#if param.fuzzy?? && param.fuzzy != ''>
+					AND (ITEMNAME LIKE '%${param.fuzzy}%' OR INPUTSTR LIKE '%${param.fuzzy}%' OR ITEMID LIKE '%${param.fuzzy}%')
+				</#if>
+				]]>
+            </sql-template>
+            <display-template>${result.ITEMNAME}</display-template>
+            <value-template>${result.ITEMID}</value-template>
         </combo-config>
     </combo-configs>
 
