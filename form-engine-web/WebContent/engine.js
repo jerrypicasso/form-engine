@@ -56,6 +56,14 @@
 			container.trigger('mode-changed',[{'mode': mode}]);
 			renderCheckboxWidgets(container);
 		},
+		'add': function(options) {
+			var container = $(this);
+			if(options) {
+				container.data('options', options);
+			}
+			container.data('mode', 'add');
+			loadForm(options, container);
+		},
 		'save': function(options) {
 			var container = $(this);
 			var mode = container.data('mode');

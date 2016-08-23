@@ -43,6 +43,16 @@
 			console.log(ret);
 		});
 		
+		$('#addBtn').click(function(){
+			var tplName = $('#chooseTpl').val();
+			$('#container').form('add', {
+				'patientCode': '1459047',
+				'staffCode': '1783032',
+				'medicalNum': '2009188',
+				'category': tplName
+			});
+		});
+		
 		$('#queryBtn').click(function(){
 			var tplName = $('#chooseTpl').val();
 			$('#container').form('load', {
@@ -127,6 +137,7 @@
 	
 		<input id="editorTestBtn" type="button" value="显示"/>
 		<input id="queryBtn" style="float:left;vertical-align:middle;" type="button" value="查询">
+		<input id="addBtn" style="float:left;vertical-align:middle;" type="button" value="新增"/>
 		<input id="changeModeBtn" style="float:left;vertical-align:middle;" type="button" value="编辑"/>
 		<input id="tempSaveBtn" style="float:left;vertical-align:middle;" type="button" value="暂存"/>
 		<input id="saveBtn" style="float:left;vertical-align:middle;" type="button" value="保存"/>

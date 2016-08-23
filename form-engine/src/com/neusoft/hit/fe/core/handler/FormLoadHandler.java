@@ -47,8 +47,12 @@ public class FormLoadHandler {
 				form = form.replaceAll("&amp;", "&");
 				html = FreemarkerUtil.getMixedString(form, rootMap);
 				
-				
-				result.put("mode", rootMap.get("mode"));
+				if("add".equals(rootMap.get("mode"))) {
+					result.put("mode", "edit");
+				}
+				else {
+					result.put("mode", rootMap.get("mode"));
+				}
 			}
 		}
 		else {
@@ -248,6 +252,7 @@ public class FormLoadHandler {
 	
 	private void loadDatasetByExecutingQuerySql(List<SqlTplInfo> selectSqlList, 
 			Map<String, Object> rootMap) throws FormEngineException {
+		Object mode = rootMap.get("mode");
 		//把select语句都执行一下，得到的结果作为展示用的数据源
 		for(SqlTplInfo sqlTpl : selectSqlList) {
 			String sqlName = sqlTpl.getName();
@@ -262,73 +267,83 @@ public class FormLoadHandler {
 			try {
 				stmt = conn.createStatement();
 				if("single".equals(resultType)) {
-					recordRs = stmt.executeQuery(sql);
-					Map<String, Object> record = DBUtil.getSingleResult(recordRs);
+					Map<String, Object> record = null;
+					//如果不是新增模式
+					if(!"add".equals(mode)) {
+						recordRs = stmt.executeQuery(sql);
+						record = DBUtil.getSingleResult(recordRs);
+					}
+					else {
+						record = new HashMap<String, Object>();
+					}
 					rootMap.put(sqlName, record);
 				} 
 				else if(resultType != null && resultType.startsWith("multi")) {
-					String recordSql = sql;
-					String paginationSql = null;
 					List<Map<String, Object>> records = new ArrayList<Map<String, Object>>();
-					if(resultlimit != null && resultlimit > 0) {
-						StringBuilder sqlBuilder = new StringBuilder();
-						Object page = rootMap.get(sqlName + "_page");
-						if(page == null) {
-							page = "0";
-						}
-						int pageNum = Integer.parseInt(page.toString());
-						int begin = resultlimit * pageNum;
-						int end = resultlimit * (pageNum + 1);
-						String dbType = DBUtil.getDataBaseType();
-						if("Oracle".equals(dbType)) {
-							sqlBuilder.append("SELECT * FROM ( SELECT OLD.*,ROWNUM RN FROM (");
-							sqlBuilder.append(sql);
-							sqlBuilder.append(") OLD WHERE ROWNUM <= ");
-							sqlBuilder.append(end);
-							sqlBuilder.append(") WHERE RN > ");
-							sqlBuilder.append(begin);
-						}
-						else if("Postgresql".equals(dbType)) {
-							sqlBuilder.append(sql).append(" LIMIT ").append(resultlimit)
+					//如果不是新增模式
+					if(!"add".equals(mode)) {
+						String recordSql = sql;
+						String paginationSql = null;
+						if(resultlimit != null && resultlimit > 0) {
+							StringBuilder sqlBuilder = new StringBuilder();
+							Object page = rootMap.get(sqlName + "_page");
+							if(page == null) {
+								page = "0";
+							}
+							int pageNum = Integer.parseInt(page.toString());
+							int begin = resultlimit * pageNum;
+							int end = resultlimit * (pageNum + 1);
+							String dbType = DBUtil.getDataBaseType();
+							if("Oracle".equals(dbType)) {
+								sqlBuilder.append("SELECT * FROM ( SELECT OLD.*,ROWNUM RN FROM (");
+								sqlBuilder.append(sql);
+								sqlBuilder.append(") OLD WHERE ROWNUM <= ");
+								sqlBuilder.append(end);
+								sqlBuilder.append(") WHERE RN > ");
+								sqlBuilder.append(begin);
+							}
+							else if("Postgresql".equals(dbType)) {
+								sqlBuilder.append(sql).append(" LIMIT ").append(resultlimit)
 								.append(" OFFSET ").append(begin);
+							}
+							recordSql = sqlBuilder.toString();
+							
+							sqlBuilder.setLength(0);
+							sqlBuilder.append("SELECT COUNT(*) AS TOTAL FROM (");
+							sqlBuilder.append(sql);
+							sqlBuilder.append(")");
+							paginationSql = sqlBuilder.toString();
 						}
-						recordSql = sqlBuilder.toString();
-						
-						sqlBuilder.setLength(0);
-						sqlBuilder.append("SELECT COUNT(*) AS TOTAL FROM (");
-						sqlBuilder.append(sql);
-						sqlBuilder.append(")");
-						paginationSql = sqlBuilder.toString();
-					}
-					recordRs = stmt.executeQuery(recordSql);
-					List<Map<String, Object>> results = DBUtil.getMultiResults(recordRs);
-					if("multi-fixed".equals(resultType)) {
-						int size = results.size();
-						if(size < resultlimit) {
-							for(int i = 0; i < resultlimit - size; i++) {
-								results.add(new HashMap<String, Object>());
+						recordRs = stmt.executeQuery(recordSql);
+						List<Map<String, Object>> results = DBUtil.getMultiResults(recordRs);
+						if("multi-fixed".equals(resultType)) {
+							int size = results.size();
+							if(size < resultlimit) {
+								for(int i = 0; i < resultlimit - size; i++) {
+									results.add(new HashMap<String, Object>());
+								}
 							}
 						}
-					}
-					records.addAll(results);
-					//增加一条隐藏的空行，用来作为新增记录时的编辑模版
-					Map<String, Object> record = new HashMap<String, Object>();
-					record.put("rowTpl", "true");
-					records.add(record);
-					rootMap.put(sqlName, records.toArray());
-					
-					//如果paginationSql不为空，则计算出分页参数
-					if(paginationSql != null) {
-						paginationRs = stmt.executeQuery(paginationSql);
-						Map<String, Object> pagination = DBUtil.getSingleResult(paginationRs);
-						if(pagination != null) {
-							Object total = pagination.get("TOTAL");
-							int rowCount = NumberUtils.toInt(total.toString(), 0);
-							int pageCount = rowCount/resultlimit + (rowCount%resultlimit > 0 ? 1 : 0);
-							pagination.clear();
-							pagination.put("ROW_COUNT", rowCount);
-							pagination.put("PAGE_COUNT", pageCount);
-							rootMap.put(sqlName + "_pagination", pagination);
+						records.addAll(results);
+						//增加一条隐藏的空行，用来作为新增记录时的编辑模版
+						Map<String, Object> record = new HashMap<String, Object>();
+						record.put("rowTpl", "true");
+						records.add(record);
+						rootMap.put(sqlName, records.toArray());
+						
+						//如果paginationSql不为空，则计算出分页参数
+						if(paginationSql != null) {
+							paginationRs = stmt.executeQuery(paginationSql);
+							Map<String, Object> pagination = DBUtil.getSingleResult(paginationRs);
+							if(pagination != null) {
+								Object total = pagination.get("TOTAL");
+								int rowCount = NumberUtils.toInt(total.toString(), 0);
+								int pageCount = rowCount/resultlimit + (rowCount%resultlimit > 0 ? 1 : 0);
+								pagination.clear();
+								pagination.put("ROW_COUNT", rowCount);
+								pagination.put("PAGE_COUNT", pageCount);
+								rootMap.put(sqlName + "_pagination", pagination);
+							}
 						}
 					}
 				}
