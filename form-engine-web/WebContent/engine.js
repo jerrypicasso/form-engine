@@ -699,7 +699,7 @@
 			$(editor).attr('multi', multiple === 'multiple');
 			$(editor).data('display', txt);
 			$(editor).val(val).trigger('change');
-			$(editor).on('change', function(e){
+			$(editor).unbind('change').bind('change', function(e){
 				if(toShowWidgets) {
 					var arr = toShowWidgets.split(',');
 					var widgets = $('#' + arr.join(',#'));
@@ -772,7 +772,7 @@
 				}
 			});
 		}*/
-		else if(type == 'text' || dataField.hasClass('widget-field-hidden')) {
+		else if(type == 'text') {
 			var isRich = dataField.attr('rich');
 			if(isRich === 'true') {
 				editor = document.createElement('textarea');
@@ -793,6 +793,25 @@
 				$(editor).val(val);
 			}
 			$(editor).attr({'maxLength':maxLength});
+		}
+		else if(dataField.hasClass('widget-field-hidden')) {
+			editor = document.createElement('input');
+			dataField.prepend(editor);
+			var triggerShowVal = dataField.attr('trigger-show-val');
+			var toShowWidgets = dataField.attr('to-show-widgets');
+			$(editor).val(val);
+			$(editor).unbind('change').bind('change', function(){
+				if(toShowWidgets) {
+					var arr = toShowWidgets.split(',');
+					var widgets = $('#' + arr.join(',#'));
+					if(triggerShowVal == $(this).val()) {
+						widgets.show();
+					}
+					else {
+						widgets.hide();
+					}
+				}
+			});
 		}
 		
 		txtField.hide();
@@ -901,11 +920,11 @@
 	}
 	
 	function hideWidgetsByCondition(container) {
-		container.find('.widget-field-select').each(function(){
-			var selectWidget = $(this);
-			var currentVal = selectWidget.find('.value-field').html();
-			var triggerShowVal = selectWidget.attr('trigger-show-val');
-			var toShowWidgets = selectWidget.attr('to-show-widgets');
+		container.find('.widget-field-select,.widget-field-hidden').each(function(){
+			var widget = $(this);
+			var currentVal = widget.find('.value-field').html();
+			var triggerShowVal = widget.attr('trigger-show-val');
+			var toShowWidgets = widget.attr('to-show-widgets');
 			if(toShowWidgets) {
 				var arr = toShowWidgets.split(',');
 				var widgets = $('#' + arr.join(',#'));

@@ -36,7 +36,7 @@ $(document).ready(function() {
 					showWidgetInitConfigDialog('field-init-config-dialog-tpl',createNumberFieldWidget);
 				}
 				else if(type === 'hidden-field') {
-					showWidgetInitConfigDialog('field-init-config-dialog-tpl',createHiddenFieldWidget);
+					showHiddenInitConfigDialog();
 				}
 				else if(type === 'text-field') {
 					showWidgetInitConfigDialog('field-init-config-dialog-tpl',createTextFieldWidget);

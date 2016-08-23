@@ -258,7 +258,6 @@ function showPickTableDialog(parent) {
 	              '<select name="table-name" style="width:100%;height:100%;"></select></td></tr>',
 	              '<tr><td colspan="2" align="center">',
 	              '<div class="ok-btn">确定</div>',
-	              '<div style="width:30px;display:inline-block;"></div>',
 	              '<div class="cancel-btn">取消</div></td></tr>',
 	              '</table>',
 	              '</div>'].join('');

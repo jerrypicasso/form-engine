@@ -707,6 +707,17 @@ function prepareRelativePropertiesFields(widget) {
 		minNumField.val(minNum);
 		minNumField.parent().show();
 	}
+	if(widget.hasClass('widget-field-select') || widget.hasClass('widget-field-hidden')) {
+		var visibleValField = propPanel.find('input[name=visibleVal]');
+		var triggerShowVal = widget.attr('trigger-show-val');
+		visibleValField.val(triggerShowVal);
+		visibleValField.parent().show();
+		
+		var visibleIdsField = propPanel.find('input[name=visibleIds]');
+		var toShowWidgets = widget.attr('to-show-widgets');
+		visibleIdsField.val(toShowWidgets);
+		visibleIdsField.parent().show();
+	}
 	if(widget.hasClass('widget-field-dict') || widget.hasClass('widget-field-staff')
 			|| widget.hasClass('widget-field-select')) {
 		var categoryField = propPanel.find('input[name=category]');
@@ -733,16 +744,6 @@ function prepareRelativePropertiesFields(widget) {
 		var master = widget.attr('master');
 		masterField.val(master);
 		masterField.parent().show();
-		
-		var visibleValField = propPanel.find('input[name=visibleVal]');
-		var triggerShowVal = widget.attr('trigger-show-val');
-		visibleValField.val(triggerShowVal);
-		visibleValField.parent().show();
-		
-		var visibleIdsField = propPanel.find('input[name=visibleIds]');
-		var toShowWidgets = widget.attr('to-show-widgets');
-		visibleIdsField.val(toShowWidgets);
-		visibleIdsField.parent().show();
 	}
 	if(widget.hasClass('widget-field-text') || widget.hasClass('widget-field-date')
 			|| widget.hasClass('widget-field-number') || widget.hasClass('widget-field-dict')
