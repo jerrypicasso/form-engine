@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -193,4 +195,32 @@ public class EmrUtil {
 
 	}
 
+	/**
+	 * 功能code获得表名
+	 * @param code
+	 * @return
+     */
+	public static String formInfo(String code){
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT TITLE AS \"title\" FROM FORM_TEMPLATE_STORAGE WHERE CODE='").append(code).append("' AND ROWNUM<=1");
+
+		try{
+			conn = DBUtil.getConnection();
+			stmt = conn.createStatement();
+			rs  =stmt.executeQuery(sql.toString());
+			Map<String, Object> singleResult = DBUtil.getSingleResult(rs);
+			rs.close();
+
+			result = JSONObject.fromObject(singleResult).toString();
+		}catch (Exception e){
+			LOGGER.error(e.toString(), e);
+		}finally{
+			DBUtil.close(conn,stmt,rs);
+		}
+		return result;
+	}
 }

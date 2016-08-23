@@ -234,6 +234,7 @@
         <plugin name="nursing" class="com.neusoft.hit.fe.ext.nursing.NursingDataHandler"/>
 	    <plugin name="surgery" class="com.neusoft.hit.fe.ext.surgery.SurgeryDataHandler"/>
 	    <plugin name="audit" class="com.neusoft.hit.fe.ext.audit.AuditDataHandler"/>
+        <plugin name="pagnation" class="com.neusoft.hit.fe.ext.pagnation.PagnationFormHandler"/>
     </plugins>
     
     <utilities>
