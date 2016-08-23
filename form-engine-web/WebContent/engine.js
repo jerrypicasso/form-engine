@@ -612,8 +612,8 @@
 			var multiple = dataField.attr('multi-select');
 			var master = dataField.attr('master');
 			var autocomplete = dataField.attr('trigger');
-			var triggerHideVal = dataField.attr('trigger-hide-val');
-			var toHideWidgets = dataField.attr('to-hide-widgets');
+			var triggerShowVal = dataField.attr('trigger-show-val');
+			var toShowWidgets = dataField.attr('to-show-widgets');
 			var closeOnSelect = true;
 			if(multiple === 'multiple') {
 				closeOnSelect = false;
@@ -700,14 +700,14 @@
 			$(editor).data('display', txt);
 			$(editor).val(val).trigger('change');
 			$(editor).on('change', function(e){
-				if(toHideWidgets) {
-					var arr = toHideWidgets.split(',');
+				if(toShowWidgets) {
+					var arr = toShowWidgets.split(',');
 					var widgets = $('#' + arr.join(',#'));
-					if(triggerHideVal == e.val) {
-						widgets.hide();
+					if(triggerShowVal == e.val) {
+						widgets.show();
 					}
 					else {
-						widgets.show();
+						widgets.hide();
 					}
 				}
 			});
@@ -904,16 +904,16 @@
 		container.find('.widget-field-select').each(function(){
 			var selectWidget = $(this);
 			var currentVal = selectWidget.find('.value-field').html();
-			var triggerHideVal = selectWidget.attr('trigger-hide-val');
-			var toHideWidgets = selectWidget.attr('to-hide-widgets');
-			if(toHideWidgets) {
-				var arr = toHideWidgets.split(',');
+			var triggerShowVal = selectWidget.attr('trigger-show-val');
+			var toShowWidgets = selectWidget.attr('to-show-widgets');
+			if(toShowWidgets) {
+				var arr = toShowWidgets.split(',');
 				var widgets = $('#' + arr.join(',#'));
-				if(triggerHideVal == currentVal) {
-					widgets.hide();
+				if(triggerShowVal == currentVal) {
+					widgets.show();
 				}
 				else {
-					widgets.show();
+					widgets.hide();
 				}
 			}
 		});
