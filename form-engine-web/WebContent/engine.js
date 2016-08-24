@@ -24,6 +24,7 @@
 			if(options) {
 				container.data('options', options);
 			}
+			container.data('mode', 'view');
 			loadForm(options, container);
 		},
 		'reload':function(options) {
