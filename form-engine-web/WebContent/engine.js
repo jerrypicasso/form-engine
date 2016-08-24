@@ -37,8 +37,7 @@
 				mode = options['mode'];
 			}
 			if(mode == 'view') {
-				container.data('mode', 'view');
-				loadForm(null, container);
+				viewForm(container);
 			}
 			else {
 				editForm(container);
@@ -352,7 +351,7 @@
 		}
 	}
 	
-	/*function viewForm(container) {
+	function viewForm(container) {
 		container.data('mode', 'view');
 		loadForm(null, container);
 		KindEditor.remove('textarea');
@@ -390,7 +389,7 @@
 		container.find('.widget-check').removeClass('editable');
 		container.find('.widget-check').unbind('click');
 		container.find('.widget-check .check-field').html('');
-	}*/
+	}
 	
 	function editForm(container) {
 		var iteratorWrappers = container.find('.iterator-wrapper[editable=true]');
