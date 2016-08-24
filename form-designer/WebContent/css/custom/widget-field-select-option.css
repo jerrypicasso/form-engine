@@ -1,0 +1,129 @@
+@CHARSET "UTF-8";
+.xc_layer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #666666;
+	opacity: 0.5;
+	z-index: 2147000000;
+}
+
+.popBox {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	background-color: #ffffff;
+	z-index: 2147000001;
+	width: 500px;
+	height: 400px;
+	margin-left: -285px;
+	margin-top: -150px;
+	border-radius: 5px;
+	color: #535e66;
+}
+
+.widget-field-select-option-xcConfirm .popBox .ttBox {
+	height: 20px;
+	line-height: 20px;
+	padding: 14px 180px;
+	border-bottom: solid 1px #eef0f1;
+	font-weight: bold;
+}
+
+.widget-field-select-option-xcConfirm .popBox .ttBox .tt {
+	font-size: 18px;
+	display: block;
+	float: left;
+	height: 30px;
+	position: relative;
+}
+
+.widget-field-select-option-xcConfirm .popBox .ttBox .clsBtn {
+	display: block;
+	cursor: pointer;
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	top: 22px;
+	right: 30px;
+	background: url(../../icon/icons.png) -48px -96px no-repeat;
+}
+
+.widget-field-select-option-xcConfirm .popBox .txtBox {
+	margin: 15px 15px 10px 25px;
+	height: 240px;
+	overflow-y: auto;
+}
+
+.widget-field-select-option-xcConfirm .popBox .txtBox .bigIcon {
+	float: left;
+	margin-right: 20px;
+	margin-top: 50px;
+	/*width: 48px;
+	height: 48px;*/
+	background-image: url(../images/icons.png);
+	background-repeat: no-repeat;
+	background-position: 48px 0;
+	overflow-y: auto;
+}
+
+.widget-field-select-option-xcConfirm .popBox .txtBox p {
+	height: 160px;
+	line-height: 26px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.widget-field-select-option-xcConfirm .popBox .txtBox p input {
+	width: 364px;
+	height: 30px;
+	border: solid 1px #eef0f1;
+	font-size: 18px;
+	margin-top: 6px;
+}
+
+.widget-field-select-option-xcConfirm .popBox .btnArea {
+	border-top: solid 1px #eef0f1;
+}
+
+.widget-field-select-option-xcConfirm .popBox .btnGroup {
+	margin-left: 220px;
+}
+
+.widget-field-select-option-xcConfirm .popBox .btnGroup .sgBtn {
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+.widget-field-select-option-xcConfirm .popBox .sgBtn {
+	display: block;
+	cursor: pointer;
+	float: left;
+	width: 95px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	color: #FFFFFF;
+	border-radius: 5px;
+}
+
+.widget-field-select-option-xcConfirm .popBox .sgBtn.ok {
+	background-color: #0095d9;
+	color: #FFFFFF;
+}
+
+.widget-field-select-option-xcConfirm .popBox .sgBtn.cancel {
+	background-color: #546a79;
+	color: #FFFFFF;
+}
+.TemplIdNames{max-height: 150px;width:100%;list-style-type:none;line-height:20px;font-size: 14px;}
+
+.TemplIdNames .lab_list{margin-bottom: 0;}
+.lab_list {width:100%;}
+.tabSub_5{display:inline-block; vertical-align:middle;margin-left:30px}
+.tabSub { cursor:pointer; width:63px; height:27px;line-height:27px;
+ /*background:url(../../icon/btn03.gif) no-repeat; */
+ color:#333; display:inline-block; vertical-align:middle; text-align:center}
+ .detailDiv{text-align:left;padding-left:10px;padding-top:5px;border-bottom: solid 1px #eef0f1;padding-bottom:5px;}

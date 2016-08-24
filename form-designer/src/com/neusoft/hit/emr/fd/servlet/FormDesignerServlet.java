@@ -141,6 +141,14 @@ public class FormDesignerServlet extends HttpServlet {
 			JSONArray jsonArr = JSONArray.fromObject(records);
 			resp.getWriter().write(jsonArr.toString());
 			resp.getWriter().flush();
+		}else if("/loadProjectList.do".equals(servletPath)) {
+			//查询下拉框列表
+			String sql = "SELECT \"PROJECT_CODE\",\"PROJECT_NAME\",\"PROJECT_CATALOG2\" FROM C_PROJECT";
+			List<Map<String, Object>> records = DBUtil.getMultiResults(sql);
+			resp.setContentType("text/json;charset=utf-8");
+			JSONArray jsonArr = JSONArray.fromObject(records);
+			resp.getWriter().write(jsonArr.toString());
+			resp.getWriter().flush();
 		}
 	}
 

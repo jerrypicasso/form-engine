@@ -372,6 +372,13 @@ function resetAndHideAllPropertiesFields() {
 	masterField.parent().hide();
 	var filterField = propPanel.find('input[name=filter]');
 	filterField.val('');
+	//下拉选项过滤参数双击选择dict数据集
+	filterField.unbind("dblclick").bind("dblclick",function(){
+		var categoryVal = propPanel.find('input[name=category]').val();
+		//c_project表相关字典使用以下快捷方式
+		if("dict"==categoryVal)
+			createOptionFieldWidget();
+	});
 	filterField.parent().hide();
 	var isRichField = propPanel.find('select[name=isRich]');
 	isRichField.val('');

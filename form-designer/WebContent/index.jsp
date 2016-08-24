@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="css/custom/widget-required.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-plugin.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-condition.css"/>
+    <link rel="stylesheet" type="text/css" href="css/custom/widget-field-select-option.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-custom-diagnosis.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-plugin-nursing.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-plugin-surgery.css"/>
@@ -49,6 +50,7 @@
     <script type="text/javascript" src="js/custom/widget-field-staff.js"></script>
     <script type="text/javascript" src="js/custom/widget-field-number.js"></script>
     <script type="text/javascript" src="js/custom/widget-field-select.js"></script>
+    <script type="text/javascript" src="js/custom/widget-field-select-option.js"></script>
     <script type="text/javascript" src="js/custom/widget-check.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-count.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-number.js"></script>
@@ -683,6 +685,23 @@
             </tr>
         </table>
     </form>
+</div>
+<div class="widget-field-select-option-xcConfirm" style="display:none;" id="waringDetailDiv">
+	<div class="xc_layer"></div>
+	<div class="popBox">
+		<div class="ttBox">
+			<a class="clsBtn" href="javascript:closeWaringDetailDiv();"></a><span class="tt">下拉框可选字典</span>
+		</div>
+		<div>
+			<div id="showDetailDiv" class="detailDiv"></div>
+			<div class="txtBox"></div>
+		</div>
+		<div class="btnArea">
+			<div id="modifyWaringDetail" class="btnGroup">
+				<a class="sgBtn ok" style="color: #FFFFFF;" onclick="setFilterVal()">确定</a>
+			</div>
+		</div>
+	</div>
 </div>
 </body>
 </html>
