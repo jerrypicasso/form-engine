@@ -352,8 +352,6 @@
 	}
 	
 	function viewForm(container) {
-		container.data('mode', 'view');
-		loadForm(null, container);
 		KindEditor.remove('textarea');
 		container.find('.edit-wrapper').remove();
 		//删除编辑器
