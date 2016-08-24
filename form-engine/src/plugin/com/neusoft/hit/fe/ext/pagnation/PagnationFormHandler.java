@@ -37,7 +37,7 @@ public class PagnationFormHandler implements PluginDataHandler {
             "<#if medicalNum?? && medicalNum!=''>" +
             "AND JZXH = '${medicalNum}'" +
             "</#if>"+
-            "order by to_date(CREATE_TIME,'yyyy-mm-dd hh24:mi:ss')";
+            "order by to_date(CREATE_TIME,'yyyy-mm-dd hh24:mi:ss') DESC";
 
     private static final String INSERTPAGESQL = "INSERT INTO PAGANATION_MANAGE " +
             "(GUID, CATEGORY, BRBH, JZXH, CREATE_ID, CREATE_TIME, MODIFY_ID, MODIFY_TIME) " +

@@ -79,7 +79,7 @@
 
 .main-field.editable {
     position: relative;
-    z-index: 1100;
+    /*z-index: 1100;*/
     background-color: #fff;
     cursor: pointer;
     overflow: visible !important;
@@ -123,14 +123,14 @@ li.selected {
 .editing {
     position: relative;
     box-shadow: 0 0 0 2px rgb(34, 139, 34);
-    z-index: 1200;
+   /* z-index: 1200;*/
     background: #fff;
 }
 
 .save-or-not-wrapper {
     background-color: blue;
     position: absolute;
-    z-index: 1200;
+   /* z-index: 1200;*/
 }
 
 .ok-cancel-wrapper {

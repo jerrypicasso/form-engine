@@ -269,7 +269,7 @@ function showPickTableDialog(parent) {
 		var sqlNode = $('.sql-node[name='+ datasetName +'] .sql');
 		if(sqlNode.length > 0) {
 			var sql = sqlNode.html();
-			var arr = sql.match(/from\s+\w+\s+/g);
+			var arr = sql.match(/from\s+\w+\s+/gi);
 			if(arr.length > 0) {
 				var combo =  mask.find('select[name=table-name]');
 				$.unique(arr);

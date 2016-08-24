@@ -38,7 +38,7 @@ $.Engine.plugin('diagnosis', {
             container.find('.widget-custom-diagnosis .display-field li').unbind().removeClass('selected');
             container.find('.widget-custom-diagnosis').each(function () {
                 $(this).css({
-                    'width': 'auto',
+                    'width': '100%',
                     'height': 'auto'
                 });
             });
@@ -157,19 +157,18 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                     }
                 }
 
-                if (stayEdit) {
-                    list.before('<div  class="display-title title">诊断列表</div>');
-                    displayField.find('li.selectable').unbind('click').bind('click', function () {
-                        $('li.selectable').removeClass('selected');
+            }
 
-                        if (!$(this).hasClass('selected')) {
-                            $(this).addClass('selected');
-                        }
-                        return false;
-                    });
-                }
+            if (stayEdit) {
+                list.before('<div  class="display-title title">诊断列表</div>');
+                displayField.find('li.selectable').unbind('click').bind('click', function () {
+                    $('li.selectable').removeClass('selected');
 
-
+                    if (!$(this).hasClass('selected')) {
+                        $(this).addClass('selected');
+                    }
+                    return false;
+                });
             }
 
 
@@ -195,7 +194,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                             });
                             container.find('.widget-custom-diagnosis').each(function () {
                                 $(this).css({
-                                    'width': 'auto',
+                                    'width': '100%',
                                     'height': 'auto'
                                 })
                             });
@@ -238,16 +237,19 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                             diagnosisWidget.removeClass('model-modal').css({
                                 'top': '0px',
                                 'left': '0px',
-                                'width': 'auto',
+                                'width': '100%',
                                 'height': 'auto'
                             });
-                            container.find('.widget-custom-diagnosis .display-field').unbind();
+                            container.find('.widget-custom-diagnosis .display-field').unbind().removeClass('hover');
+                            container.find('.widget-custom-diagnosis .display-field li').unbind().removeClass('selected');
                             container.find('.widget-custom-diagnosis .editor-wrapper').remove();
                             container.find('.widget-custom-diagnosis .model-wrapper').remove();
                             container.find('.widget-custom-diagnosis .addDiagnosisBox').remove();
-
+                            container.find('div.diagnosisMask').remove();
                             $(this).val('编辑');
-                            container.form('reload');
+
+
+                            //container.form('reload');
 
                         }
                     });
@@ -320,7 +322,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
     }
 
     if(!container.find('div.diagnosisMask')||container.find('div.diagnosisMask').length<=0){
-        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;position: fixed;top:0;left: 0;bottom:0;z-index: 200;background-color:black"></div>').appendTo(container);
+        $('<div class="diagnosisMask" style="width: 100%;height:100%;opacity: 0.5;filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);position: fixed;top:0;left: 0;bottom:0;z-index: 200;background-color:black"></div>').appendTo(container);
     }
 
 
@@ -727,6 +729,16 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
         }
 
         triggerBox = $('<div class="triggerBox"></div>').appendTo(diagnosisEditorWrapper);
+        triggerBox.empty();
+        diagnosisEditorWrapper.find('.comboText').val('');
+        diagnosisEditorWrapper.find('.resultsView').show();
+        triggerBox.append('<div class="comboTextBox"><span class="label-interval">诊断录入：' +
+            '</span></label><input class="combo" style="width:50%;"/></div>');
+        renderInputToSelect2(triggerBox.find('.combo'));
+
+        diagnosisEditorWrapper.find('.combo').off('select2-selecting').on('select2-selecting', function (e) {
+            diagnosisEditorWrapper.find('.comboText').val(e.choice.name);
+        });
 
         /*根据诊断类型的改变，改变诊断控件形式*/
         dTypeSelector.select2().off('select2-selecting').on('select2-selecting', function (e) {
@@ -1260,21 +1272,23 @@ function openDialog(container,options) {
                     dataType: 'json',
                     data: JSON.stringify(params),
                     success: function (data) {
-                        console.log('三级权限：');
-                        console.log(data);
-                        result = true;
-                        if(result){
+                        if(data.authorized){
+                            var param = {};
+                            $.extend(param, options.param);
+                            param.staffCode = data.currentid;
                             $.ajax({
                                 url:options.url,
                                 type: 'post',
                                 dataType: 'json',
-                                data: options.param,
+                                data: param,
                                 success:function(data){
-                                    toastr['success']('操作成功！');
+                                    toastr['success']('操作成功!');
                                     layer.close(index);
-                                    container.form('reload');
                                 }
                             })
+                        }else{
+                            toastr['error'](data.message);
+                            layer.close(index);
                         }
                     }
                 });
