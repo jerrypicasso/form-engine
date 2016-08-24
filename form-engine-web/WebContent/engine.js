@@ -780,8 +780,30 @@
 				dataField.prepend(editor);
 				KindEditor.create(editor, {
 					width: '100%',
-					newlineTag : 'br',
-					uploadJson : 'form/upload.process',
+					height: 200,
+					resizeType: 0,
+					newlineTag: 'br',
+					useContextmenu: false,
+					uploadJson: 'form/upload.process',
+					afterCreate: function() {
+						var containerHeight = this.height.replace('px','');
+						var editHeight = this.edit.height.replace('px','');
+						this.toolbar.hide();
+						this.statusbar.hide();
+						this.edit.setHeight(containerHeight);
+						$(this).attr('edit-height', editHeight);
+						$(this).attr('container-height', containerHeight);
+					},
+					afterFocus: function(){
+						var editHeight = $(this).attr('edit-height');
+						this.edit.setHeight(editHeight);
+						this.toolbar.show();
+					},
+					afterBlur: function(){
+						var containerHeight = $(this).attr('container-height');
+						this.edit.setHeight(containerHeight);
+						this.toolbar.hide();
+					},
 					items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 							'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 							'insertunorderedlist', '|', 'table', 'image', 'link']
@@ -910,7 +932,8 @@
 					}
 					else if(checkGroupType === 'multi') {
 						var arr = hiddenVal.split(',');
-						if($.inArray(checkVal) > -1) {
+						console.log(arr);
+						if($.inArray(checkVal, arr) > -1) {
 							$(this).find('.check-field').html('√');
 						}
 					}
@@ -983,11 +1006,11 @@
 		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
 		newRow.attr('row-mode','new');
 		newRow.removeAttr('row-tpl');
-		iteratorWrapper.children('.data-row').remove();
+		iteratorWrapper.children('.data-row[row-tpl!=true]').remove();
 		iteratorWrapper.prepend(newRow);
+		newRow.show();
 		var iteratorId = iteratorWrapper.attr('id');
 		createEditableRow(iteratorId, newRow);
-		newRow.show();
 	}
 
 	function updateDataRow(iteratorWrapper) {
@@ -1141,8 +1164,17 @@
 	}
 
 	function cancelEditRow(iteratorWrapper) {
-		var func = methods['reload'];
-		func.apply(container);
+		iteratorWrapper.children('.data-row[row-mode=new]').remove();
+		iteratorWrapper.children('.data-row.editing').each(function(){
+			$(this).removeClass('editing');
+			$(this).find('.editor').each(function(){
+				if($(this).hasClass('select')) {
+					$(this).select2('destroy');
+				}
+			});
+			$(this).find('.editor').remove();
+			$(this).find('.display-field').show();
+		});
 	}
 	
 })(jQuery);

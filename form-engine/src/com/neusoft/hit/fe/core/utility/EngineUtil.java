@@ -34,6 +34,13 @@ public class EngineUtil {
 	public static String md5(String data) {
 		return DigestUtils.md5Hex(data);
 	}
+	
+	public static String ellipsis(String str, int len) {
+		if(str.length() <= 0) {
+			return str;
+		}
+		return str.substring(0, len) + "...";
+	}
 
 	public static String format(String dateStr, String pattern) {
 		String[] patterns = new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd", "yyyy/MM/dd", "yyyyMMdd" };
