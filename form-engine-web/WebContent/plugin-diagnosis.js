@@ -88,6 +88,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
         url: 'form/plugin.process?action=load&handler=diagnosis',
         data: param,
         dataType: 'json',
+        cache:false,
         success: function (result) {
             var data = result.list,signatureInfo = result.signatureInfo,signature;
             var direct = diagnosisWidget.attr('direct');
@@ -177,7 +178,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                     diagnosisWidget.find('.editTrigger').off('click').on('click', function () {
                         if ('X' != $(this).val()) {
 
-                            var relativeId = diagnosisWidget.attr('relative_id');
+                            var relativeId = diagnosisWidget.attr(' ');
                             if(typeof relativeId!='undefined'){
                                 if(relativeId){
                                     param.relativeId = diagnosisWidget.attr('relative_id');
@@ -344,6 +345,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
         url: 'form/plugin.process?action=modelLoad&handler=diagnosis',
         data: opts,
         dataType: 'json',
+        cache:false,
         success: function (results) {
             var data = results.grzdList;
             var zdList = results.bczdList;
@@ -486,6 +488,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                     data: param,
                     dataType: 'json',
                     type: 'post',
+                    cache:false,
                     success: function (data) {
                         queryDiagnosis(diagnosisWidget, opts, 'edit', container, true);
                         container.find('.widget-custom-diagnosis .model-wrapper').remove();
@@ -545,6 +548,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                         data: param,
                         dataType: 'json',
                         type: 'post',
+                        cache:false,
                         success: function (data) {
                             queryDiagnosis(diagnosisWidget, opts, 'edit', container, true);
                             container.find('.widget-custom-diagnosis .model-wrapper').remove();
@@ -593,6 +597,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                     data: param,
                     dataType: 'json',
                     type: 'post',
+                    cache:false,
                     success: function (data) {
                         queryDiagnosis(diagnosisWidget, opts, 'edit', container, true);
                         container.find('.widget-custom-diagnosis .model-wrapper').remove();
@@ -638,6 +643,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                         url: 'form/plugin.process?action=modelSort&handler=diagnosis',
                         data: {records: JSON.stringify(records)},
                         dataType: 'json',
+                        cache:false,
                         success: function (data) {
                         }
                     });
@@ -677,6 +683,7 @@ function createDiagnosisModel(diagnosisWidget, opts, container, showGrzd) {
                         url: 'form/plugin.process?action=modelSort&handler=diagnosis',
                         data: {records: JSON.stringify(records)},
                         dataType: 'json',
+                        cache:false,
                         success: function (data) {
                         }
                     });
@@ -802,7 +809,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 triggerBox.empty();
                 diagnosisEditorWrapper.find('.comboText').val('');
                 diagnosisEditorWrapper.find('.resultsView').show();
-                triggerBox.append('<div class="comboTextBox"><span class="label-interval">选择ICD：' +
+                triggerBox.append('<div class="comboTextBox"><span class="label-interval">诊断录入：' +
                     '</span><input class="combo" style="width:50%;"/></div>');
                 var scztBox = $('<div class="comboTextBox"><span class="label-interval">生产状态：' +
                     '</span><select class="sczt" style="width:30%;"><option></option></select></div>').appendTo(triggerBox);
@@ -836,13 +843,13 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 triggerBox.empty();
                 diagnosisEditorWrapper.find('.comboText').val('');
                 diagnosisEditorWrapper.find('.resultsView').hide();
-                triggerBox.append('<div class="comboTextBox"><span class="label-interval">主病ICD：' +
+                triggerBox.append('<div class="comboTextBox"><span class="label-interval">主病诊断录入：' +
                     '</span><input class="combo zbzd" style="width:50%;"/></div>');
-                triggerBox.append('<div class="comboTextBox"><span class="label-interval">证候ICD：' +
+                triggerBox.append('<div class="comboTextBox"><span class="label-interval">证候诊断录入：' +
                     '</span><input class="combo zhzd" style="width:50%;"/></div>');
-                triggerBox.append('<div class="comboTextBox"><span class="label-interval">主病内容：' +
+                triggerBox.append('<div class="comboTextBox"><span class="label-interval">主病自定义：' +
                     '</span><input class="zbzdnr" style="width:50%;"/></div>');
-                triggerBox.append('<div class="comboTextBox"><span class="label-interval">证候内容：' +
+                triggerBox.append('<div class="comboTextBox"><span class="label-interval">证候自定义：' +
                     '</span><input class="zhzdnr" style="width:50%;"/></div>');
                 renderInputToSelect2(triggerBox.find('.combo'), '20');
 
@@ -975,6 +982,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
             data: param,
             dataType: 'json',
             type: 'post',
+            cache:false,
             success: function (data) {
                 queryDiagnosis(diagnosisWidget, opts, 'edit', container, true);
                 container.find('.widget-custom-diagnosis .model-wrapper').remove();
@@ -1038,6 +1046,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 data: param,
                 dataType: 'json',
                 type: 'post',
+                cache:false,
                 success: function (data) {
                     queryDiagnosis(diagnosisWidget, opts, 'edit', container, true);
                     container.find('.widget-custom-diagnosis .model-wrapper').remove();
@@ -1064,6 +1073,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                 url: 'form/plugin.process?action=drop&handler=diagnosis',
                 data: param,
                 dataType: 'json',
+                cache:false,
                 success: function (data) {
                     queryDiagnosis(diagnosisWidget, opts, 'edit', container, true);
                     container.find('.widget-custom-diagnosis .model-wrapper').remove();
@@ -1119,6 +1129,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                     url: 'form/plugin.process?action=sort&handler=diagnosis',
                     data: {type: type, records: JSON.stringify(records)},
                     dataType: 'json',
+                    cache:false,
                     success: function (data) {
                     }
                 });
@@ -1167,6 +1178,7 @@ function createDiagnosisEditor(diagnosisWidget, opts, container) {
                     url: 'form/plugin.process?action=sort&handler=diagnosis',
                     data: {type: type, records: JSON.stringify(records)},
                     dataType: 'json',
+                    cache:false,
                     success: function (data) {
                     }
                 });
@@ -1270,6 +1282,7 @@ function openDialog(container,options) {
                     url: ctx+'/jsp/checkDoctor.action',
                     type: 'post',
                     dataType: 'json',
+                    cache:false,
                     data: JSON.stringify(params),
                     success: function (data) {
                         if(data.authorized){
@@ -1281,6 +1294,7 @@ function openDialog(container,options) {
                                 type: 'post',
                                 dataType: 'json',
                                 data: param,
+                                cache:false,
                                 success:function(data){
                                     toastr['success']('操作成功!');
                                     layer.close(index);
