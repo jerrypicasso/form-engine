@@ -260,11 +260,12 @@ public class FormLoadHandler {
 			String sql = sqlTpl.getSql();
 			Integer resultlimit = sqlTpl.getResultLimit();
 			sql = FreemarkerUtil.getMixedString(sql, rootMap);
-			Connection conn = DBUtil.getConnection();
+			Connection conn = null;
 			Statement stmt = null;
 			ResultSet recordRs = null;
 			ResultSet paginationRs = null;
 			try {
+				conn = DBUtil.getConnection();
 				stmt = conn.createStatement();
 				if("single".equals(resultType)) {
 					Map<String, Object> record = null;

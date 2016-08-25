@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="css/custom/widget-field-select.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-page-count.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-page-number.css"/>
+    <link rel="stylesheet" type="text/css" href="css/custom/widget-required.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-plugin.css"/>
     <link rel="stylesheet" type="text/css" href="css/custom/widget-condition.css"/>
     <link rel="stylesheet" type="text/css" href="css/plugins/widget-custom-diagnosis.css"/>
@@ -51,6 +52,7 @@
     <script type="text/javascript" src="js/custom/widget-check.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-count.js"></script>
     <script type="text/javascript" src="js/custom/widget-page-number.js"></script>
+    <script type="text/javascript" src="js/custom/widget-required.js"></script>
     <script type="text/javascript" src="js/custom/widget-plugin.js"></script>
     <script type="text/javascript" src="js/custom/widget-condition.js"></script>
     <script type="text/javascript" src="js/plugins/widget-custom-diagnosis.js"></script>

@@ -29,8 +29,8 @@ public class NursingDataHandler implements PluginDataHandler {
 			sql = FreemarkerUtil.getMixedString(sql, params);
 			Connection conn = null;
 			Statement stmt = null;
-			conn = DBUtil.getConnection();
 			try {
+				conn = DBUtil.getConnection();
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 			} catch (SQLException e) {

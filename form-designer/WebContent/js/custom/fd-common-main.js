@@ -56,6 +56,9 @@ $(document).ready(function() {
 				else if(type === 'page-count') {
 					createPageCountWidget();
 				}
+				else if(type === 'required') {
+					createRequiredWidget();
+				}
 				else if(type === 'condition') {
 					showConditionInitConfigDialog();
 				}
@@ -158,7 +161,7 @@ function createFormPaper() {
 	var paper = $('<div class="paper" style="font-size:14px;position:relative;background:rgb(255, 255, 255);margin:0 auto;">');
 	paperWrapper.append(paper);
 	
-	var contentWrapper = $('<div class="content-wrapper" style="position:relative;padding:10px;">');
+	var contentWrapper = $('<div class="content-wrapper" style="position:relative;padding:10px;line-height:20px;">');
 	$(paper).append(contentWrapper);
 	
 	

@@ -101,13 +101,8 @@ public class DBUtil {
      *
      * @return
      */
-    public static Connection getConnection() {
-        Connection conn = null;
-        try {
-    		conn = dataSource.getConnection();
-        } catch (SQLException e) {
-        	LOGGER.error(e.toString(), e);
-        }
+    public static Connection getConnection() throws SQLException {
+    	Connection conn = dataSource.getConnection();
         return conn;
     }
 
