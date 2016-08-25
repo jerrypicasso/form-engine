@@ -279,10 +279,15 @@
 		var msg = [];
 		var records = [];
 		KindEditor.sync('textarea');
-		container.find('.main-field[table!=""]').each(function() {
+		var dataFields = container.find('.main-field[table!=""]');
+		validateField(dataFields, msg);
+		if(msg.length > 0) {
+			toastr['error'](msg.join('<br/>'));
+			return;
+		}
+		dataFields.each(function() {
 			var dataField = $(this);
 			var editor = dataField.find('.editor');
-			validateField(editor, msg);
 			var fieldName = dataField.attr('field');
 			var tableName = dataField.attr('table');
 			var primaryKey = dataField.attr('primary-key');
@@ -300,10 +305,6 @@
 				'isPrimary' : primaryKey
 			});
 		});
-		if(msg.length > 0) {
-			toastr['error'](msg.join('<br/>'));
-			return;
-		}
 		var errors = [];
 		container.trigger('before-save', [records, errors]);
 		if(errors.length <= 0) {
@@ -570,9 +571,18 @@
 		});
 	}
 	
-	function validateField(editor, msg) {
-		editor.each(function(){
-			var val = $(this).val()||'';
+	function validateField(dataField, msg) {
+		dataField.each(function(){
+			var editor = $(this).find('.editor');
+			var val = editor.val()||'';
+			var valLength = null;
+			if(editor.is('textarea')) {
+				var text = $('<div>' + val + '</div>').text();
+				valLength = text.length;
+			}
+			else {
+				valLength = val.length;
+			}
 			var fieldName = $(this).attr('field');
 			var required = $(this).attr('required');
 			if(required == 'true' || required == 'required') {
@@ -580,10 +590,16 @@
 					msg.push(fieldName + '是必填项，不允许为空！');
 				}
 			}
-			var maxLength = $(this).attr('maxLength');
+			var maxLength = $(this).attr('max-len');
 			if(maxLength) {
-				if(val.length > maxLength) {
-					msg.push(fieldName + '字符长度不允许超过' + maxLength + '，当前长度' + val.length);
+				if(valLength > maxLength) {
+					msg.push(fieldName + '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength);
+				}
+			}
+			var minLength = $(this).attr('min-len');
+			if(minLength) {
+				if(valLength < minLength) {
+					msg.push(fieldName + '字符长度不允许少于' + minLength + '个字，当前长度' + valLength);
 				}
 			}
 		});
@@ -801,6 +817,9 @@
 						var containerHeight = $(this).attr('container-height');
 						this.edit.setHeight(containerHeight);
 						this.toolbar.hide();
+						/*if(this.count('text') <= 0) {
+							this.html('');
+						}*/
 					},
 					items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 							'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
@@ -812,7 +831,7 @@
 				dataField.prepend(editor);
 				$(editor).val(val);
 			}
-			$(editor).attr({'maxLength':maxLength});
+			//$(editor).attr({'maxLength':maxLength});
 		}
 		else if(dataField.hasClass('widget-field-hidden')) {
 			editor = document.createElement('input');
@@ -930,7 +949,6 @@
 					}
 					else if(checkGroupType === 'multi') {
 						var arr = hiddenVal.split(',');
-						console.log(arr);
 						if($.inArray(checkVal, arr) > -1) {
 							$(this).find('.check-field').html('√');
 						}
@@ -1102,9 +1120,9 @@
 	function saveDataRow(iteratorWrapper) {
 		KindEditor.sync('textarea');
 		var row = iteratorWrapper.children('.data-row.editing');
-		var editors = row.find('.editor');
+		var dataFields = row.find('.row-field');
 		var msg = [];
-		validateField(editors, msg);
+		validateField(dataFields, msg);
 		if(msg.length > 0) {
 			toastr['error'](msg.join('<br/>'));
 			return false;

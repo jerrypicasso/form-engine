@@ -53,9 +53,10 @@
 	        				var params = {
 	        					'tableName': tableName,
 	        					'pkName': pkName,
-	        					'pkValue': pkValue
+	        					'pkValue': pkValue,
+	        					'modifyId': modifyId
 	        				};
-	        				showAuditDialog(params, container);
+	        				showAuditDialog(params, container, auditWidget);
 	        				return false;
 	        			});
 	        			auditWidget.empty().append(auditBtn);
@@ -65,7 +66,7 @@
 	    }
 	});
 	
-	function showAuditDialog(params, container) {
+	function showAuditDialog(params, container, auditWidget) {
 		var content = ['<table style="width:100%;">',
 		               '<tr>',
 		               '<td align="right">帐号：</td>',
@@ -88,13 +89,18 @@
 				var password = self.find('input[name=password]').val();
 				if(account && password) {
 					$.ajax({
-						url:'form/plugin.process?handler=audit&action=check',
+						url:ctx + '/jsp/checkDoctor.action',
 						type:'post',
 						dataType: 'json',
-						data: {'account': account, 'password': password},
+						data: {
+							'username': account, 
+							'password': password, 
+							'modifyid' :params.modifyId
+						},
 						success: function(data){
-							if(data.authorized === 'true') {
-								var staffCode = data.message;
+							if(data.authorized) {
+								var staffCode = data.currentid;
+								var auditName = data.name;
 								if(!staffCode) {
 									toastr['warning']('审签人编号为空，无法审签！');
 									return;
@@ -102,7 +108,11 @@
 								var opts = {'staffCode': staffCode};
 								$.extend(opts, params);
 								doAudit(opts, function(){
-									container.form('reload');
+									if(auditName !== '') {
+					        			var signature = $('<span>' + auditName + '/</span>');
+					        			signature.css({'color':'red'});
+					        			auditWidget.empty().append(signature);
+					        		}
 									layer.close(index);
 								});	
 							}
@@ -129,7 +139,6 @@
 			dataType: 'json',
 			data: params,
 			success: function(data){
-				console.log(data);
 				if(data.success) {
 					toastr['success'](data.message);
 					callback();
