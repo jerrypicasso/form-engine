@@ -279,10 +279,15 @@
 		var msg = [];
 		var records = [];
 		KindEditor.sync('textarea');
-		container.find('.main-field[table!=""]').each(function() {
+		var dataFields = container.find('.main-field[table!=""]');
+		validateField(dataFields, msg);
+		if(msg.length > 0) {
+			toastr['error'](msg.join('<br/>'));
+			return;
+		}
+		dataFields.each(function() {
 			var dataField = $(this);
 			var editor = dataField.find('.editor');
-			validateField(editor, msg);
 			var fieldName = dataField.attr('field');
 			var tableName = dataField.attr('table');
 			var primaryKey = dataField.attr('primary-key');
@@ -300,10 +305,6 @@
 				'isPrimary' : primaryKey
 			});
 		});
-		if(msg.length > 0) {
-			toastr['error'](msg.join('<br/>'));
-			return;
-		}
 		var errors = [];
 		container.trigger('before-save', [records, errors]);
 		if(errors.length <= 0) {
@@ -452,7 +453,7 @@
 			var iteratorWrapper = $(this).parents('.iterator-wrapper:first');
 			if(iteratorWrapper.attr('editable') === 'true' && !$(this).hasClass('editing')) {
 				$(this).addClass('selected');
-				updateDataRow(iteratorWrapper);
+				updateDataRow.call(container, iteratorWrapper);
 			}
 		});
 		//主表数据可编辑状态
@@ -570,9 +571,18 @@
 		});
 	}
 	
-	function validateField(editor, msg) {
-		editor.each(function(){
-			var val = $(this).val()||'';
+	function validateField(dataField, msg) {
+		dataField.each(function(){
+			var editor = $(this).find('.editor');
+			var val = editor.val()||'';
+			var valLength = null;
+			if(editor.is('textarea')) {
+				var text = $('<div>' + val + '</div>').text();
+				valLength = text.length;
+			}
+			else {
+				valLength = val.length;
+			}
 			var fieldName = $(this).attr('field');
 			var required = $(this).attr('required');
 			if(required == 'true' || required == 'required') {
@@ -580,10 +590,16 @@
 					msg.push(fieldName + '是必填项，不允许为空！');
 				}
 			}
-			var maxLength = $(this).attr('maxLength');
+			var maxLength = $(this).attr('max-len');
 			if(maxLength) {
-				if(val.length > maxLength) {
-					msg.push(fieldName + '字符长度不允许超过' + maxLength + '，当前长度' + val.length);
+				if(valLength > maxLength) {
+					msg.push(fieldName + '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength);
+				}
+			}
+			var minLength = $(this).attr('min-len');
+			if(minLength) {
+				if(valLength < minLength) {
+					msg.push(fieldName + '字符长度不允许少于' + minLength + '个字，当前长度' + valLength);
 				}
 			}
 		});
@@ -781,6 +797,7 @@
 					height: 200,
 					resizeType: 0,
 					newlineTag: 'br',
+					cssData: 'body {height:100%;} html{height:100%;}',
 					useContextmenu: false,
 					uploadJson: 'form/upload.process',
 					afterCreate: function() {
@@ -812,7 +829,6 @@
 				dataField.prepend(editor);
 				$(editor).val(val);
 			}
-			$(editor).attr({'maxLength':maxLength});
 		}
 		else if(dataField.hasClass('widget-field-hidden')) {
 			editor = document.createElement('input');
@@ -930,7 +946,6 @@
 					}
 					else if(checkGroupType === 'multi') {
 						var arr = hiddenVal.split(',');
-						console.log(arr);
 						if($.inArray(checkVal, arr) > -1) {
 							$(this).find('.check-field').html('√');
 						}
@@ -1001,10 +1016,11 @@
 	}
 	
 	function insertDataRow(iteratorWrapper) {
-		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
+		cancelEditRow(iteratorWrapper);
+		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone(true);
 		newRow.attr('row-mode','new');
 		newRow.removeAttr('row-tpl');
-		iteratorWrapper.children('.data-row[row-tpl!=true]').remove();
+		//iteratorWrapper.children('.data-row[row-tpl!=true]').remove();
 		iteratorWrapper.prepend(newRow);
 		newRow.show();
 		var iteratorId = iteratorWrapper.attr('id');
@@ -1012,6 +1028,7 @@
 	}
 
 	function updateDataRow(iteratorWrapper) {
+		var container = $(this);
 		var selected = iteratorWrapper.find('.data-row.selected');
 		if(selected && selected.length > 0) {
 			var flag = true;
@@ -1100,11 +1117,12 @@
 	}
 
 	function saveDataRow(iteratorWrapper) {
+		var container = $(this);
 		KindEditor.sync('textarea');
 		var row = iteratorWrapper.children('.data-row.editing');
-		var editors = row.find('.editor');
+		var dataFields = row.find('.row-field');
 		var msg = [];
-		validateField(editors, msg);
+		validateField(dataFields, msg);
 		if(msg.length > 0) {
 			toastr['error'](msg.join('<br/>'));
 			return false;
@@ -1149,9 +1167,12 @@
 					//'primaryKeyValue':primaryKeyValue,
 					'record':JSON.stringify(records)
 				},
-				success:function() {
-					var func = methods['reload'];
-					func.apply(container);
+				success:function(data) {
+					if(data.guid) {
+						primaryKeyField.find('.editor').val(data.guid);
+					}
+					cancelEditRow(iteratorWrapper, true);
+					toastr['success']('保存成功！');
 				}
 			});
 		}
@@ -1161,17 +1182,52 @@
 		}
 	}
 
-	function cancelEditRow(iteratorWrapper) {
-		iteratorWrapper.children('.data-row[row-mode=new]').remove();
-		iteratorWrapper.children('.data-row.editing').each(function(){
-			$(this).removeClass('editing');
-			$(this).find('.editor').each(function(){
-				if($(this).hasClass('select')) {
-					$(this).select2('destroy');
+	function cancelEditRow(iteratorWrapper, flag) {
+		if(flag) {
+			var newRow = iteratorWrapper.children('.data-row[row-mode=new]').removeAttr('row-mode');
+			iteratorWrapper.find('.edit-wrapper').before(newRow);
+		}
+		else {
+			iteratorWrapper.children('.data-row[row-mode=new]').remove();
+		}
+		var editingRow = iteratorWrapper.children('.data-row.editing');
+		editingRow.removeClass('editing selected');
+		editingRow.find('.row-field').each(function(){
+			var editor = $(this).find('.editor');
+			var displayField = $(this).find('.display-field');
+			var valueField = $(this).find('.value-field');
+			if(flag) {
+				var fieldValue = editor.val();
+				var fieldText = '';
+				if(editor.hasClass('select')) {
+					fieldValue = editor.select2('val');
+					if($.isArray(fieldValue)) {
+						val = fieldValue.join(',');
+					}
+					var selectedData = editor.select2('data');
+					if($.isArray(selectedData)) {
+						var arr = [];
+						for(var i = 0; i < selectedData.length; i++) {
+							arr.push(selectedData[i].name);
+						}
+						fieldText = arr.join(',');
+					}
+					else if(selectedData) {
+						fieldText = selectedData.name;
+					}
 				}
-			});
-			$(this).find('.editor').remove();
-			$(this).find('.display-field').show();
+				else {
+					fieldText = fieldValue;
+				}
+				valueField.html(fieldValue);
+				displayField.html(fieldText);
+			}
+			if(editor.hasClass('select')) {
+				editor.select2('destroy');
+			}
+			editor.remove();
+			$(this).find('.ke-container').remove();
+			displayField.show();
 		});
 	}
 	

@@ -36,7 +36,7 @@ public class EngineUtil {
 	}
 	
 	public static String ellipsis(String str, int len) {
-		if(str.length() <= 0) {
+		if(str.length() <= len) {
 			return str;
 		}
 		return str.substring(0, len) + "...";
