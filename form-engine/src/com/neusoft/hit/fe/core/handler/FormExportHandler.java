@@ -52,7 +52,8 @@ public class FormExportHandler {
 		html.append(".widget-page-number:before {content:counter(page);}");
 		html.append(".widget-page-count:before {content:counter(pages);}");
 		html.append("@media print {");
-		html.append("body {margin:0;padding:0;width:100%;}");
+		html.append("body {margin:0;padding:0;width:100%;line-height:24px;}");
+		html.append("span,div {word-wrap:break-word;}");
 		html.append(".header {position:running(header) !important;padding-top:")
 			.append(marginTop).append("px}");
 		html.append(".footer {position:running(footer) !important;padding-bottom:")
@@ -97,6 +98,7 @@ public class FormExportHandler {
 			ITextFontResolver fontResolver = renderer.getFontResolver();  
 			//fontResolver.addFont("C:/Windows/Fonts/SIMKAI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);  
 			fontResolver.addFont("/usr/share/fonts/win/simsun.ttc",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+			fontResolver.addFont("/usr/share/fonts/win/simsunbd.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
 			//fontResolver.addFont("c:/windows/fonts/SimSun-Bold.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
   
 			// 解决图片的相对路径问题  
