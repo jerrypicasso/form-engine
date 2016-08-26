@@ -418,7 +418,7 @@ div.model-wrapper i.fa {
 
 .widget-custom-diagnosis .editor-wrapper .comboTextBox span.label-interval{
     display: inline-block;
-    width: 90px;
+    min-width: 90px;
     text-align: left;
 }
 
