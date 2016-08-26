@@ -797,7 +797,7 @@
 					height: 200,
 					resizeType: 0,
 					newlineTag: 'br',
-					//cssData: 'body {position:relative;top:0;left:0;right:0;bottom:0;}',
+					cssData: 'body {height:100%;} html{height:100%;}',
 					useContextmenu: false,
 					uploadJson: 'form/upload.process',
 					afterCreate: function() {
