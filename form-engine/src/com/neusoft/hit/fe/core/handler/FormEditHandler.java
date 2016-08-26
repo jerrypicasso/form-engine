@@ -24,7 +24,8 @@ public class FormEditHandler {
 	
 	private static final Log LOGGER = LogFactory.getLog(FormEditHandler.class);
 	
-	public void save(Map<String, Object> params) throws FormEngineException {
+	public String save(Map<String, Object> params) throws FormEngineException {
+		String guid = null;
 		Object recordStr = params.get("record");
 		JSONArray records = JSONArray.fromObject(recordStr);
 		Map<String, SaveParam> saveParams = new HashMap<String, SaveParam>();
@@ -73,9 +74,10 @@ public class FormEditHandler {
 				StringBuilder saveSql = new StringBuilder();
 				//新增
 				if(pkValue == null || "".equals(pkValue)) {
+					guid = EngineUtil.guid();
 					StringBuilder columnNames = new StringBuilder(" (");
 					StringBuilder columnValues = new StringBuilder(" (");
-					columns.put(pkName, EngineUtil.guid());
+					columns.put(pkName, guid);
 					String now = EngineUtil.now();
 					columns.put("CREATE_TIME", now);
 					columns.put("MODIFY_TIME", now);
@@ -159,6 +161,7 @@ public class FormEditHandler {
 		} finally {
 			DBUtil.close(conn, stmt, null);
 		}
+		return guid;
 	}
 	
 	public void drop(Map<String, Object> params) throws FormEngineException {

@@ -453,7 +453,7 @@
 			var iteratorWrapper = $(this).parents('.iterator-wrapper:first');
 			if(iteratorWrapper.attr('editable') === 'true' && !$(this).hasClass('editing')) {
 				$(this).addClass('selected');
-				updateDataRow(iteratorWrapper);
+				updateDataRow.call(container, iteratorWrapper);
 			}
 		});
 		//主表数据可编辑状态
@@ -797,6 +797,7 @@
 					height: 200,
 					resizeType: 0,
 					newlineTag: 'br',
+					//cssData: 'body {position:relative;top:0;left:0;right:0;bottom:0;}',
 					useContextmenu: false,
 					uploadJson: 'form/upload.process',
 					afterCreate: function() {
@@ -817,9 +818,6 @@
 						var containerHeight = $(this).attr('container-height');
 						this.edit.setHeight(containerHeight);
 						this.toolbar.hide();
-						/*if(this.count('text') <= 0) {
-							this.html('');
-						}*/
 					},
 					items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 							'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
@@ -831,7 +829,6 @@
 				dataField.prepend(editor);
 				$(editor).val(val);
 			}
-			//$(editor).attr({'maxLength':maxLength});
 		}
 		else if(dataField.hasClass('widget-field-hidden')) {
 			editor = document.createElement('input');
@@ -1019,10 +1016,11 @@
 	}
 	
 	function insertDataRow(iteratorWrapper) {
-		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone();
+		cancelEditRow(iteratorWrapper);
+		var newRow = iteratorWrapper.children('.data-row[row-tpl=true]:first').clone(true);
 		newRow.attr('row-mode','new');
 		newRow.removeAttr('row-tpl');
-		iteratorWrapper.children('.data-row[row-tpl!=true]').remove();
+		//iteratorWrapper.children('.data-row[row-tpl!=true]').remove();
 		iteratorWrapper.prepend(newRow);
 		newRow.show();
 		var iteratorId = iteratorWrapper.attr('id');
@@ -1030,6 +1028,7 @@
 	}
 
 	function updateDataRow(iteratorWrapper) {
+		var container = $(this);
 		var selected = iteratorWrapper.find('.data-row.selected');
 		if(selected && selected.length > 0) {
 			var flag = true;
@@ -1118,6 +1117,7 @@
 	}
 
 	function saveDataRow(iteratorWrapper) {
+		var container = $(this);
 		KindEditor.sync('textarea');
 		var row = iteratorWrapper.children('.data-row.editing');
 		var dataFields = row.find('.row-field');
@@ -1167,9 +1167,12 @@
 					//'primaryKeyValue':primaryKeyValue,
 					'record':JSON.stringify(records)
 				},
-				success:function() {
-					var func = methods['reload'];
-					func.apply(container);
+				success:function(data) {
+					if(data.guid) {
+						primaryKeyField.find('.editor').val(data.guid);
+					}
+					cancelEditRow(iteratorWrapper, true);
+					toastr['success']('保存成功！');
 				}
 			});
 		}
@@ -1179,17 +1182,52 @@
 		}
 	}
 
-	function cancelEditRow(iteratorWrapper) {
-		iteratorWrapper.children('.data-row[row-mode=new]').remove();
-		iteratorWrapper.children('.data-row.editing').each(function(){
-			$(this).removeClass('editing');
-			$(this).find('.editor').each(function(){
-				if($(this).hasClass('select')) {
-					$(this).select2('destroy');
+	function cancelEditRow(iteratorWrapper, flag) {
+		if(flag) {
+			var newRow = iteratorWrapper.children('.data-row[row-mode=new]').removeAttr('row-mode');
+			iteratorWrapper.find('.edit-wrapper').before(newRow);
+		}
+		else {
+			iteratorWrapper.children('.data-row[row-mode=new]').remove();
+		}
+		var editingRow = iteratorWrapper.children('.data-row.editing');
+		editingRow.removeClass('editing selected');
+		editingRow.find('.row-field').each(function(){
+			var editor = $(this).find('.editor');
+			var displayField = $(this).find('.display-field');
+			var valueField = $(this).find('.value-field');
+			if(flag) {
+				var fieldValue = editor.val();
+				var fieldText = '';
+				if(editor.hasClass('select')) {
+					fieldValue = editor.select2('val');
+					if($.isArray(fieldValue)) {
+						val = fieldValue.join(',');
+					}
+					var selectedData = editor.select2('data');
+					if($.isArray(selectedData)) {
+						var arr = [];
+						for(var i = 0; i < selectedData.length; i++) {
+							arr.push(selectedData[i].name);
+						}
+						fieldText = arr.join(',');
+					}
+					else if(selectedData) {
+						fieldText = selectedData.name;
+					}
 				}
-			});
-			$(this).find('.editor').remove();
-			$(this).find('.display-field').show();
+				else {
+					fieldText = fieldValue;
+				}
+				valueField.html(fieldValue);
+				displayField.html(fieldText);
+			}
+			if(editor.hasClass('select')) {
+				editor.select2('destroy');
+			}
+			editor.remove();
+			$(this).find('.ke-container').remove();
+			displayField.show();
 		});
 	}
 	

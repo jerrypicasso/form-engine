@@ -68,8 +68,14 @@ public class FormServlet extends HttpServlet {
 				resp.getWriter().write(result);
 			}
 			else if(servletPath.endsWith("/save.process")) {
-				formEditHandler.save(params);
-				resp.getWriter().write(ResultInfo.getResult());
+				String result = ResultInfo.getResult();
+				String guid = formEditHandler.save(params);
+				if(guid != null) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("guid", guid);
+					result = ResultInfo.getResult(map);
+				}
+				resp.getWriter().write(result);
 			}
 			else if(servletPath.endsWith("/drop.process")) {
 				formEditHandler.drop(params);
