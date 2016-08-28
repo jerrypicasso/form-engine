@@ -117,9 +117,15 @@ public class FormServlet extends HttpServlet {
 				param.setFuzzy(req.getParameter("fuzzy"));
 				param.setMaster(req.getParameter("master"));
 				param.setFilter(req.getParameter("filter"));
+				param.setFilter(req.getParameter("filter"));
 				int page = NumberUtils.toInt(req.getParameter("page"), 1);
 				param.setPage(page);
-				String result = comboDataHandler.load(param);
+				String result= null;
+				if("icd".equals(req.getParameter("category"))){
+					result = comboDataHandler.loadIcd(param);
+				}else{
+					result = comboDataHandler.load(param);
+				}
 				resp.getWriter().write(result);
 			}
 			else if(servletPath.endsWith("/upload.process")) {

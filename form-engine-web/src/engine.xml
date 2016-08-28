@@ -41,16 +41,33 @@
         <combo-config code="icd" name="ICD">
             <sql-template>
                 <![CDATA[
-				SELECT ICD_CODE,ICD_NAME FROM ICD WHERE ICD_TYPE = '${param.filter}'
-				<#if param.fuzzy?? && param.fuzzy != ''>
-					AND (ICD_NAME LIKE '%${param.fuzzy}%' OR SPELL_CODE LIKE '%${param.fuzzy}%')
-				</#if>
+				select ICD_CODE,ICD_NAME from ICD
+                Where  ICD_TYPE = '${param.filter}'
+                <#if param.fuzzy?? && param.fuzzy != ''>
+                   AND (ICD_NAME like '%${param.fuzzy}%' Or SPELL_CODE Like '%${param.fuzzy}%')
+                order by
+                    (Case When Instr(ICD_NAME||SPELL_CODE,'${param.fuzzy}')=1 Then 1 Else 0 End) desc,nvl(length(trim(ICD_NAME)),0) asc
+                </#if>
 				]]>
             </sql-template>
             <display-template>${result.ICD_NAME}</display-template>
             <value-template>${result.ICD_CODE}</value-template>
         </combo-config>
-        
+
+        <combo-config code="icd2" name="ICD2">
+            <sql-template>
+                <![CDATA[
+				    select ICD_CODE,ICD_NAME FROM ICD WHERE ICD_TYPE = '${param.filter}'
+				    <#if param.fuzzy?? && param.fuzzy != ''>
+				    AND (INSTR(ICD_CODE,'${param.fuzzy}')=1)
+                    </#if>
+				    ORDER  BY ICD_CODE
+				]]>
+            </sql-template>
+            <display-template>${result.ICD_NAME}</display-template>
+            <value-template>${result.ICD_CODE}</value-template>
+        </combo-config>
+
         <combo-config code="surgery" name="手术">
         	<sql-template>
                 <![CDATA[
