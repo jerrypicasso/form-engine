@@ -336,6 +336,7 @@
 							toastr['error'](data.message);
 						}
 						else {
+							toastr['success']('保存成功');
 							container.data('mode', 'view');
 							var func = methods['reload'];
 							func.apply(container);

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,8 +50,9 @@ public class FormLoadHandler {
 				
 				if("add".equals(rootMap.get("mode"))) {
 					result.put("mode", "edit");
-				}
-				else {
+				}else if(rootMap.get("editFlag")!=null&&(Boolean)rootMap.get("editFlag")){
+					result.put("mode", "edit");
+				}else {
 					result.put("mode", rootMap.get("mode"));
 				}
 			}
@@ -253,6 +255,7 @@ public class FormLoadHandler {
 	private void loadDatasetByExecutingQuerySql(List<SqlTplInfo> selectSqlList, 
 			Map<String, Object> rootMap) throws FormEngineException {
 		Object mode = rootMap.get("mode");
+		Boolean editFlag  = rootMap.get("editFlag")==null?false: (Boolean) rootMap.get("editFlag");
 		//把select语句都执行一下，得到的结果作为展示用的数据源
 		for(SqlTplInfo sqlTpl : selectSqlList) {
 			String sqlName = sqlTpl.getName();
@@ -273,6 +276,9 @@ public class FormLoadHandler {
 					if(!"add".equals(mode)) {
 						recordRs = stmt.executeQuery(sql);
 						record = DBUtil.getSingleResult(recordRs);
+						if(record==null||record.get("GUID")==null||StringUtils.isBlank((String) record.get("GUID"))){
+							editFlag = true;
+						}
 					}
 					else {
 						record = new HashMap<String, Object>();
@@ -349,6 +355,7 @@ public class FormLoadHandler {
 					}
 				}
 				List<SqlTplInfo> children = sqlTpl.getChildren();
+				rootMap.put("editFlag",editFlag);
 				loadDatasetByExecutingQuerySql(children, rootMap);
 			} catch (Exception e) {
 				LOGGER.error(e.toString(), e);

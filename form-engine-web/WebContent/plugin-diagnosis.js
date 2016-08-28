@@ -92,12 +92,19 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
         success: function (result) {
             var data = result.list,signatureInfo = result.signatureInfo,signature;
             var direct = diagnosisWidget.attr('direct');
-            var displayField = diagnosisWidget.find('.display-field'), list;
+            var displayField = diagnosisWidget.find('.display-field'), list,displayTitle;
             if (!displayField || displayField.length <= 0) {
                 $('<div class="display-field"></div>').appendTo(diagnosisWidget);
             }
             displayField.append('<span></span>');
             displayField.empty();
+            if('edit'==mode){
+                displayTitle = displayField.find('.display-title');
+                if (!displayTitle || displayTitle.length <= 0) {
+
+                    displayTitle = $('<div class="display-title title">诊断列表</div>').appendTo(displayField);
+                }
+            }
             list = $('<ul style="margin:0;padding:0;list-style:none;" class="diagnosis-list"></ul>');
             displayField.append(list);
 
@@ -160,8 +167,12 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
 
             }
 
+
             if (stayEdit) {
-                list.before('<div  class="display-title title">诊断列表</div>');
+                if (!displayTitle || displayTitle.length <= 0) {
+                    list.before('<div  class="display-title title">诊断列表</div>');
+                }
+
                 displayField.find('li.selectable').unbind('click').bind('click', function () {
                     $('li.selectable').removeClass('selected');
 
@@ -188,7 +199,7 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                                 }
                             }
 
-                            var displayTitle = displayField.find('.display-title');
+
                             container.find('.widget-custom-diagnosis').removeClass('model-modal').css({
                                 'top': '0px',
                                 'left': '0px'
@@ -205,13 +216,8 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                             container.find('.widget-custom-diagnosis .addDiagnosisBox').remove();
                             //container.find('.widget-custom-diagnosis .diagnosis-list').removeClass('edit');
 
-                            if (!displayTitle || displayTitle.length <= 0) {
-                                if (!list) {
-                                    $('<div class="display-title title">诊断列表</div>').appendTo(displayField);
-                                } else {
-                                    list.before('<div  class="display-title title">诊断列表</div>');
-                                }
-                            }
+
+
 
                             var left = container.find('div.content').offset().left;
                             var originWidth = diagnosisWidget.width();
@@ -1211,6 +1217,7 @@ function renderInputToSelect2(input, type) {
             dataType: 'json',
             quietMillis: 250,
             cache: true,
+            type: 'post',
             data: function (term, page) {
                 return {
                     'category': 'icd',
