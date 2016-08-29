@@ -189,10 +189,10 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                     diagnosisWidget.find('.editTrigger').off('click').on('click', function () {
                         if ('X' != $(this).val()) {
 
-                            var relativeId = diagnosisWidget.attr(' ');
+                            var relativeId = diagnosisWidget.attr('relative-id');
                             if(typeof relativeId!='undefined'){
                                 if(relativeId){
-                                    param.relativeId = diagnosisWidget.attr('relative_id');
+                                    param.relativeId = relativeId;
                                 }else{
                                     toastr['warning']('请先填写主表单，并点击保存后再编辑诊断内容。');
                                     return;
