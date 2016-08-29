@@ -117,7 +117,7 @@ public class ComboDataHandler {
                 displayExpr = dropdown.getDisplayExpr();
                 valueExpr = dropdown.getValueExpr();
                 for (int x = 0; x < combos.size(); x++) {
-                    param.setFuzzy(combos.get(x).getVal().split("\\.")[0]);
+                    param.setFuzzy(combos.get(x).getVal().substring(0,combos.get(x).getVal().indexOf(".")+2));
                     if(StringUtils.isNotBlank(param.getFuzzy())){
                         List<ComboInfo> tempList =  new ArrayList<ComboInfo>();
                         arguments.put("param", param);
@@ -165,11 +165,10 @@ public class ComboDataHandler {
         String icdTemp = null;
 
         for (int i = 0; i < combos.size(); i++) {
-            String[] split = combos.get(i).getVal().split("\\.");
-            icdTemp = combos.get(i).getVal().split("\\.")[0];
+            icdTemp = combos.get(i).getVal().substring(0,combos.get(i).getVal().indexOf(".")+2);
             if(StringUtils.isNotBlank(icdTemp)){
                 for (int j = combos.size() - 1; j > i; j--) {
-                    String icdTitle = combos.get(j).getVal().split("\\.")[0];
+                    String icdTitle =combos.get(j).getVal().substring(0,combos.get(j).getVal().indexOf(".")+2);
                     if(StringUtils.isNotBlank(icdTitle)){
                         if (icdTemp.equals(icdTitle)) {
                             combos.remove(j);
