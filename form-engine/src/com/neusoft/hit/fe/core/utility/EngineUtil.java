@@ -156,7 +156,10 @@ public class EngineUtil {
 	}
 
 	/*将秒转换成时分秒*/
-	public static String secToTime(int time) {
+	public static String secToTime(Integer time) {
+		if(time==null){
+			return null;
+		}
 		String timeStr = null;
 		int hour = 0;
 		int minute = 0;
