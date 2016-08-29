@@ -568,6 +568,8 @@
 					var func = methods['toggle'];
 					func.apply(container, [{'mode':'edit'}]);
 				}
+
+				container.trigger('form-rendered');
 			}
 		});
 	}
