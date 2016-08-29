@@ -209,8 +209,15 @@ input.editor {
     padding-right: 0 !important;
 }
 
-/*diagnosis插件用css*/
+.validate-error{
+    border:1px solid red;
+}
 
+.error-tip{
+    color:red
+}
+
+/*diagnosis插件用css*/
 .diagnosis-list span.icd {
     display: none;
 
