@@ -740,7 +740,26 @@
 					maxDate:'%y-%M-%d %H:%m:%s'
 				});
 			});
-			$(editor).val(val);
+			if(val) {
+				$(editor).val(val);
+			}
+			else {
+				var date = new Date();
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				month = month < 10 ? '0' + month : month;
+				var day = date.getDate();
+				day = day < 10 ? '0' + day : day;
+				var hour = date.getHours();
+				hour = hour < 10 ? '0' + hour : hour;
+				var min = date.getMinutes();
+				min = min < 10 ? '0' + min : min;
+				var sec = date.getSeconds();
+				sec = sec < 10 ? '0' + sec : sec;
+				
+				var dt = year + '-' + month + '-' + day + ' ' + hour + ":" + min + ":" + sec;
+				$(editor).val(dt);
+			}
 		} 
 		else if(type == 'number') {
 			editor = document.createElement('input');
@@ -755,40 +774,6 @@
 			}
 			$(editor).val(val);
 		} 
-		/*else if(type == 'check') {
-			dataField.find('.check-field').bind('click', function(){
-				var checkField = $(this);
-				var fieldName = checkField.parent().attr('field');
-				var parent = $(this).parents('table[check-group-type]:first');
-				if(parent.length > 0 && fieldName) {
-					var realVal = checkField.prev().html();
-					var hiddenField = parent.find('.widget-field-hidden[field='+ fieldName +']');
-					var checkGroupType = parent.attr('check-group-type');
-					if(checkField.html() == '√') {
-						checkField.html('');
-					}
-					else {
-						checkField.html('√');
-						//如果是单选设置，则将其余的checkbox都设为''
-						if(checkGroupType == 'single') {
-							parent.find('.widget-check .check-field').each(function(){
-								if($(this).prev().html() != realVal) {
-									$(this).html('');
-								}
-							});
-						}
-					}
-					var arr = [];
-					parent.find('.check-field').each(function(){
-						if($(this).html() == '√') {
-							var val = $(this).prev().html();
-							arr.push(val);
-						}
-					});
-					hiddenField.find('.editor').val(arr.join(','));
-				}
-			});
-		}*/
 		else if(type == 'text') {
 			var isRich = dataField.attr('rich');
 			if(isRich === 'true') {
