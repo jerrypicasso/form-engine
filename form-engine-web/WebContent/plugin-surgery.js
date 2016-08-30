@@ -73,7 +73,6 @@
 	    					'surgeryItemName':surgeryItemName,
 	    					'operator':operator
 	    				};
-	        			alert(param);
 	        			$.ajax({
 	        				url:'form/plugin.process?handler=surgery&action=save',
 	        				type:'post',
