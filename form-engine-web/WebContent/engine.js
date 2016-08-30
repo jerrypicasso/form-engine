@@ -278,11 +278,14 @@
 	function saveForm(container) {
 		var msg = [];
 		var records = [];
+		var result ;
 		KindEditor.sync('textarea');
 		var dataFields = container.find('.main-field[table!=""]');
-		validateField(dataFields, msg);
-		if(msg.length > 0) {
-			toastr['error'](msg.join('<br/>'));
+		result = validateField(dataFields, msg);
+		if(!result) {
+			if(msg&&msg.length>0){
+				toastr['error'](msg.join('<br/>'));
+			}
 			return;
 		}
 		dataFields.each(function() {
@@ -575,10 +578,14 @@
 	}
 	
 	function validateField(dataField, msg) {
+
+		var result = true;
 		dataField.each(function(){
-			var editor = $(this).find('.editor');
+			var error = false;
+			var editor = $(this).find('.editor'),ishidden = $(this).hasClass('widget-field-hidden')?true:false, type;
 			var val = editor.val()||'';
 			var valLength = null;
+            var errorSpan = null;
 			if(editor.is('textarea')) {
 				var text = $('<div>' + val + '</div>').text();
 				valLength = text.length;
@@ -588,24 +595,75 @@
 			}
 			var fieldName = $(this).attr('field');
 			var required = $(this).attr('required');
+            if(!ishidden){
+                if($(this).find('input.editor.select').length>0){
+                    type = 'select';
+					val = editor.select2('val')||'';
+                }else if($(this).find('input.editor.text').length>0||$(this).find('input.editor.date').length>0){
+                    type = 'text';
+                }else{
+                    type = 'textarea';
+                }
+            }
+
 			if(required == 'true' || required == 'required') {
 				if(val.length <= 0) {
-					msg.push(fieldName + '是必填项，不允许为空！');
+					result = false;
+					error = true;
+					if(ishidden){
+						msg.push(fieldName + '是必填项，不允许为空！');
+					}else{
+						errorSpan = $('<span class="error-tip">必填项，不允许为空！</span>');
+					}
 				}
 			}
 			var maxLength = $(this).attr('max-len');
 			if(maxLength) {
 				if(valLength > maxLength) {
-					msg.push(fieldName + '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength);
+					result = false;
+					error = true;
+					if(ishidden){
+						msg.push(fieldName + '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength);
+					}else{
+						errorSpan =$('<span class="error-tip">字符长度不允许超过'+maxLength+'个字，当前长度'+valLength+'</span>');
+					}
 				}
 			}
 			var minLength = $(this).attr('min-len');
 			if(minLength) {
 				if(valLength < minLength) {
-					msg.push(fieldName + '字符长度不允许少于' + minLength + '个字，当前长度' + valLength);
+					result = false;
+					error = true;
+					if(ishidden){
+						msg.push(fieldName + '字符长度不允许少于' + minLength + '个字，当前长度' + valLength);
+					}else{
+						errorSpan = $('<span class="error-tip">字符长度不允许少于'+minLength+'个字，当前长度'+valLength+'</span>');
+					}
 				}
 			}
+
+            if(error){
+				if($(this).next('span.error-tip').length<=0){
+
+					$(this).addClass('validate-error').after(errorSpan);
+				}
+				if(type=='select'){
+					var that =$(this);
+					$(this).find('input.editor').one('select2-open',function(){
+						that.next('span.error-tip').remove();
+						that.removeClass('validate-error');
+					})
+				}else if(type=='text'){
+					$(this).one('mousedown',function(){
+						$(this).next('span.error-tip').remove();
+						$(this).removeClass('validate-error');
+					})
+				}
+
+            }
 		});
+		return result;
+
 	}
 
 	function createFieldEditor(dataField) {
@@ -801,11 +859,13 @@
 						var editHeight = $(this).attr('edit-height');
 						this.edit.setHeight(editHeight);
 						this.toolbar.show();
+						dataField.removeClass('validate-error').next('span.error-tip').remove();
 					},
 					afterBlur: function(){
 						var containerHeight = $(this).attr('container-height');
 						this.edit.setHeight(containerHeight);
 						this.toolbar.hide();
+						dataField.removeClass('validate-error').next('span.error-tip').remove();
 					},
 					items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 							'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
@@ -1110,9 +1170,12 @@
 		var row = iteratorWrapper.children('.data-row.editing');
 		var dataFields = row.find('.row-field');
 		var msg = [];
-		validateField(dataFields, msg);
-		if(msg.length > 0) {
-			toastr['error'](msg.join('<br/>'));
+		var result;
+		result = validateField(dataFields, msg);
+		if(!result) {
+			if(msg&&msg.length>0){
+				toastr['error'](msg.join('<br/>'));
+			}
 			return false;
 		}
 		var records = [];
