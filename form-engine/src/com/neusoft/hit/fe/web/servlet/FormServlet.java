@@ -129,9 +129,11 @@ public class FormServlet extends HttpServlet {
 				resp.getWriter().write(result);
 			}
 			else if(servletPath.endsWith("/upload.process")) {
+				resp.setContentType("text/html;charset=utf-8");
 				imgUploadHandler.upload(req, resp);
 			}
 			else if(servletPath.endsWith("/download.process")) {
+				resp.setContentType("text/html;charset=utf-8");
 				imgUploadHandler.download(req, resp);
 			}
 			else if(servletPath.endsWith("/plugin.process")) {
