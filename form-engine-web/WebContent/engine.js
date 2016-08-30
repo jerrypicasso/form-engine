@@ -1170,10 +1170,15 @@
 		var container = $(this);
 		KindEditor.sync('textarea');
 		var row = iteratorWrapper.children('.data-row.editing');
-		var dataFields = row.find('.row-field');
+		var dataFields = [];
+		row.find('.row-field').each(function(){
+			var dataRow = $(this).parents('.data-row:first');
+			if(dataRow.attr('id') === row.attr('id')) {
+				dataFields.push($(this));
+			}
+		});
 		var msg = [];
-		var result;
-		result = validateField(dataFields, msg);
+		var result = validateField($(dataFields), msg);
 		if(!result) {
 			if(msg&&msg.length>0){
 				toastr['error'](msg.join('<br/>'));
