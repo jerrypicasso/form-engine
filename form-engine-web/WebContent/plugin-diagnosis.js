@@ -152,13 +152,13 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                         var subList = $('<ul style="margin:0 0 0 20px;padding:0;list-style:none;" class="diagnosis-list"></ul>');
                         for (var j = 0; j < items.length; j++) {
                             var subIndex = j + 1;
-                            if (items.length > 1) {
-                                subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable"><span class="index sub-index" style="display: inline-block;vertical-align: top;word-wrap: break-word;">(' + subIndex + '). </span><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
-                                    + '<span class="icd" style="display: none">' + items[j].ICD_10 + '</span></li>');
-                            } else {
+                            /*if (items.length > 1) {*/
+                            subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable"><span class="index sub-index" style="display: inline-block;vertical-align: top;word-wrap: break-word;">(' + subIndex + '). </span><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
+                                + '<span class="icd" style="display: none">' + items[j].ICD_10 + '</span></li>');
+                            /*} else {
                                 subList.append('<li id="' + items[j].ID + '" type="sub" class="selectable"><span class="text" style="width: 165px;display: inline-block;vertical-align: top;word-wrap: break-word;">' + items[j].NAME + '</span>'
                                     + '<span class="icd" style="display: none">' + items[j].ICD_10 + '</span></li>');
-                            }
+                            }*/
 
                         }
                         li.append(subList);

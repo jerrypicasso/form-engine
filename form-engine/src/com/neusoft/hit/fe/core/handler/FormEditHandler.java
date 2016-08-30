@@ -68,17 +68,31 @@ public class FormEditHandler {
 			for(Map.Entry<String, SaveParam> entry : saveParams.entrySet()) {
 				SaveParam saveParam = entry.getValue();
 				String tableName = saveParam.getTableName();
+				String dateType = DBUtil.getFieldType(tableName,"MODIFY_TIME").toUpperCase();
 				String pkName = saveParam.getPrimaryKeyName();
 				String pkValue = saveParam.getPrimaryKeyValue();
 				Map<String, Object> columns = saveParam.getColumns();
 				StringBuilder saveSql = new StringBuilder();
+				StringBuilder fakeSql = new StringBuilder();
+				StringBuilder fakeColumns = new StringBuilder(" ");
 				//新增
 				if(pkValue == null || "".equals(pkValue)) {
 					guid = EngineUtil.guid();
 					StringBuilder columnNames = new StringBuilder(" (");
+
 					StringBuilder columnValues = new StringBuilder(" (");
 					columns.put(pkName, guid);
-					String now = EngineUtil.now();
+					String now = EngineUtil.now() ;
+
+					if("ORACLE".equals(DBUtil.getDataBaseType().toUpperCase())){
+						if("DATE".equals(dateType)){
+							now =  "to_date('"+now+"',"+"'yyyy-MM-dd hh24:mi:ss')";
+						}
+					}else if("POSTGRESQL".equals(DBUtil.getDataBaseType().toUpperCase())){
+						if("DATE".equals(dateType)){
+							now =  "to_date('"+now+"',"+"'yyyy-MM-dd hh24:mi:ss')";
+						}
+					}
 					columns.put("CREATE_TIME", now);
 					columns.put("MODIFY_TIME", now);
 					Iterator<?> it = columns.keySet().iterator();
@@ -86,6 +100,7 @@ public class FormEditHandler {
 						String key = (String) it.next();  
 			            Object value = columns.get(key);
 			            columnNames.append(key).append(',');
+
 			            /*if(value.matches("\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{2}:\\d{2}:\\d{2}")) {
 			            	if("Oracle".equals(DBUtil.getDataBaseType())) {
 			            		columnValues.append("TO_DATE('").append(value).append("','yyyy-mm-dd hh24:mi:ss'),");
@@ -97,23 +112,43 @@ public class FormEditHandler {
 			            else {
 			            	columnValues.append('\'').append(value).append("',");
 			            }*/
-			            columnValues.append('\'').append(value).append("',");
+						if("DATE".equals(dateType)){
+							if("MODIFY_TIME".equals(key)||"CREATE_TIME".equals(key)){
+								columnValues.append(value).append(",");
+							}else{
+								columnValues.append('\'').append(value).append("',");
+							}
+						}else{
+							columnValues.append('\'').append(value).append("',");
+						}
 					}
 					columnNames.setCharAt(columnNames.length() - 1, ')');
 					columnValues.setCharAt(columnValues.length() - 1, ')');
+					fakeColumns.deleteCharAt(fakeColumns.length() - 1);
 					saveSql.append("INSERT INTO ").append(tableName).append(columnNames);
 					saveSql.append(" VALUES ").append(columnValues);
+					fakeSql.append("SELECT ").append(fakeColumns).append(" FROM ").append(tableName);
 				}
 				//修改
 				else {
 					StringBuilder update = new StringBuilder();
 					columns.remove("CREATE_ID");
 					String now = EngineUtil.now();
+					if("ORACLE".equals(DBUtil.getDataBaseType().toUpperCase())){
+						if("DATE".equals(dateType)){
+							now =  "to_date('"+now+"',"+"'yyyy-MM-dd hh24:mi:ss')";
+						}
+					}else if("POSTGRESQL".equals(DBUtil.getDataBaseType().toUpperCase())){
+						if("DATE".equals(dateType)){
+							now =  "to_date('"+now+"',"+"'yyyy-MM-dd hh24:mi:ss')";
+						}
+					}
 					columns.put("MODIFY_TIME", now);
 					Iterator<?> it = columns.keySet().iterator();
 					while (it.hasNext()) {
 						String key = (String) it.next();  
 						Object value = columns.get(key);
+						fakeColumns.append(key).append(',');
 						/*if(value.matches("\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{2}:\\d{2}:\\d{2}")) {
 			            	if("Oracle".equals(DBUtil.getDataBaseType())) {
 			            		update.append(key).append('=').append("TO_DATE('").append(value).append("','yyyy-mm-dd hh24:mi:ss'),");
@@ -125,12 +160,25 @@ public class FormEditHandler {
 			            else {
 			            	update.append(key).append('=').append('\'').append(value).append("',");
 			            }*/
-						update.append(key).append('=').append('\'').append(value).append("',");
+						if("DATE".equals(dateType)){
+							if("MODIFY_TIME".equals(key)||"CREATE_TIME".equals(key)){
+								update.append(key).append('=').append(value).append(",");
+							}else{
+								update.append(key).append('=').append('\'').append(value).append("',");
+							}
+						}else{
+							update.append(key).append('=').append('\'').append(value).append("',");
+						}
 					}
 					update.deleteCharAt(update.length() - 1);
+					fakeColumns.deleteCharAt(fakeColumns.length() - 1);
 					saveSql.append("UPDATE ").append(tableName).append(" SET ").append(update);
 					saveSql.append(" WHERE ").append(pkName).append("='").append(pkValue).append('\'');
+					fakeSql.append("SELECT ").append(fakeColumns).append(" FROM ").append(tableName);
 				}
+
+
+
 				stmt.executeUpdate(saveSql.toString());
 				
 				String historyTableName = tableName + "_HISTORY";

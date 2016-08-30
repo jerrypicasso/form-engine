@@ -327,4 +327,41 @@ public class DBUtil {
     }
 
 
+    public static String getFieldType(String tableName,String field) throws SQLException {
+        List<String> names = new ArrayList<String>();
+        Connection conn = DBUtil.getConnection();
+        Statement stmt = null;
+        ResultSet rs = null;
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT ").append(field).append(" FROM ").append(tableName).append(" WHERE ROWNUM =0");
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql.toString());
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnNum =  meta.getColumnCount();
+            for(int i = 0; i < columnNum; i++) {
+                String columnTypeName = meta.getColumnTypeName(i+1);
+                names.add(columnTypeName);
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        } finally {
+            try {
+                if(rs != null) {
+                    rs.close();
+                }
+                if(stmt != null) {
+                    stmt.close();
+                }
+                if(conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return names.get(0);
+    }
+
+
 }

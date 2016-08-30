@@ -214,7 +214,9 @@ input.editor {
 }
 
 .error-tip{
-    color:red
+    color:red;
+    display:block;
+    text-align: center;
 }
 
 /*diagnosis插件用css*/
