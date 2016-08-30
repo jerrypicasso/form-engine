@@ -37,7 +37,7 @@ public class SurgeryDataHandler implements PluginDataHandler {
 	}
 	
 	private String load(Map<String, Object> params) throws FormEngineException {
-		String sql = "SELECT * FROM NEW_SSXX_TM WHERE SS_ID = '${surgery}' ORDER BY CREATE_TIME ASC";
+		String sql = "SELECT * FROM CLOUD_EMR_SSXX_SS WHERE PARENT_ID = '${surgery}' ORDER BY CREATE_TIME ASC";
 		sql = FreemarkerUtil.getMixedString(sql, params);
 		Connection conn = null;
 		Statement stmt = null;
@@ -58,8 +58,8 @@ public class SurgeryDataHandler implements PluginDataHandler {
 	
 	private String save(Map<String, Object> params) throws FormEngineException {
 		String sql = "<#assign now=.now?string('yyyy-MM-dd HH:mm:ss')/>" +
-					 "INSERT INTO NEW_SSXX_TM(GUID,SS_ID,SSBM,SSMC,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) " +
-					 "VALUES('${CommonUtil.guid()}','${surgery}','${(surgeryItemCode)!}','${surgeryItemName}'," + 
+					 "INSERT INTO CLOUD_EMR_SSXX_SS(GUID,PARENT_ID,SSBM,SSMC,CREATE_ID,CREATE_TIME,MODIFY_ID,MODIFY_TIME) " +
+					 "VALUES('${EngineUtil.guid()}','${surgery}','${(surgeryItemCode)!}','${surgeryItemName}'," + 
 					 "'${(operator)!}','${now}','${(operator)!}','${now}')";
 		sql = FreemarkerUtil.getMixedString(sql, params);
 		Connection conn = null;
@@ -77,7 +77,7 @@ public class SurgeryDataHandler implements PluginDataHandler {
 	}
 	
 	private String drop(Map<String, Object> params) throws FormEngineException {
-		String sql = "DELETE FROM NEW_SSXX_TM WHERE GUID = '${id}'";
+		String sql = "DELETE FROM CLOUD_EMR_SSXX_SS WHERE GUID = '${id}'";
 		sql = FreemarkerUtil.getMixedString(sql, params);
 		Connection conn = null;
 		Statement stmt = null;
