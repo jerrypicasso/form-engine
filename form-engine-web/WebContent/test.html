@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        [{
+            "diagnosisText": "Terson综合征",
+            "diagnosisCode": "I60.902I60.902H50.804M82211/0I60.902T60.901",
+            "staffCode": "1885252"
+        }, {
+            "diagnosisText": "Helveston综合征T0N0M0Helveston综合征",
+            "diagnosisCode": "I60.902I60.902H50.804M82211/0I60.902T60.901",
+            "staffCode": "1885252"
+        }, {
+            "diagnosisText": "农用药中毒",
+            "diagnosisCode": "I60.902I60.902H50.804M82211/0I60.902T60.901",
+            "staffCode": "1885252"
+        }]
+    </script>
+</head>
+<body>
+<div class="sql-wrapper" style="width: 210mm; display: none;">
+    <div class="sql-node" name="yyxx" style="display: block;">
+        <span class="sql-name">yyxx</span>
+        <span class="sql-result-type">single</span>
+        <span class="var-name" style="display: none;"></span>
+        <span class="sql-result-limit" style="display: none;"></span>
+
+        <div class="sql">select * from yy_info where id = '1'</div>
+    </div>
+    <div class="sql-node" name="ssjl" style="display: block;">
+        <span class="sql-name">ssjl</span>
+        <span class="sql-result-type">single</span>
+        <span class="var-name" style="display: none;"></span>
+        <span class="sql-result-limit" style="display: none;"></span>
+
+        <div class="sql">SELECT
+            ssjl.*, sszxx.xm AS SSZ_XM,
+            zsxx.xm AS ZS_XM,
+            hsxx.xm AS HS_XM
+            FROM
+            NEW_SSJL ssjl
+            LEFT JOIN ygjbxx sszxx ON SSJL.SSZ = sszxx.YGBH
+            LEFT JOIN ygjbxx zsxx ON SSJL.ZS = zsxx.YGBH
+            LEFT JOIN ygjbxx hsxx ON SSJL.HS = zsxx.YGBH
+        </div>
+    </div>
+</div>
+<div class="paper"
+     style="font-size: 14px; position: relative; margin: 0px auto; width: 210mm; background: rgb(255, 255, 255);"
+     name="手术记录" code="ssjl" table-name="ssjl" direction="portrait">
+    <div class="content-wrapper" style="position: relative; padding: 10px;">
+        <div class="header droppable widget-container" style="height: 0px;"></div>
+        <div class="content droppable widget-container">
+            <table id="7b92ef68f3b34541a71d747e106e5817" class="widget-table"
+                   style="width:0;border-collapse:collapse;table-layout:fixed;font-size:14px;">
+                <colgroup table="7b92ef68f3b34541a71d747e106e5817">
+                    <col class="" style="width: 43px;">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;" class="">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col class="" style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col style="width: 39px;">
+                    <col style="width: 38px;">
+                    <col style="width: 38px;">
+                    <col style="width: 38px;">
+                    <col style="width: 38px;">
+                    <col style="width: 38px;">
+                    <col style="width: 38px;">
+                    <col style="width: 38px;" class="">
+                    <col style="width: 38px;">
+                </colgroup>
+                <tbody>
+                <tr index="0" id="4f6bd02727004232aff72fd0798c6e26" table="7b92ef68f3b34541a71d747e106e5817" class=""
+                    style="height: 66px;">
+                    <td coordinate="0-0" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="20"
+                        rowspan="1" style="text-align: center; font-size: 20px; line-height: 40px;" align="center"><span
+                            class="widget-text-dynamic droppable"
+                            style="display: inline-block; vertical-align: bottom; white-space: normal; word-wrap: break-word; text-align: center; overflow: hidden; width: 300px;">${(yyxx.NAME)!}</span><span
+                            class="widget-text-static droppable"
+                            style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 48px;">医院</span>
+                    </td>
+                </tr>
+                <tr index="1" id="9b27aefe4b284919ac9d22d34e56b9dc" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 49px;" class="">
+                    <td coordinate="0-1" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="20" rowspan="1"
+                        style="text-align: center; font-size: 22px;"><span class="widget-text-static droppable"
+                                                                           style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 121px;">手 术 记 录</span>
+                    </td>
+                </tr>
+                <tr index="2" id="4783db6dd7564dbba94d37979fb2aa26" table="7b92ef68f3b34541a71d747e106e5817" class=""
+                    style="height: 30px;">
+                    <td coordinate="0-2" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="20" rowspan="1"
+                        style="border-bottom: 1px solid rgb(0, 0, 0); line-height: 28px;">
+                        <table id="889b022a34b343d8bbad204cde1192ef" class="widget-table"
+                               style="width:0;border-collapse:collapse;table-layout:fixed;font-size:14px;">
+                            <colgroup table="889b022a34b343d8bbad204cde1192ef">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                                <col style="width: 95px;">
+                            </colgroup>
+                            <tbody>
+                            <tr index="0" id="e014281a26da4eaf82ac5bb120b93368" table="889b022a34b343d8bbad204cde1192ef"
+                                style="height: 24px;" class="">
+                                <td coordinate="0-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible" style=""><span
+                                        class="widget-text-static droppable"
+                                        style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">手术日期：</span>
+                                </td>
+                                <td coordinate="1-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible" style=""><span
+                                        class="widget-field-date droppable main-field" field="ssrq" type="date"
+                                        style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 100px;"><span
+                                        class="value-field" style="display: none;">${(ssjlSSRQ)!}</span><span
+                                        class="display-field">${(ssjl.SSRQ?string("yyyy-MM-dd"))!}</span></span></td>
+                                <td coordinate="2-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible" style=""><span
+                                        class="widget-text-static droppable"
+                                        style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">开始时间：</span>
+                                </td>
+                                <td coordinate="3-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible" style=""><span
+                                        class="widget-field-date droppable main-field"
+                                        field="${(ssjl.kssj?string(&quot;yyyy-MM-dd HH:mm:ss&quot;))!}" type="date"
+                                        style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 105px;"><span
+                                        class="value-field" style="display: none;">${(ssjl.KSSJ)!}</span><span
+                                        class="display-field">${(ssjl.KSSJ?string("yyyy-MM-dd HH:mm:ss"))!}</span></span>
+                                </td>
+                                <td coordinate="4-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible row-resizable" style="">
+                                    <span class="widget-text-static droppable"
+                                          style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">结束时间：</span>
+                                </td>
+                                <td coordinate="5-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible col-resizable" style="">
+                                    <span class="widget-field-date droppable main-field" field="jssj" type="date"
+                                          style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 92px;"><span
+                                            class="value-field" style="display: none;">${(ssjl.JSSJ)!}</span><span
+                                            class="display-field">${(ssjl.JSSJ?string("yyyy-MM-dd HH:mm:ss"))!}</span></span>
+                                </td>
+                                <td coordinate="6-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible" style=""><span
+                                        class="widget-text-static droppable"
+                                        style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">全程时间：</span>
+                                </td>
+                                <td coordinate="7-0" table="889b022a34b343d8bbad204cde1192ef"
+                                    class="droppable cell widget-container td-border-invisible" style=""></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr index="3" id="27d978d49bff4f2db9997690c5be02f4" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 21px;" class="">
+                    <td coordinate="0-3" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="2"
+                        rowspan="1" align="left" style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                                                  style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">术前诊断：</span>
+                    </td>
+                    <td coordinate="2-3" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="18"
+                        rowspan="1" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="4" id="60e1fd1d1b6f4393b230c6d9af4a4b38" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 25px;" class="">
+                    <td coordinate="0-4" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1" align="left"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: left; width: 70px;">术后诊断：</span>
+                    </td>
+                    <td coordinate="2-4" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="18"
+                        rowspan="1" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="5" id="b2b64e4cb82f4f38b60318b13040e40d" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;" class="">
+                    <td coordinate="0-5" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1" align="left"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">手术名称：</span>
+                    </td>
+                    <td coordinate="2-5" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="18" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-field-text droppable main-field" field=" ssmc"
+                                                         type="text"
+                                                         style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 112px;"><span
+                            class="value-field" style="display: none;">${(ssjl.SSMC)!}</span><span
+                            class="display-field">${(ssjl.SSMC)!}</span></span></td>
+                </tr>
+                <tr index="6" id="638a0a815c454b46b94b784da9071d9a" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td coordinate="0-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1" align="left"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 56px;">手术者：</span>
+                    </td>
+                    <td coordinate="2-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="3" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-field-select droppable main-field" field="SSZ_XM"
+                                                         category="dict" filter="" type="select"
+                                                         style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 119px;"><span
+                            class="value-field" style="display: none;">${(ssjl.SSZ_XM)!}</span><span
+                            class="display-field">${(ssjl.SSZ_XM)!}</span></span></td>
+                    <td coordinate="5-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="6-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 42px;">助手：</span>
+                    </td>
+                    <td coordinate="8-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="3" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-field-select droppable main-field" field="ZS_XM"
+                                                         category="staff" filter="" type="select" trigger="true"
+                                                         style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 112px;"><span
+                            class="value-field" style="display: none;">${(ssjl.ZS_XM)!}</span><span
+                            class="display-field">${(ssjl.ZS_XM)!}</span></span></td>
+                    <td coordinate="11-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="12-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 42px;">护士：</span>
+                    </td>
+                    <td coordinate="14-6" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="6"
+                        rowspan="1" style="line-height: 28px;"><span class="widget-field-select droppable main-field"
+                                                                     field="HS_XM" category="staff" filter=""
+                                                                     type="select" trigger="true"
+                                                                     style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 112px;"><span
+                            class="value-field" style="display: none;">${(ssjl.HS_XM)!}</span><span
+                            class="display-field">${(ssjl.HS_XM)!}</span></span></td>
+                </tr>
+                <tr index="7" id="6a51e61dd88b449db5908deb748daca6" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;" class="">
+                    <td coordinate="0-7" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="2"
+                        rowspan="1" align="left" style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                                                  style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">麻醉方法：</span>
+                    </td>
+                    <td coordinate="2-7" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="10" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-field-text droppable main-field" field="MZFF"
+                                                         type="text"
+                                                         style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 105px;"><span
+                            class="value-field" style="display: none;">${(ssjl.MZFF)!}</span><span
+                            class="display-field">${(ssjl.MZFF)!}</span></span></td>
+                    <td coordinate="12-7" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 70px;">麻醉医师：</span>
+                    </td>
+                    <td coordinate="14-7" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="6" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-field-select droppable main-field" field="MZYS"
+                                                         category="staff" filter="" type="select" trigger="true"
+                                                         style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 105px;"><span
+                            class="value-field" style="display: none;">${(ssjl.MZYS)!}</span><span
+                            class="display-field">${(ssjl.MZYS)!}</span></span></td>
+                </tr>
+                <tr index="8" id="5093b63658c94f1aafd09df7a1ee8618" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;" class="">
+                    <td coordinate="0-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1" align="left"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 63px;">手术经过：</span>
+                    </td>
+                    <td coordinate="2-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="3-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="4-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="5-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="6-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="7-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="8-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="9-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="10-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="11-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="12-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="13-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="14-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="15-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="16-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="17-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="18-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="19-8" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="9" id="8312d8c3af6f4ddaaa147e47ee2ed4bf" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td coordinate="0-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="1-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"><span
+                            class="widget-text-static droppable"
+                            style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 42px; line-height: 20px;">体位：</span>
+                    </td>
+                    <td coordinate="2-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;" colspan="2" rowspan="1"><span
+                            class="widget-field-text droppable main-field" field="TW" type="text"
+                            style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 91px;"><span
+                            class="value-field" style="display: none;">${(ssjl.TW)!}</span><span class="display-field">${(ssjl.TW)!}</span></span>
+                    </td>
+                    <td coordinate="4-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 56px;">皮肤消毒</span>
+                    </td>
+                    <td coordinate="6-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="line-height: 28px;" colspan="2" rowspan="1"><span
+                            class="widget-field-text droppable main-field" field="PFXD" type="text"
+                            style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 105px;"><span
+                            class="value-field" style="display: none;">${(ssjl.PFXD)!}</span><span
+                            class="display-field">${(ssjl.PFXD)!}</span></span></td>
+                    <td coordinate="8-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="9-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="4" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 140px;">切口部位、方向、长度</span>
+                    </td>
+                    <td coordinate="13-9" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"
+                        colspan="7" rowspan="1"><span class="widget-field-text droppable main-field" field="BWCDFX"
+                                                      type="text"
+                                                      style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 119px;"><span
+                            class="value-field" style="display: none;">${(ssjl.BWCDFX)!}</span><span
+                            class="display-field">${(ssjl.BWCDFX)!}</span></span></td>
+                </tr>
+                <tr index="10" id="bbf43f9b81ec4d81bd04066df808cde6" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 18px;" class="">
+                    <td coordinate="0-10" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="1-10" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="4"
+                        rowspan="1" style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                                     style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 112px; line-height: 20px;">术中改变手术方式</span>
+                    </td>
+                    <td coordinate="5-10" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="2" rowspan="1"
+                        style="line-height: 28px;">
+                        <table id="b2add460b77c4556853d69b16cb07904" class="widget-table" check-group-type="single"
+                               style="width:0;border-collapse:collapse;table-layout:fixed;font-size:14px;">
+                            <colgroup table="b2add460b77c4556853d69b16cb07904">
+                                <col style="width: 36px;">
+                                <col style="width: 36px;">
+                            </colgroup>
+                            <tbody>
+                            <tr index="0" id="2be9eba97efe4ea781ddb9a9407c4b57" table="b2add460b77c4556853d69b16cb07904"
+                                style="height: 20px;">
+                                <td coordinate="0-0" table="b2add460b77c4556853d69b16cb07904"
+                                    class="droppable cell widget-container td-border-invisible row-resizable"></td>
+                                <td coordinate="1-0" table="b2add460b77c4556853d69b16cb07904"
+                                    class="droppable cell widget-container td-border-invisible"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td coordinate="7-10" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="8-10" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 42px;">理由：</span>
+                    </td>
+                    <td coordinate="9-10" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;" colspan="11" rowspan="1"></td>
+                </tr>
+                <tr index="11" id="e9cc1018219445eb9df579a6f10aba87" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 32px;" class="">
+                    <td coordinate="0-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="1-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="3" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 98px;">签署知情同意书</span>
+                    </td>
+                    <td coordinate="4-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="2"
+                        rowspan="1" style="line-height: 28px;"></td>
+                    <td coordinate="6-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="7-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="8-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="9-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="10-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="11-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="12-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="13-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="14-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="15-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="16-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="17-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="18-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="19-11" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="12" id="a2aec63a958f4f11b66155a8aa5002ad" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;" class="">
+                    <td coordinate="0-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="1-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable" colspan="3"
+                        rowspan="1" style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                                     style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 84px;">引流材料名称</span>
+                    </td>
+                    <td coordinate="4-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"
+                        colspan="4" rowspan="1"><span class="widget-field-text droppable main-field" field="YLCLMC"
+                                                      type="text"
+                                                      style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 119px;"><span
+                            class="value-field" style="display: none;">${(ssjl.YLCLMC)!}</span><span
+                            class="display-field">${(ssjl.YLCLMC)!}</span></span></td>
+                    <td coordinate="8-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 28px;">数目</span>
+                    </td>
+                    <td coordinate="9-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="line-height: 28px;"><span class="widget-field-number droppable main-field" field="SM"
+                                                         type="number"
+                                                         style="display: inline-block; overflow: hidden; text-align: center; vertical-align: bottom; white-space: normal; width: 91px;"><span
+                            class="value-field" style="display: none;">${(ssjl.SM)!}</span><span class="display-field">${(ssjl.SM)!}</span></span>
+                    </td>
+                    <td coordinate="10-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="11-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="2"
+                        rowspan="1" style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                                     style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 56px;">放置部位</span>
+                    </td>
+                    <td coordinate="13-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;" colspan="4" rowspan="1"><span
+                            class="widget-field-text droppable main-field" field="FZBW" type="text"
+                            style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 105px;"><span
+                            class="value-field" style="display: none;">${(ssjl.FZBW)!}</span><span
+                            class="display-field">${(ssjl.FZBW)!}</span></span></td>
+                    <td coordinate="17-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="18-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="19-12" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="13" id="5c4987cdd8b64f37a4e5b45f1b813692" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td coordinate="0-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="1-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="3" rowspan="1"
+                        style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                         style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 84px;">送检标本名称
+</span></td>
+                    <td coordinate="4-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;" colspan="10" rowspan="1"><span
+                            class="widget-field-text droppable main-field" field="SJBBMC" type="text"
+                            style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 119px;"><span
+                            class="value-field" style="display: none;">${(ssjl.SJBBMC)!}</span><span
+                            class="display-field">${(ssjl.SJBBMC)!}</span></span></td>
+                    <td coordinate="14-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="15-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="16-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="17-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="18-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="19-13" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="14" id="2dd78ea4cec9439e8ba1b0b4a916ec03" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td coordinate="0-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="1-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable" colspan="5"
+                        rowspan="1" style="line-height: 28px;"><span class="widget-text-static droppable"
+                                                                     style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 168px;">术中用药（麻醉药品除外）</span>
+                    </td>
+                    <td coordinate="6-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="line-height: 28px;" colspan="5" rowspan="1"><span
+                            class="widget-field-text droppable main-field" field="SZYY" type="text"
+                            style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 105px;"><span
+                            class="value-field" style="display: none;">${(ssjl.SZYY)!}</span><span
+                            class="display-field">${(ssjl.SZYY)!}</span></span></td>
+                    <td coordinate="11-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"><span
+                            class="widget-text-static droppable"
+                            style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 28px;">输血</span>
+                    </td>
+                    <td coordinate="12-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"
+                        colspan="5" rowspan="1"><span class="widget-field-text droppable main-field" field="SX"
+                                                      type="text"
+                                                      style="display: inline-block; overflow: hidden; text-align: center; white-space: normal; vertical-align: bottom; width: 91px;"><span
+                            class="value-field" style="display: none;">${(ssjl.SX)!}</span><span class="display-field">${(ssjl.SX)!}</span></span>
+                    </td>
+                    <td coordinate="17-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="line-height: 28px;"></td>
+                    <td coordinate="18-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                    <td coordinate="19-14" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" style="line-height: 28px;"></td>
+                </tr>
+                <tr index="15" id="eefd039df88440099af14124354dbf0f" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 293px;" class="">
+                    <td class="td-border-invisible droppable cell" coordinate="0-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="1-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="2-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="3-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="4-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="5-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="6-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="7-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="8-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell col-resizable" coordinate="9-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="10-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="11-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="12-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="13-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="14-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="15-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="16-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="17-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="18-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="19-15"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                </tr>
+                <tr index="16" id="42fcc6de9e6f42b0a5691415cc4c7dc4" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;" class="">
+                    <td class="td-border-invisible droppable cell" coordinate="0-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="1-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="2-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="3-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="4-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="5-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="6-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="7-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="8-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="9-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="10-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="11-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="12-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="13-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="14-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="15-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="16-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="17-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="18-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="19-16"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                </tr>
+                <tr index="17" id="97181c692e5449ecb9d79d3af89246b7" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td class="td-border-invisible droppable cell" coordinate="0-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="1-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="2-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="3-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="4-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="5-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="6-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="7-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="8-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="9-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="10-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="11-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="12-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell row-resizable" coordinate="13-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="14-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="15-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="16-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="17-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="18-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="19-17"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                </tr>
+                <tr index="18" id="382991a82962483eaa0b89794da94a14" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td class="td-border-invisible droppable cell" coordinate="0-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="1-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="2-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="3-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="4-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="5-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="6-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="7-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="8-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="9-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="10-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="11-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="12-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell row-resizable" coordinate="13-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell col-resizable" coordinate="14-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="15-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="16-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="17-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="18-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                    <td class="td-border-invisible droppable cell" coordinate="19-18"
+                        table="7b92ef68f3b34541a71d747e106e5817"></td>
+                </tr>
+                <tr index="19" id="e00c9d58c76c48b6913d95354ae0c566" table="7b92ef68f3b34541a71d747e106e5817"
+                    style="height: 20px;">
+                    <td coordinate="0-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="1-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="2-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="3-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="4-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="5-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="6-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="7-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="8-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="9-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="10-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="11-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="12-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="13-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible col-resizable"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                    <td coordinate="14-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible row-resizable" colspan="3"
+                        rowspan="1" align="right" style="border-bottom: 1px solid rgb(0, 0, 0);"><span
+                            class="widget-text-static droppable"
+                            style="display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; text-align: center; width: 84px;">手术者签名：</span>
+                    </td>
+                    <td coordinate="17-19" table="7b92ef68f3b34541a71d747e106e5817"
+                        class="droppable cell widget-container td-border-invisible" colspan="3" rowspan="1"
+                        style="border-bottom: 1px solid rgb(0, 0, 0);"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer droppable widget-container" style="height: 46px;"></div>
+        <script id="form-script" type="text/javascript"></script>
+    </div>
+</div>
+</body>
+</html>
