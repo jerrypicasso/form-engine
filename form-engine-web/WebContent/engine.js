@@ -577,91 +577,130 @@
 			}
 		});
 	}
-	
+
 	function validateField(dataField, msg) {
 
 		var result = true;
-		dataField.each(function(){
+		dataField.each(function () {
 			var error = false;
-			var editor = $(this).find('.editor'),ishidden = $(this).hasClass('widget-field-hidden')?true:false, type;
-			var val = editor.val()||'';
+			var editor = $(this).find('.editor'), isHidden = $(this).hasClass('widget-field-hidden') ? true : false, type;
+			var isNum = $(this).hasClass('widget-field-number') ? true : false;
+			var val = editor.val() || '';
 			var valLength = null;
-            var errorSpan = null;
-			if(editor.is('textarea')) {
+			var errorSpan = null;
+
+			if (editor.is('textarea')) {
 				var text = $('<div>' + val + '</div>').text();
 				valLength = text.length;
-			}
-			else {
+			} else {
 				valLength = val.length;
 			}
 			var fieldName = $(this).attr('field');
 			var required = $(this).attr('required');
-            if(!ishidden){
-                if($(this).find('input.editor.select').length>0){
-                    type = 'select';
-					val = editor.select2('val')||'';
-                }else if($(this).find('input.editor.text').length>0||$(this).find('input.editor.date').length>0){
-                    type = 'text';
-                }else{
-                    type = 'textarea';
-                }
-            }
+			if (!isHidden) {
+				if ($(this).find('input.editor.select').length > 0) {
+					type = 'select';
+					val = editor.select2('val') || '';
+				} else if ($(this).find('input.editor.text').length > 0 || $(this).find('input.editor.date').length > 0||$(this).find('input.editor.number').length > 0) {
+					type = 'input';
+				} else {
+					type = 'textarea';
+				}
+			}
 
-			if(required == 'true' || required == 'required') {
-				if(val.length <= 0) {
+			if (required == 'true' || required == 'required') {
+				if (val.length <= 0) {
 					result = false;
 					error = true;
-					if(ishidden){
+					if (isHidden) {
 						msg.push(fieldName + '是必填项，不允许为空！');
-					}else{
+					} else {
 						errorSpan = $('<span class="error-tip">必填项，不允许为空！</span>');
 					}
 				}
 			}
 			var maxLength = $(this).attr('max-len');
-			if(maxLength) {
-				if(valLength > maxLength) {
+			if (maxLength) {
+				if (valLength > maxLength) {
 					result = false;
 					error = true;
-					if(ishidden){
+					if (isHidden) {
 						msg.push(fieldName + '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength);
-					}else{
-						errorSpan =$('<span class="error-tip">字符长度不允许超过'+maxLength+'个字，当前长度'+valLength+'</span>');
+					} else {
+						errorSpan = $('<span class="error-tip">字符长度不允许超过' + maxLength + '个字，当前长度' + valLength + '</span>');
 					}
 				}
 			}
 			var minLength = $(this).attr('min-len');
-			if(minLength) {
-				if(valLength < minLength) {
+			if (minLength) {
+				if (valLength < minLength) {
 					result = false;
 					error = true;
-					if(ishidden){
+					if (isHidden) {
 						msg.push(fieldName + '字符长度不允许少于' + minLength + '个字，当前长度' + valLength);
-					}else{
-						errorSpan = $('<span class="error-tip">字符长度不允许少于'+minLength+'个字，当前长度'+valLength+'</span>');
+					} else {
+						errorSpan = $('<span class="error-tip">字符长度不允许少于' + minLength + '个字，当前长度' + valLength + '</span>');
 					}
 				}
 			}
 
-            if(error){
-				if($(this).next('span.error-tip').length<=0){
+			if (isNum) {
+				if (isNaN(val)) {
+					result = false;
+					error = true;
+					if (isHidden) {
+						msg.push(fieldName + '是数字字段，输入内容非法。');
+					} else {
+						errorSpan = $('<span class="error-tip">请输入数字。</span>');
+					}
+				}else{
 
-					$(this).addClass('validate-error').after(errorSpan);
+					var minNum = parseFloat($(this).attr('min-num'));
+					var maxNum = parseFloat($(this).attr('max-num'));
+					if (!isNaN(minNum)) {
+						if (minNum > val) {
+							result = false;
+							error = true;
+							if (isHidden) {
+								msg.push(fieldName + '字段值低于最小值限制');
+							} else {
+								errorSpan = $('<span class="error-tip">字段值低于最小值限制。</span>');
+							}
+						}
+					}
+					if (!isNaN(maxNum)) {
+						if (maxNum < val) {
+							result = false;
+							error = true;
+							if (isHidden) {
+								msg.push(fieldName + '字段值超出最大值限制');
+							} else {
+								errorSpan = $('<span class="error-tip">字段值超出最大值限制。</span>');
+							}
+						}
+					}
 				}
-				if(type=='select'){
-					var that =$(this);
-					$(this).find('input.editor').one('select2-open',function(){
+
+			}
+
+
+
+			if (error) {
+				$(this).next('span.error-tip').remove();
+				$(this).addClass('validate-error').after(errorSpan);
+				if (type == 'select') {
+					var that = $(this);
+					$(this).find('input.editor').one('select2-open', function () {
 						that.next('span.error-tip').remove();
 						that.removeClass('validate-error');
 					})
-				}else if(type=='text'){
-					$(this).one('mousedown',function(){
+				} else if (type == 'input') {
+					$(this).one('mousedown', function () {
 						$(this).next('span.error-tip').remove();
 						$(this).removeClass('validate-error');
 					})
 				}
-
-            }
+			}
 		});
 		return result;
 
