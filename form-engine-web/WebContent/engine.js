@@ -401,6 +401,7 @@
 		iteratorWrappers.each(function(){
 			var iteratorWrapper = $(this);
 			var editWrapper = $('<div class="edit-wrapper"></div>');
+			editWrapper.attr('iter', iteratorWrapper.attr('id'));
 			var insertBtn = $('<input type="button" class="edit-btn" value="新增"/>');
 			insertBtn.unbind('click').bind('click', function(){
 				if(iteratorWrapper.children('.data-row[row-mode=new]').length <= 0) {
@@ -917,6 +918,7 @@
 			var pageParamName = wrapper.attr('page-param-name');
 			if(pages && parseInt(pages) > 0) {
 				var pageWrapper = $('<div class="page-wrapper">');
+				pageWrapper.attr('iter', wrapper.attr('id'));
 				pageWrapper.appendTo(wrapper);
 				var firstPageBtn = $('<input type="button" class="page-btn" value="首页"/>');
 				firstPageBtn.appendTo(pageWrapper);
@@ -1236,7 +1238,16 @@
 	function cancelEditRow(iteratorWrapper, flag) {
 		if(flag) {
 			var newRow = iteratorWrapper.children('.data-row[row-mode=new]').removeAttr('row-mode');
-			iteratorWrapper.find('.edit-wrapper').before(newRow);
+			var iterId = iteratorWrapper.attr('id');
+			if(iteratorWrapper.find('.page-wrapper[iter='+ iterId +']').length > 0) {
+				iteratorWrapper.find('.page-wrapper[iter='+ iterId +']').before(newRow);
+			}
+			else if(iteratorWrapper.find('.edit-wrapper[iter='+ iterId +']').length > 0) {
+				iteratorWrapper.find('.edit-wrapper[iter='+ iterId +']').before(newRow);
+			}
+			else {
+				iteratorWrapper.append(newRow);
+			}
 		}
 		else {
 			iteratorWrapper.children('.data-row[row-mode=new]').remove();
