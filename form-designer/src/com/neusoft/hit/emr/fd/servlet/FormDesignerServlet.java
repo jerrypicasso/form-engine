@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.neusoft.hit.emr.fd.util.CommonUtil;
 import com.neusoft.hit.emr.fd.util.DBUtil;
-import com.neusoft.hit.fe.core.utility.CommonUtil;
 
 import net.sf.json.JSONArray;
 

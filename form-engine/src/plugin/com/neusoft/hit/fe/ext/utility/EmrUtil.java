@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +42,11 @@ public class EmrUtil {
     }
 
     public static String staff(String code) {
-        String text = "";
+        return staff(code, "");
+    }
+    
+    public static String staff(String code, String defaultVal) {
+        String text = defaultVal;
         if (code != null && code.trim().length() > 0) {
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT XM FROM YGJBXX WHERE YGBH = ").append(code);
