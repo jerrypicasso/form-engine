@@ -751,6 +751,7 @@
 						return '<span style="font-size:12px;">没找到</span>';
 				    }
 				},
+				dropdownAutoWidth: true,
 				multiple : multiple === 'multiple',
 				ajax:{
 					url : 'form/fill-combo.process',

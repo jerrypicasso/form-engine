@@ -200,13 +200,16 @@ input.editor {
     border-radius: 0 !important;
 }
 
-.select2-selection__arrow {
-    display: none !important;
+.select2-choice {
+	padding:0 !important;
 }
 
-.select2-selection__rendered {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+.select2-arrow {
+	display:none !important;
+}
+
+.select2-chosen {
+	margin-right:0 !important;
 }
 
 .validate-error{
