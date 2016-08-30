@@ -1222,7 +1222,8 @@ function renderInputToSelect2(input, type) {
                 return {
                     'category': 'icd',
                     'fuzzy': term,
-                    'filter': type || '10'
+                    'filter': type || '10',
+                    'page':page
                 };
             },
             results: function (data, page) {
@@ -1233,7 +1234,8 @@ function renderInputToSelect2(input, type) {
                         name: item.txt
                     });
                 });
-                return {results: results};
+                var more = 100 == data.length;
+                return {results: results, more: more};
             }
         },
         escapeMarkup: function (markup) {

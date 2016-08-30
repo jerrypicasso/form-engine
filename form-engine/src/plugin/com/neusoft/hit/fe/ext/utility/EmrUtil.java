@@ -269,4 +269,23 @@ public class EmrUtil {
     }
 
 
+    /**
+     * 判断字符串长度
+     * @param s
+     * @return
+     */
+    public static int stringLength(String s) {
+        if (s == null)
+            return 0;
+        char[] c = s.toCharArray();
+        int len = 0;
+        for (int i = 0; i < c.length; i++) {
+            len++;
+            if (isChinese(c[i])) {
+                len++;
+            }
+        }
+        return len;
+    }
+
 }

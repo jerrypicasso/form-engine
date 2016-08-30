@@ -1,15 +1,5 @@
 package com.neusoft.hit.fe.core.handler;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.*;
-
-import com.neusoft.hit.fe.ext.utility.EmrUtil;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.neusoft.hit.fe.core.exception.FormEngineException;
 import com.neusoft.hit.fe.core.model.ComboCfgInfo;
 import com.neusoft.hit.fe.core.model.ComboInfo;
@@ -17,9 +7,19 @@ import com.neusoft.hit.fe.core.model.ComboParam;
 import com.neusoft.hit.fe.core.utility.ConfigUtil;
 import com.neusoft.hit.fe.core.utility.DBUtil;
 import com.neusoft.hit.fe.core.utility.FreemarkerUtil;
-
+import com.neusoft.hit.fe.ext.utility.EmrUtil;
 import net.sf.json.JSONArray;
-import org.apache.poi.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ComboDataHandler {
 
@@ -106,9 +106,9 @@ public class ComboDataHandler {
                 combos.add(combo);
             }
 
-            if (EmrUtil.isChinese(param.getFuzzy())) {
+            if (EmrUtil.isChinese(param.getFuzzy()) && EmrUtil.stringLength(param.getFuzzy()) >= 4) {
                 filterByIcd(combos);
-                Map<String,List<ComboInfo>> temp = new HashMap<String, List<ComboInfo>>();
+                Map<String, List<ComboInfo>> temp = new HashMap<String, List<ComboInfo>>();
                 rs.close();
                 arguments.clear();
                 list.clear();
@@ -116,10 +116,10 @@ public class ComboDataHandler {
                 sqlTemp = dropdown.getSqlText();
                 displayExpr = dropdown.getDisplayExpr();
                 valueExpr = dropdown.getValueExpr();
-                for (int x = 0; x < combos.size(); x++) {
-                    param.setFuzzy(combos.get(x).getVal().substring(0,combos.get(x).getVal().indexOf(".")+2));
-                    if(StringUtils.isNotBlank(param.getFuzzy())){
-                        List<ComboInfo> tempList =  new ArrayList<ComboInfo>();
+                for (int x = 0; x < (3 > combos.size() ? combos.size() : 3); x++) {
+                    param.setFuzzy(combos.get(x).getVal().substring(0, combos.get(x).getVal().indexOf(".") + 2));
+                    if (StringUtils.isNotBlank(param.getFuzzy())) {
+                        List<ComboInfo> tempList = new ArrayList<ComboInfo>();
                         arguments.put("param", param);
                         sql = FreemarkerUtil.getMixedString(sqlTemp, arguments);
                         arguments.clear();
@@ -132,19 +132,19 @@ public class ComboDataHandler {
                             String value = FreemarkerUtil.getMixedString(valueExpr, arguments);
                             combo.setVal(value);
                             combo.setTxt(display);
-                            if(!combos.get(x).getVal().equals(combo.getVal())){
+                            if (!combos.get(x).getVal().equals(combo.getVal())) {
                                 tempList.add(combo);
                             }
 
                         }
-                        temp.put(combos.get(x).getVal(),tempList);
+                        temp.put(combos.get(x).getVal(), tempList);
                     }
                 }
-                for(String key:temp.keySet()){
-                    for(int i=0;i<combos.size();i++){
-                        if(combos.get(i).getVal().equals(key)){
-                            for(int j = temp.get(key).size()-1;j>=0;j--){
-                                combos.add(i+1,temp.get(key).get(j));
+                for (String key : temp.keySet()) {
+                    for (int i = 0; i < combos.size(); i++) {
+                        if (combos.get(i).getVal().equals(key)) {
+                            for (int j = temp.get(key).size() - 1; j >= 0; j--) {
+                                combos.add(i + 1, temp.get(key).get(j));
                             }
                         }
                     }
@@ -158,18 +158,35 @@ public class ComboDataHandler {
         } finally {
             DBUtil.close(conn, stmt, rs);
         }
+        combos = pagination(combos, param.getPage());
         return JSONArray.fromObject(combos).toString();
+    }
+
+    private List<ComboInfo> pagination(List<ComboInfo> combos, Integer page) {
+        List<ComboInfo> comboInfos = new ArrayList<ComboInfo>();
+        if (combos.size() <= 100) {
+            comboInfos = combos;
+        } else if (page != null) {
+            Integer start = (page - 1) * 100;
+            Integer end = start + 100;
+            if (start + 100 >= combos.size()) {
+                end = combos.size();
+            }
+            comboInfos = combos.subList(start, end);
+        }
+        return comboInfos;
     }
 
     private void filterByIcd(List<ComboInfo> combos) {
         String icdTemp = null;
 
-        for (int i = 0; i < combos.size(); i++) {
-            icdTemp = combos.get(i).getVal().substring(0,combos.get(i).getVal().indexOf(".")+2);
-            if(StringUtils.isNotBlank(icdTemp)){
+
+        for (int i = 0; i < (3 > combos.size() ? combos.size() : 3); i++) {
+            icdTemp = combos.get(i).getVal().substring(0, combos.get(i).getVal().indexOf(".") + 2);
+            if (StringUtils.isNotBlank(icdTemp)) {
                 for (int j = combos.size() - 1; j > i; j--) {
-                    String icdTitle =combos.get(j).getVal().substring(0,combos.get(j).getVal().indexOf(".")+2);
-                    if(StringUtils.isNotBlank(icdTitle)){
+                    String icdTitle = combos.get(j).getVal().substring(0, combos.get(j).getVal().indexOf(".") + 2);
+                    if (StringUtils.isNotBlank(icdTitle)) {
                         if (icdTemp.equals(icdTitle)) {
                             combos.remove(j);
                         }
