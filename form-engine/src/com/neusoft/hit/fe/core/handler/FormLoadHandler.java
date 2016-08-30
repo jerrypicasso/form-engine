@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -154,8 +153,10 @@ public class FormLoadHandler {
 			listElement.attr("expr", itemsName + " as " + varName);
 			listElement.removeAttr("items");
 			listElement.removeAttr("var");
-			listElement.removeAttr("class");
 			listElement.removeAttr("style");
+			listElement.removeClass("droppable");
+			listElement.removeClass("selectable");
+			listElement.removeAttr("class");
 			HtmlElement listWrapper = listElement.parent();
 			listWrapper.attr("total-row", "${(" + itemsName + "_pagination.ROW_COUNT)!}");
 			listWrapper.attr("total-page", "${(" + itemsName + "_pagination.PAGE_COUNT)!}");
@@ -166,6 +167,8 @@ public class FormLoadHandler {
 		List<HtmlElement> conditionElements = htmlDocument.getElementsByTag("condition");
 		for(HtmlElement conditionElement : conditionElements) {
 			conditionElement.removeClass("widget-condition");
+			conditionElement.removeClass("droppable");
+			conditionElement.removeClass("selectable");
 			conditionElement.removeAttr("class");
 			conditionElement.removeAttr("style");
 		}
