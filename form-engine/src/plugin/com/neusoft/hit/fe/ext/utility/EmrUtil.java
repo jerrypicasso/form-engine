@@ -68,6 +68,10 @@ public class EmrUtil {
         }
         return text;
     }
+    
+    public static String dict(String category, String code, String defaultVal) {
+    	return null;
+    }
 
     public static String dict(String category, String code) {
         String text = "";
@@ -96,7 +100,15 @@ public class EmrUtil {
         }
         return text;
     }
-
+    
+    public static String dept(String code, String defaultVal) {
+    	return null;
+    }
+    
+    public static String ward(String code, String defaultVal) {
+    	return null;
+    }
+    
     /**
      * 读取诊断表中的类型，然后返回内容
      *
