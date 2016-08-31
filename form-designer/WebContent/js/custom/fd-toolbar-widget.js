@@ -48,13 +48,13 @@ function createWidgetControls() {
 		icon:'url(icon/page_number.png)',
 		title:'当前页码'
 	},{
-		id:'required',
-		icon:'url(icon/required.png)',
-		title:'必填项'
-	},{
 		id:'page-count',
 		icon:'url(icon/page_count.png)',
 		title:'总共页数'
+	},{
+		id:'required',
+		icon:'url(icon/required.png)',
+		title:'必填项'
 	},{
 		id:'diagnosis',
 		icon:'url(icon/diagnosis.png)',
