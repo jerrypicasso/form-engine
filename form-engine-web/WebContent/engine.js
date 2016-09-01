@@ -343,6 +343,7 @@
 						else {
 							toastr['success']('保存成功');
 							container.data('mode', 'view');
+							KindEditor.remove('textarea');
 							var func = methods['reload'];
 							func.apply(container);
 						}
@@ -588,10 +589,12 @@
 			var editor = $(this).find('.editor'), isHidden = $(this).hasClass('widget-field-hidden') ? true : false, type;
 			var isNum = $(this).hasClass('widget-field-number') ? true : false;
 			var val = editor.val() || '';
+
 			var valLength = null;
 			var errorSpan = null;
 
 			if (editor.is('textarea')) {
+				val = $('<div>' + val + '</div>').text();
 				var text = $('<div>' + val + '</div>').text();
 				valLength = text.length;
 			} else {
