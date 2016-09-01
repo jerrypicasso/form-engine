@@ -47,7 +47,7 @@ public class JedisUtils {
 
     }
 
-    public static final String KEY_PREFIX = "cloud_emr";
+    public static final String KEY_PREFIX = "form-engine";
 
     /**
      * 获取缓存
