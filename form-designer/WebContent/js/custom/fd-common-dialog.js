@@ -1,3 +1,4 @@
+var test2 = "222";
 function showLoadPaperDialog() {
 	var mask = $('.mask-layer-tpl').clone();
 	mask.addClass('mask-layer').removeClass('mask-layer-tpl');
