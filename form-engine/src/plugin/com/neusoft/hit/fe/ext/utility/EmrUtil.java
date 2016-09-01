@@ -44,6 +44,18 @@ public class EmrUtil {
     public static String staff(String code) {
         return staff(code, "");
     }
+    /*
+     * 科室为空显示默认值
+     */
+    public static String dept(String code) {
+    	return dept(code,"");
+    }
+    /*
+     * 病区为空显示默认值
+     */
+    public static String ward(String code) {
+    	return ward(code,"");
+    }
     
     public static String staff(String code, String defaultVal) {
         String text = defaultVal;
@@ -68,9 +80,15 @@ public class EmrUtil {
         }
         return text;
     }
-    
+    /**
+     * 
+     * @param category
+     * @param code
+     * @param defaultVal
+     * @return
+     */
     public static String dict(String category, String code, String defaultVal) {
-    	return null;
+    	return dict(category,code,"");
     }
 
     public static String dict(String category, String code) {
@@ -100,13 +118,63 @@ public class EmrUtil {
         }
         return text;
     }
-    
+    /**
+     * 科室编号->科室名称
+     * @param code
+     * @param defaultVal 默认值
+     * @return
+     */
     public static String dept(String code, String defaultVal) {
-    	return null;
+    	String text = defaultVal;
+        if (code != null && code.trim().length() > 0) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT KCMC FROM KS WHERE KSBH = ").append(code);
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            try {
+                conn = DBUtil.getConnection();
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql.toString());
+                if (rs.next()) {
+                    text = rs.getString("KCMC");
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.toString(), e);
+            } finally {
+                DBUtil.close(conn, stmt, rs);
+            }
+        }
+        return text;
     }
-    
+    /**
+     * 病区编号->病区名称
+     * @param code
+     * @param defaultVal
+     * @return
+     */
     public static String ward(String code, String defaultVal) {
-    	return null;
+    	String text = defaultVal;
+        if (code != null && code.trim().length() > 0) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT BQMC FROM BQ WHERE BQID = ").append(code);
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            try {
+                conn = DBUtil.getConnection();
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql.toString());
+                if (rs.next()) {
+                    text = rs.getString("BQMC");
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.toString(), e);
+            } finally {
+                DBUtil.close(conn, stmt, rs);
+            }
+        }
+        return text;
     }
     
     /**
