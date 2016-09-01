@@ -6,6 +6,14 @@
         <max-size>1000000</max-size>
     </image-upload>
 
+    <redis-config>
+        <path>127.0.0.1</path>
+        <port>6379</port>
+        <max-wait>600000</max-wait>
+        <test-on-borrow>true</test-on-borrow>
+    </redis-config>
+
+
     <combo-configs>
         <combo-config code="dict" name="字典">
             <sql-template>

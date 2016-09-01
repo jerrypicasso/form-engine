@@ -33,7 +33,29 @@ public class ConfigUtil {
 			LOGGER.error(e.toString(), e);
 		}
 	}
-	
+
+	public static  Map<String,Object> getJedisCfg(){
+		Map<String,Object> result = new HashMap<String, Object>();
+		Node node = document.selectSingleNode("/form-engine/redis-config/path");
+		if(node!=null){
+			result.put("path",node.getText().trim());
+		}
+		node = document.selectSingleNode("/form-engine/redis-config/port");
+		if(node!=null){
+			result.put("port",Integer.parseInt(node.getText().trim()));
+		}
+		node = document.selectSingleNode("/form-engine/redis-config/max-wait");
+		if(node!=null){
+			result.put("maxWait",Integer.parseInt(node.getText().trim()));
+		}
+		node = document.selectSingleNode("/form-engine/redis-config/test-on-borrow");
+		if(node!=null){
+			result.put("testOnBorrow",Boolean.valueOf(node.getText().trim()));
+		}
+		return result;
+	}
+
+
 	public static JdbcCfgInfo getJdbcCfg() {
 		JdbcCfgInfo jdbc = new JdbcCfgInfo();
 		Node node = document.selectSingleNode("/form-engine/data-source/driver-class");

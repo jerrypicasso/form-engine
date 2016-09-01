@@ -285,6 +285,8 @@
 		if(!result) {
 			if(msg&&msg.length>0){
 				toastr['error'](msg.join('<br/>'));
+			}else{
+				toastr['error']('填写内容存在错误，请根据提示修改，');
 			}
 			return;
 		}
@@ -1232,6 +1234,8 @@
 		if(!result) {
 			if(msg&&msg.length>0){
 				toastr['error'](msg.join('<br/>'));
+			}else{
+				toastr['error']('填写内容存在错误，请根据提示修改，');
 			}
 			return false;
 		}
