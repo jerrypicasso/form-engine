@@ -615,7 +615,7 @@
 					if (isHidden) {
 						msg.push(fieldName + '是必填项，不允许为空！');
 					} else {
-						errorSpan = $('<span class="error-tip">必填项，不允许为空！</span>');
+						errorSpan = '必填项，不允许为空';
 					}
 				}
 			}
@@ -627,7 +627,7 @@
 					if (isHidden) {
 						msg.push(fieldName + '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength);
 					} else {
-						errorSpan = $('<span class="error-tip">字符长度不允许超过' + maxLength + '个字，当前长度' + valLength + '</span>');
+						errorSpan = '字符长度不允许超过' + maxLength + '个字，当前长度' + valLength;
 					}
 				}
 			}
@@ -639,7 +639,7 @@
 					if (isHidden) {
 						msg.push(fieldName + '字符长度不允许少于' + minLength + '个字，当前长度' + valLength);
 					} else {
-						errorSpan = $('<span class="error-tip">字符长度不允许少于' + minLength + '个字，当前长度' + valLength + '</span>');
+						errorSpan = '字符长度不允许少于' + minLength + '个字，当前长度' + valLength ;
 					}
 				}
 			}
@@ -651,7 +651,7 @@
 					if (isHidden) {
 						msg.push(fieldName + '是数字字段，输入内容非法。');
 					} else {
-						errorSpan = $('<span class="error-tip">请输入数字。</span>');
+						errorSpan = '请输入数字。';
 					}
 				}else{
 
@@ -664,7 +664,7 @@
 							if (isHidden) {
 								msg.push(fieldName + '字段值低于最小值限制');
 							} else {
-								errorSpan = $('<span class="error-tip">字段值低于最小值限制。</span>');
+								errorSpan = '字段值低于最小值限制。';
 							}
 						}
 					}
@@ -675,7 +675,7 @@
 							if (isHidden) {
 								msg.push(fieldName + '字段值超出最大值限制');
 							} else {
-								errorSpan = $('<span class="error-tip">字段值超出最大值限制。</span>');
+								errorSpan = '>字段值超出最大值限制。';
 							}
 						}
 					}
@@ -686,18 +686,28 @@
 
 
 			if (error) {
-				$(this).next('span.error-tip').remove();
-				$(this).addClass('validate-error').after(errorSpan);
+				$(this).addClass('validate-error');
+				$(this).off('mouseover').on('mouseover',function(){
+					var index = layer.tips(errorSpan, $(this),{
+						tips: [1, '#CA3031'],
+						time: 60000
+					});
+					$(this).one('mouseout',function(){
+						layer.close(index);
+					})
+
+				})
 				if (type == 'select') {
 					var that = $(this);
-					$(this).find('input.editor').one('select2-open', function () {
-						that.next('span.error-tip').remove();
+					$(this).find('input.editor').one('select2-blur', function () {
 						that.removeClass('validate-error');
+						that.off('mouseover');
 					})
 				} else if (type == 'input') {
-					$(this).one('mousedown', function () {
-						$(this).next('span.error-tip').remove();
-						$(this).removeClass('validate-error');
+					var that = $(this);
+					$(this).find('input.editor').one('blur', function () {
+						that.removeClass('validate-error');
+						that.off('mouseover');
 					})
 				}
 			}
@@ -900,13 +910,13 @@
 						var editHeight = $(this).attr('edit-height');
 						this.edit.setHeight(editHeight);
 						this.toolbar.show();
-						dataField.removeClass('validate-error').next('span.error-tip').remove();
 					},
 					afterBlur: function(){
 						var containerHeight = $(this).attr('container-height');
 						this.edit.setHeight(containerHeight);
 						this.toolbar.hide();
 						dataField.removeClass('validate-error').next('span.error-tip').remove();
+						dataField.off('mouseover');
 					},
 					items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 							'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
