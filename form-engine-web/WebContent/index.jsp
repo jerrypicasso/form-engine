@@ -35,6 +35,8 @@
 <script type="text/javascript" src="plugin-nursing.js"></script>
 <script type="text/javascript" src="plugin-surgery.js"></script>
 <script type="text/javascript">
+
+	var ctx = '${pageContext.request.contextPath}';
 	$(document).ready(function(){
 		$('#container').bind('form-loaded', function(){
 			var ret = $('#container').form('lookup', {

@@ -122,12 +122,16 @@ function queryDiagnosis(diagnosisWidget, opts, mode, container, stayEdit) {
                         if(signatureInfo.sync&&signatureInfo.sync=="Y"){
                             signature.append('<div class="signature-row" ><span class="signature-label">'+signatureInfo.modifyZcName+':</span>' +
                                 '<span class="audit-position">' + signatureInfo.modfiyName + '</span></div>');
+                            signature.append('<div class="signature-row"><span class="signature-label"><span class="signature-time">' + signatureInfo.modifyTime + '</span></span></div>')
+
                         }
                     }else{
                         signature.append('<div class="signature-row" ><span class="signature-label" >医师签名:</span>' +
                             '<span class="signature-position">' + signatureInfo.modfiyName + '</span></div>');
+                        signature.append('<div class="signature-row"><span class="signature-label"><span class="signature-time">' + signatureInfo.modifyTime + '</span></span></div>')
+
                     }
-                    signature.append('<div class="signature-row"><span class="signature-label"><span class="signature-time">' + signatureInfo.modifyTime + '</span></span></div>')
+
                 }
             }
 
@@ -1292,8 +1296,9 @@ function openDialog(container,options) {
                     type: 'post',
                     dataType: 'json',
                     cache:false,
-                    data: JSON.stringify(params),
+                    data: params,
                     success: function (data) {
+
                         if(data.authorized){
                             var param = {};
                             $.extend(param, options.param);
