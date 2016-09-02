@@ -608,7 +608,7 @@
 					val = editor.select2('val') || '';
 				} else if ($(this).find('input.editor.text').length > 0 || $(this).find('input.editor.date').length > 0||$(this).find('input.editor.number').length > 0) {
 					type = 'input';
-				} else {
+				} else if (editor.is('textarea')){
 					type = 'textarea';
 				}
 			}
@@ -650,6 +650,7 @@
 			}
 			var regexExpr =  $.trim($(this).attr('regex-expr'));
 			if(regexExpr&& $.trim(regexExpr).length>0){
+
 				var flag,expression,pattern;
 				if('/'==regexExpr.substring(0,1)){
 					flag = regexExpr.substring(regexExpr.lastIndexOf('/')+1)||'';
