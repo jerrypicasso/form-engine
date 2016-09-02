@@ -650,9 +650,16 @@
 			}
 			var regexExpr =  $.trim($(this).attr('regex-expr'));
 			if(regexExpr&& $.trim(regexExpr).length>0){
-				var flag = regexExpr.substring(regexExpr.lastIndexOf('/')+1)||'';
-				var expression = regexExpr.substring(1,regexExpr.lastIndexOf('/'));
-				var pattern = new RegExp(expression,flag);
+				var flag,expression,pattern;
+				if('/'==regexExpr.substring(0,1)){
+					flag = regexExpr.substring(regexExpr.lastIndexOf('/')+1)||'';
+					expression = regexExpr.substring(1,regexExpr.lastIndexOf('/'));
+				}else{
+					flag='';
+					expression = regexExpr;
+				}
+				pattern = new RegExp(expression,flag);
+
 				if(!pattern.test(val)){
 					result = false;
 					error = true;
