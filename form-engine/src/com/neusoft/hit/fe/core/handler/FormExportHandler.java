@@ -91,14 +91,16 @@ public class FormExportHandler {
 			tidy.parse(new ByteArrayInputStream(html.toString().getBytes("utf-8")), buffer);
 			String htmlStr = buffer.toString("utf-8");
 			htmlStr = htmlStr.replaceAll("\\-ms\\-word\\-wrap", "word-wrap");
-        	ITextRenderer renderer = new ITextRenderer();  
+			htmlStr = htmlStr.replaceAll("align=\"middle\"", "align=\"center\"");
+        	ITextRenderer renderer = new ITextRenderer();
         	renderer.setDocumentFromString(htmlStr);
         	
 			// 解决中文支持问题  
 			ITextFontResolver fontResolver = renderer.getFontResolver();  
-			//fontResolver.addFont("C:/Windows/Fonts/SIMKAI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);  
-			fontResolver.addFont("/usr/share/fonts/win/simsun.ttc",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
-			fontResolver.addFont("/usr/share/fonts/win/simsunbd.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+			fontResolver.addFont("c:/simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+			fontResolver.addFont("c:/simsunbd.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+			//fontResolver.addFont("C:/Windows/Fonts/simsunb.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+			//fontResolver.addFont("/usr/share/fonts/win/simsunbd.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
 			//fontResolver.addFont("c:/windows/fonts/SimSun-Bold.ttf",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
   
 			// 解决图片的相对路径问题  
