@@ -648,6 +648,23 @@
 					}
 				}
 			}
+			var regexExpr =  $.trim($(this).attr('regex-expr'));
+			if(regexExpr&& $.trim(regexExpr).length>0){
+				var flag = regexExpr.substring(regexExpr.lastIndexOf('/')+1);
+				var expression = regexExpr.substring(1,regexExpr.lastIndexOf('/'));
+				var pattern = new RegExp(expression,flag);
+				if(!pattern.test(val)){
+					result = false;
+					error = true;
+					if (isHidden) {
+						msg.push('未按正确格式输入');
+					} else {
+						errorSpan = '未按正确格式输入';
+					}
+				}
+			}
+
+
 
 			if (isNum) {
 				if (isNaN(val)) {
