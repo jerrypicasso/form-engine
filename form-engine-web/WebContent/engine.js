@@ -127,7 +127,7 @@
 		$(container).find('.content table.data-row').each(function(){
 			if($(this).height() <= 48) {
 				var style = $(this).attr('style');
-				style = style + "page-break-inside:avoid;"
+				style = style + "page-break-inside:avoid;";
 				$(this).attr('style', style);
 			}
 		});
@@ -1011,7 +1011,7 @@
 				prevPageBtn.appendTo(pageWrapper);
 				prevPageBtn.click(function(){
 					var lastOptions = container.data('lastOptions');
-					var page = lastOptions[pageParamName] || 0
+					var page = lastOptions[pageParamName] || 0;
 					if(page > 0) {
 						page--;
 					}
